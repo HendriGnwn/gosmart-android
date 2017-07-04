@@ -5,4 +5,12 @@
     <color name="colorAccent">#C80000</color>
     <color name="coloryellow">#FFD300</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+
+    <color name="colorWhiteSmoke">#DDD</color>
+    <color name="colorBlackSecondary">#70000000</color>
+
+    <color name="colorButtonBackgroundPrimary">#C80000</color>
+    <color name="colorButtonBackgroundSecondary">#80C80000</color>
+    <color name="colorButtonBackgroundThirdy">#60C80000</color>
 </resources>
