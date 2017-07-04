@@ -17,4 +17,22 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.TextTransparent">
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@android:color/transparent</item>
+        <item name="android:textSize">0dp</item>
+        <item name="fontPath">fonts/latoRegular.ttf</item>
+    </style>
+
+    <style name="AppTheme.TextLight">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_title_material</item>
+        <item name="fontPath">fonts/latoRegular.ttf</item>
+    </style>
+
+    <style name="AppTheme.ButtonActionBar" parent="Widget.AppCompat.ActionButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
 </resources>
