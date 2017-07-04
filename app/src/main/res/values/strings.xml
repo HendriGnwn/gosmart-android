@@ -5,9 +5,33 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="dont_have_an_account">Dont have an account?</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="please_enter_your">Please enter your registered Email Address</string>
+
+    <string name="forgot_password">Forgot Password</string>
+    <string name="signup_student">Sign Up Student</string>
+    <string name="signup_teacher">Sign Up Teacher</string>
 
     <!-- action -->
     <string name="action_settings">Settings</string>
     <string name="action_cart">Cart</string>
+    <string name="action_signin">Sign In</string>
+    <string name="action_signup">Sign Up</string>
+    <string name="action_need_help">Need help?</string>
+    <string name="action_signup_student">Sign Up Student</string>
+    <string name="action_signup_teacher">Sign Up Teacher</string>
+    <string name="action_submit">Submit</string>
+
+    <!-- prompt -->
+    <string name="prompt_email">Email*</string>
+    <string name="prompt_password">Password*</string>
+    <string name="prompt_first_name">First Name*</string>
+    <string name="prompt_last_name">Last Name</string>
+    <string name="prompt_phone_number">Phone Number*</string>
+    <string name="prompt_address">Address*</string>
+    <string name="prompt_title">Title*</string>
+
+    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
 </resources>
