@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Go Smart Les Magistra</string>
+    <string name="go_smart">Go Smart</string>
+    <string name="les_magistra">Les Magistra</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

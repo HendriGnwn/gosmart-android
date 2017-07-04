@@ -39,6 +39,12 @@ dependencies {
     // image selector for upload photo
     compile 'com.sw926.imagefileselector:library:1.0.7'
 
+    // custom for textview
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+
+    //circular image view
+    compile 'com.pkmmte.view:circularimageview:1.1'
+
     // restful handle and image load
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.google.code.gson:gson:2.8.0'
