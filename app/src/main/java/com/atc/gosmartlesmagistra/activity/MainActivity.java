@@ -1,6 +1,7 @@
 package com.atc.gosmartlesmagistra.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.R;
+import com.pkmmte.view.CircularImageView;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -52,6 +55,10 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setTitle(null);
         }
 
+        final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
+        iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        fab.setImageDrawable(iconFab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +73,31 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        manageHeaderView();
+    }
+
+    private void manageHeaderView() {
+        View headerView = navigationView.getHeaderView(0);
+        TextView userName = (TextView) headerView.findViewById(R.id.name);
+        TextView userEmail = (TextView) headerView.findViewById(R.id.email);
+        CircularImageView userPhoto = (CircularImageView) headerView.findViewById(R.id.image);
+
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditProfileStudentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        userPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditProfileTeacherActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -97,7 +129,18 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         Drawable cartDrawable = ContextCompat.getDrawable(this, R.drawable.zzz_cart);
         cartDrawable.setColorFilter(white, PorterDuff.Mode.SRC_ATOP);
-        menu.findItem(R.id.action_cart).setIcon(cartDrawable);
+        menu.findItem(R.id.action_cart)
+                .setIcon(cartDrawable)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        Intent intent = new Intent(getApplicationContext(), PrivateOrderActivity.class);
+                        startActivity(intent);
+
+                        return false;
+                    }
+                });
         return true;
     }
 

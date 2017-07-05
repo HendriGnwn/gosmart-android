@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="left"
-                android:text="@string/action_signup_teacher"
+                android:text="@string/edit_profile_student"
                 android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_size_medium_material" />
@@ -44,48 +44,11 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
-        android:id="@+id/bottombar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_horizontal_margin"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorWhiteSmoke"
-        android:gravity="center"
-        android:layout_gravity="bottom">
-        <TextView
-            android:id="@+id/have_an_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_marginRight="@dimen/input_right"
-            android:textSize="@dimen/textSmallSecondary"
-            android:textColor="@color/colorBlackSecondary"
-            android:text="@string/have_an_account"/>
-
-        <TextView
-            android:layout_alignParentRight="true"
-            android:id="@+id/action_sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:text="@string/action_signin"
-            android:textSize="@dimen/textSmallSecondary"
-            android:textColor="@color/colorBlackSecondary"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
     <android.support.v4.widget.NestedScrollView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appbar"
-        android:layout_above="@+id/bottombar"
         android:scrollbars="vertical"
         android:fillViewport="true">
         <LinearLayout
@@ -94,8 +57,20 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <com.pkmmte.view.CircularImageView
+                android:id="@+id/image"
+                android:background="@drawable/shape_circle"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/user"
+                app:border="true"
+                app:border_width="1dp"
+                app:border_color="@android:color/white"
+                app:shadow="false" />
+
             <LinearLayout
-                android:id="@+id/sign_up_form"
+                android:id="@+id/edit_profile_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -108,26 +83,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                   <android.support.design.widget.TextInputLayout
-                       android:id="@+id/input_layout_title"
-                       android:layout_width="0dp"
-                       android:layout_height="wrap_content"
-                       android:layout_weight=".20"
-                       android:layout_marginBottom="@dimen/input_bottom">
-
-                       <AutoCompleteTextView
-                           android:id="@+id/title"
-                           android:layout_width="match_parent"
-                           android:layout_height="wrap_content"
-                           android:hint="@string/prompt_title"
-                           android:imeOptions="actionNext"
-                           android:inputType="number"
-                           android:maxLines="1"
-                           android:nextFocusDown="@+id/first_name"
-                           android:singleLine="true" />
-
-                   </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_first"
@@ -231,33 +186,22 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_layout_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/input_bottom">
-
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:imeActionId="@+id/login"
-                        android:imeActionLabel="@string/action_signin"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true" />
-
-                </android.support.design.widget.TextInputLayout>
-
                 <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/sign_up_button"
+                    android:id="@+id/change_password_button"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/activity_horizontal_margin"
-                    android:text="@string/action_signup"
+                    android:text="@string/action_change_password"
+                    android:textColor="@color/colorBlackSecondary" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/submit_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                    android:text="@string/action_submit"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/fontInputBig"
                     android:background="@drawable/shape_rectanglebutton"
