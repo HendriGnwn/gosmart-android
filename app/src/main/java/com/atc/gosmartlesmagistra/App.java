@@ -3,8 +3,12 @@ package com.atc.gosmartlesmagistra;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Base64;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import java.io.ByteArrayOutputStream;
@@ -46,5 +50,30 @@ public class App extends Application {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    /**
+     * check internet connection with context
+     * @param context
+     * @return
+     */
+    public static boolean isOnline(Context context) {
+        boolean connected = false;
+        try {
+
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            connected = networkInfo != null && networkInfo.isAvailable() &&
+                    networkInfo.isConnected();
+            return connected;
+
+
+        } catch (Exception e) {
+            System.out.println("CheckConnectivity Exception: " + e.getMessage());
+            Log.v("connectivity", e.toString());
+        }
+
+        return connected;
     }
 }

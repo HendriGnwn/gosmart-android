@@ -27,6 +27,7 @@
     <string name="action_signup_teacher">Sign Up Teacher</string>
     <string name="action_submit">Submit</string>
     <string name="action_change_password">Change Password</string>
+    <string name="action_checkout">Checkout</string>
 
     <!-- prompt -->
     <string name="prompt_email">Email*</string>

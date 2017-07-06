@@ -44,11 +44,31 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:id="@+id/bottombar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorWhiteSmoke"
+        android:gravity="center"
+        android:layout_gravity="bottom">
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/checkout_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_checkout"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/fontInputBig"
+            android:background="@drawable/shape_rectanglebutton_secondary" />
+    </RelativeLayout>
+
     <android.support.v4.widget.NestedScrollView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appbar"
+        android:layout_above="@+id/bottombar"
         android:scrollbars="vertical"
         android:fillViewport="true">
         <LinearLayout

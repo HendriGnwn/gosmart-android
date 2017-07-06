@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.pkmmte.view.CircularImageView;
 
@@ -62,8 +63,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Toast.makeText(getApplicationContext(), "Sorry page is not available", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -73,6 +73,17 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (!App.isOnline(this)) {
+            Snackbar.make(fab, "there is no internet connection", Snackbar.LENGTH_LONG)
+                    .setAction("Try Again", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                            startActivity(getIntent());
+                        }
+                    }).show();
+        }
 
         manageHeaderView();
     }
