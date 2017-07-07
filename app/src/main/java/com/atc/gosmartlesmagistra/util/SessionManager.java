@@ -41,7 +41,7 @@ public class SessionManager {
 
         editor.putBoolean(KEY_IS_LOGGEDIN, isLoggedIn);
         editor.putString(KEY_USER_TOKEN, user.getToken());
-        editor.putString(KEY_USER_CODE, user.getCode());
+        editor.putString(KEY_USER_CODE, user.getUniqueNumber());
         editor.commit();
     }
 

@@ -55,10 +55,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE_USER, COLUMN_CODE + " = ?",
-                new String[] { String.valueOf(user.getCode()) });
+                new String[] { String.valueOf(user.getUniqueNumber()) });
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CODE, user.getCode());
+        values.put(COLUMN_CODE, user.getUniqueNumber());
         values.put(COLUMN_RAW, new Gson().toJson(user).getBytes());
         db.insert(TABLE_USER, null, values);
         db.close();
