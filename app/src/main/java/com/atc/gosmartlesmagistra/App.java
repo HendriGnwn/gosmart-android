@@ -21,8 +21,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
 
-    public static String API = "http://sushitei.cranium.id/api/v1/";
-    public static String URL = "http://sushitei.cranium.id/";
+    public static String API = "http://atc.co.id/gosmart/public/api/v1/";
+    public static String URL = "http://atc.co.id/gosmart/public/";
 
     @Override
     public void onCreate() {
