@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class User implements Serializable
 {
+    public static Integer roleTeacher = 2;
+    public static Integer roleStudent = 3;
 
     @SerializedName("unique_number")
     @Expose
@@ -20,6 +22,9 @@ public class User implements Serializable
     @SerializedName("phone_number")
     @Expose
     private String phoneNumber;
+    @SerializedName("photo")
+    @Expose
+    private String photo;
     @SerializedName("latitude")
     @Expose
     private Double latitude;
@@ -32,6 +37,9 @@ public class User implements Serializable
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("firebase_token")
+    @Expose
+    private String firebaseToken;
     @SerializedName("status")
     @Expose
     private Integer status;
@@ -84,16 +92,18 @@ public class User implements Serializable
      * @param latitude
      * @param firstName
      */
-    public User(String uniqueNumber, String firstName, String lastName, String phoneNumber, Double latitude, Double longitude, String address, String email, Integer status, Integer role, String lastLoginAt, String createdAt, String updatedAt, String token, StudentProfile studentProfile, TeacherProfile teacherProfile) {
+    public User(String uniqueNumber, String firstName, String lastName, String phoneNumber, String photo, Double latitude, Double longitude, String address, String email, String firebaseToken, Integer status, Integer role, String lastLoginAt, String createdAt, String updatedAt, String token, StudentProfile studentProfile, TeacherProfile teacherProfile) {
         super();
         this.uniqueNumber = uniqueNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.photo = photo;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
         this.email = email;
+        this.firebaseToken = firebaseToken;
         this.status = status;
         this.role = role;
         this.lastLoginAt = lastLoginAt;
@@ -136,6 +146,14 @@ public class User implements Serializable
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public Double getLatitude() {
         return latitude;
     }
@@ -166,6 +184,14 @@ public class User implements Serializable
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 
     public Integer getStatus() {

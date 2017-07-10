@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,11 +24,27 @@ import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.api.UserApi;
+import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
+import com.atc.gosmartlesmagistra.util.DatabaseHelper;
+import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by hendrigunawan 7/4/2017
@@ -44,6 +61,9 @@ public class MainActivity extends AppCompatActivity
     @BindColor(R.color.colorWhite) int white;
 
     boolean doubleBackToExitPressedOnce = false;
+    SessionManager sessionManager;
+    DatabaseHelper databaseHelper;
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +75,11 @@ public class MainActivity extends AppCompatActivity
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(null);
         }
+
+        sessionManager = new SessionManager(this);
+        databaseHelper = new DatabaseHelper(this);
+        user = databaseHelper.getUserByUniqueNumber(sessionManager.getUserCode());
+        Log.i("atc", sessionManager.getKeyUserRole());
 
         final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
         iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
@@ -74,17 +99,6 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (!App.isOnline(this)) {
-            Snackbar.make(fab, "there is no internet connection", Snackbar.LENGTH_LONG)
-                    .setAction("Try Again", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                            startActivity(getIntent());
-                        }
-                    }).show();
-        }
-
         manageHeaderView();
     }
 
@@ -94,19 +108,33 @@ public class MainActivity extends AppCompatActivity
         TextView userEmail = (TextView) headerView.findViewById(R.id.email);
         CircularImageView userPhoto = (CircularImageView) headerView.findViewById(R.id.image);
 
+        userName.setText(user.getFirstName() + " " + user.getLastName());
+        userEmail.setText(user.getEmail());
+        Picasso.with(this).load(App.URL + "files/users/" + user.getPhoto()).error(R.drawable.user).into(userPhoto);
+
         userName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditProfileStudentActivity.class);
-                startActivity(intent);
+                if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleTeacher) {
+                    Intent intent = new Intent(getApplicationContext(), EditProfileTeacherActivity.class);
+                    startActivity(intent);
+                } else if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleStudent) {
+                    Intent intent = new Intent(getApplicationContext(), EditProfileStudentActivity.class);
+                    startActivity(intent);
+                }
             }
         });
 
         userPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditProfileTeacherActivity.class);
-                startActivity(intent);
+                if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleTeacher) {
+                    Intent intent = new Intent(getApplicationContext(), EditProfileTeacherActivity.class);
+                    startActivity(intent);
+                } else if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleStudent) {
+                    Intent intent = new Intent(getApplicationContext(), EditProfileStudentActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -182,12 +210,59 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_sign_in) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+        } else if (id == R.id.nav_sign_out) {
+            drawer.closeDrawer(GravityCompat.START);
+            attemptLogout();
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void attemptLogout() {
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest  = chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(App.API)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        UserApi service = retrofit.create(UserApi.class);
+
+        Call<LogoutSuccess> call = service.logout();
+        call.enqueue(new Callback<LogoutSuccess>() {
+            @Override
+            public void onResponse(Call<LogoutSuccess> call, Response<LogoutSuccess> response) {
+
+                if (response.raw().isSuccessful()) {
+                    sessionManager.setLogout();
+                    Toast.makeText(MainActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    sessionManager.setLogout();
+                    Toast.makeText(MainActivity.this, "Your login is expired.", Toast.LENGTH_LONG).show();
+                }
+
+                DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this);
+
+                finish();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<LogoutSuccess> call, Throwable t) {
+                Log.i("cranium:save", "failed");
+            }
+        });
     }
 }

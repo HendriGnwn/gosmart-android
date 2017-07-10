@@ -21,9 +21,6 @@ public class TeacherProfile implements Serializable
     @SerializedName("bio")
     @Expose
     private String bio;
-    @SerializedName("photo")
-    @Expose
-    private String photo;
     @SerializedName("upload_izajah")
     @Expose
     private String uploadIzajah;
@@ -71,15 +68,13 @@ public class TeacherProfile implements Serializable
      * @param teacherTotalHistories
      * @param formalPhoto
      * @param izajahNumber
-     * @param photo
      */
-    public TeacherProfile(Integer title, String izajahNumber, String graduated, String bio, String photo, String uploadIzajah, String formalPhoto, String total, String totalUpdatedAt, String createdAt, String updatedAt, List<TeacherCourse> teacherCourses, List<TeacherTotalHistory> teacherTotalHistories) {
+    public TeacherProfile(Integer title, String izajahNumber, String graduated, String bio, String uploadIzajah, String formalPhoto, String total, String totalUpdatedAt, String createdAt, String updatedAt, List<TeacherCourse> teacherCourses, List<TeacherTotalHistory> teacherTotalHistories) {
         super();
         this.title = title;
         this.izajahNumber = izajahNumber;
         this.graduated = graduated;
         this.bio = bio;
-        this.photo = photo;
         this.uploadIzajah = uploadIzajah;
         this.formalPhoto = formalPhoto;
         this.total = total;
@@ -120,14 +115,6 @@ public class TeacherProfile implements Serializable
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 
     public String getUploadIzajah() {
