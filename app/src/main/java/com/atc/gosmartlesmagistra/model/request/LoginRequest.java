@@ -14,7 +14,10 @@ public class LoginRequest implements Serializable
     @SerializedName("password")
     @Expose
     private String password;
-    private final static long serialVersionUID = 2576787184871920443L;
+    @SerializedName("firebase_token")
+    @Expose
+    private String firebaseToken;
+    private final static long serialVersionUID = -7839439601965759000L;
 
     /**
      * No args constructor for use in serialization
@@ -25,13 +28,15 @@ public class LoginRequest implements Serializable
 
     /**
      *
+     * @param firebaseToken
      * @param email
      * @param password
      */
-    public LoginRequest(String email, String password) {
+    public LoginRequest(String email, String password, String firebaseToken) {
         super();
         this.email = email;
         this.password = password;
+        this.firebaseToken = firebaseToken;
     }
 
     public String getEmail() {
@@ -48,6 +53,14 @@ public class LoginRequest implements Serializable
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 
 }

@@ -19,15 +19,7 @@
     <item android:title="Account">
         <menu>
             <item
-                android:id="@+id/nav_sign_in"
-                android:icon="@drawable/zzz_login"
-                android:title="Sign In" />
-            <item
-                android:id="@+id/nav_register"
-                android:icon="@drawable/zzz_account_plus"
-                android:title="Sign Up" />
-            <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_sign_out"
                 android:icon="@drawable/zzz_logout"
                 android:title="Sign Out" />
         </menu>
