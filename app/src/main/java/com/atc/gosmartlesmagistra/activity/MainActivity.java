@@ -78,6 +78,13 @@ public class MainActivity extends AppCompatActivity
 
         sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
+
+        if (!sessionManager.isLoggedIn()) {
+            Toast.makeText(this, "You must be a login", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         user = databaseHelper.getUserByUniqueNumber(sessionManager.getUserCode());
         Log.i("atc", sessionManager.getKeyUserRole());
 
