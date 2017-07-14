@@ -63,7 +63,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginRight="@dimen/input_right"
-            android:textSize="@dimen/textSmallSecondary"
+            android:textSize="@dimen/textSmall"
             android:textColor="@color/colorBlackSecondary"
             android:text="@string/have_an_account"/>
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:text="@string/action_signin"
-            android:textSize="@dimen/textSmallSecondary"
+            android:textSize="@dimen/textSmall"
             android:textColor="@color/colorBlack" />
 
     </RelativeLayout>
