@@ -6,8 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.atc.gosmartlesmagistra.model.TeacherTermCondition;
 import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.response.TeacherTermConditionSuccess;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hendrigunawan on 07/06/17.
@@ -15,13 +20,14 @@ import com.google.gson.Gson;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // database name
     private static final String DATABASE_NANE = "gosmartdb";
 
     // table name
     private static final String TABLE_USER = "user";
+    private static final String TABLE_TERM_CONDITION = "termcondition";
 
     // column name
     private static final String COLUMN_ID = "id";
@@ -40,6 +46,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_STATUS = "status";
     private static final String COLUMN_ROLE = "role";
     private static final String COLUMN_LAST_LOGIN_AT = "last_login_at";
+
+    private static final String CREATE_TABLE_TERM_CONDITION = "CREATE TABLE "
+            + TABLE_TERM_CONDITION + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_RAW + " BLOB, "
+            + COLUMN_CREATED_AT + " datetime default current_timestamp)";
 
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
             + TABLE_USER + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -63,11 +74,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_USER);
+        db.execSQL(CREATE_TABLE_TERM_CONDITION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TERM_CONDITION);
 
         onCreate(db);
     }
@@ -131,5 +144,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_USER, null, null);
         db.close();
+    }
+
+    public void createTeacherTermCondition(TeacherTermConditionSuccess terms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TERM_CONDITION, null, null);
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RAW, new Gson().toJson(terms).getBytes());
+        db.insert(TABLE_TERM_CONDITION, null, values);
+
+        db.close();
+    }
+
+    public TeacherTermCondition getTeacherTermCondition() {
+        TeacherTermCondition terms = new TeacherTermCondition();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_TERM_CONDITION, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                Gson gson = new Gson();
+                TeacherTermConditionSuccess term = gson.fromJson(new String(cursor.getBlob(1)), TeacherTermConditionSuccess.class);
+                terms = new TeacherTermCondition(term.getTeacherTermCondition().getDescription());
+            }
+            return terms;
+        }finally {
+            cursor.close();
+        }
     }
 }

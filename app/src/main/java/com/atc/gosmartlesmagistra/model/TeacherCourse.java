@@ -42,13 +42,13 @@ public class TeacherCourse implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public TeacherCourse() {
     }
 
     /**
-     * 
+     *
      * @param course
      * @param id
      * @param module

@@ -21,6 +21,9 @@ public class TeacherProfile implements Serializable
     @SerializedName("bio")
     @Expose
     private String bio;
+    @SerializedName("photo")
+    @Expose
+    private String photo;
     @SerializedName("upload_izajah")
     @Expose
     private String uploadIzajah;
@@ -39,48 +42,55 @@ public class TeacherProfile implements Serializable
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("teacher_bank")
+    @Expose
+    private TeacherBank teacherBank;
     @SerializedName("teacher_courses")
     @Expose
     private List<TeacherCourse> teacherCourses = null;
     @SerializedName("teacher_total_histories")
     @Expose
     private List<TeacherTotalHistory> teacherTotalHistories = null;
-    private final static long serialVersionUID = 2980836571156661697L;
+    private final static long serialVersionUID = 4188594433897398307L;
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public TeacherProfile() {
     }
 
     /**
-     * 
-     * @param updatedAt
+     *
      * @param total
-     * @param uploadIzajah
-     * @param title
-     * @param graduated
      * @param totalUpdatedAt
-     * @param bio
      * @param teacherCourses
-     * @param createdAt
      * @param teacherTotalHistories
      * @param formalPhoto
+     * @param photo
+     * @param uploadIzajah
+     * @param updatedAt
+     * @param title
+     * @param graduated
+     * @param bio
+     * @param createdAt
+     * @param teacherBank
      * @param izajahNumber
      */
-    public TeacherProfile(Integer title, String izajahNumber, String graduated, String bio, String uploadIzajah, String formalPhoto, String total, String totalUpdatedAt, String createdAt, String updatedAt, List<TeacherCourse> teacherCourses, List<TeacherTotalHistory> teacherTotalHistories) {
+    public TeacherProfile(Integer title, String izajahNumber, String graduated, String bio, String photo, String uploadIzajah, String formalPhoto, String total, String totalUpdatedAt, String createdAt, String updatedAt, TeacherBank teacherBank, List<TeacherCourse> teacherCourses, List<TeacherTotalHistory> teacherTotalHistories) {
         super();
         this.title = title;
         this.izajahNumber = izajahNumber;
         this.graduated = graduated;
         this.bio = bio;
+        this.photo = photo;
         this.uploadIzajah = uploadIzajah;
         this.formalPhoto = formalPhoto;
         this.total = total;
         this.totalUpdatedAt = totalUpdatedAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.teacherBank = teacherBank;
         this.teacherCourses = teacherCourses;
         this.teacherTotalHistories = teacherTotalHistories;
     }
@@ -115,6 +125,14 @@ public class TeacherProfile implements Serializable
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getUploadIzajah() {
@@ -163,6 +181,14 @@ public class TeacherProfile implements Serializable
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public TeacherBank getTeacherBank() {
+        return teacherBank;
+    }
+
+    public void setTeacherBank(TeacherBank teacherBank) {
+        this.teacherBank = teacherBank;
     }
 
     public List<TeacherCourse> getTeacherCourses() {

@@ -22,13 +22,13 @@ public class CourseLevel implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public CourseLevel() {
     }
 
     /**
-     * 
+     *
      * @param id
      * @param courses
      * @param name

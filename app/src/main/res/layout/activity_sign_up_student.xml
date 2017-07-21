@@ -63,7 +63,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginRight="@dimen/input_right"
-            android:textSize="@dimen/textSmallSecondary"
+            android:textSize="@dimen/textSmall"
             android:textColor="@color/colorBlackSecondary"
             android:text="@string/have_an_account"/>
 
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:text="@string/action_signin"
-            android:textSize="@dimen/textSmallSecondary"
+            android:textSize="@dimen/textSmall"
             android:textColor="@color/colorBlack" />
 
     </RelativeLayout>
@@ -178,7 +178,7 @@
                     android:layout_marginBottom="@dimen/input_bottom">
 
                     <AutoCompleteTextView
-                        android:id="@+id/message"
+                        android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:inputType="text|textMultiLine"
@@ -240,6 +240,15 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/fontInputBig"
                     android:background="@drawable/shape_rectanglebutton" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

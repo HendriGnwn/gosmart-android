@@ -3,11 +3,11 @@ package com.atc.gosmartlesmagistra.model.response;
 
 import java.io.Serializable;
 
-import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.TeacherTermCondition;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginSuccess implements Serializable
+public class TeacherTermConditionSuccess implements Serializable
 {
 
     @SerializedName("status")
@@ -18,27 +18,27 @@ public class LoginSuccess implements Serializable
     private String message;
     @SerializedName("data")
     @Expose
-    private User user;
-    private final static long serialVersionUID = -6063553094077069824L;
+    private TeacherTermCondition teacherTermCondition;
+    private final static long serialVersionUID = -8401805715928346713L;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public LoginSuccess() {
+    public TeacherTermConditionSuccess() {
     }
 
     /**
      *
      * @param message
+     * @param teacherTermCondition
      * @param status
-     * @param user
      */
-    public LoginSuccess(Integer status, String message, User user) {
+    public TeacherTermConditionSuccess(Integer status, String message, TeacherTermCondition teacherTermCondition) {
         super();
         this.status = status;
         this.message = message;
-        this.user = user;
+        this.teacherTermCondition = teacherTermCondition;
     }
 
     public Integer getStatus() {
@@ -57,12 +57,12 @@ public class LoginSuccess implements Serializable
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
+    public TeacherTermCondition getTeacherTermCondition() {
+        return teacherTermCondition;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setTeacherTermCondition(TeacherTermCondition teacherTermCondition) {
+        this.teacherTermCondition = teacherTermCondition;
     }
 
 }

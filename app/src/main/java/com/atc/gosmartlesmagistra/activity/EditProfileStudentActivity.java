@@ -51,7 +51,7 @@ public class EditProfileStudentActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
 
         if (!sessionManager.isLoggedIn()) {
-            Toast.makeText(this, "You must be a login", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You must login", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }

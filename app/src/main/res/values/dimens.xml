@@ -18,6 +18,8 @@
     <dimen name="input_bottom_small">5dp</dimen>
     <dimen name="textTitle">26dp</dimen>
 
+    <dimen name="margin_10">10dp</dimen>
+
     <dimen name="control_inset_material">4dp</dimen>
     <dimen name="control_inset_material_big">10dp</dimen>
     <dimen name="control_inset_material_end">16dp</dimen>
