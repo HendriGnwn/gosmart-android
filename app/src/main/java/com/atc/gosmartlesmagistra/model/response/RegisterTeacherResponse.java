@@ -2,12 +2,10 @@
 package com.atc.gosmartlesmagistra.model.response;
 
 import java.io.Serializable;
-
-import com.atc.gosmartlesmagistra.model.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginSuccess implements Serializable
+public class RegisterTeacherResponse implements Serializable
 {
 
     @SerializedName("status")
@@ -16,29 +14,29 @@ public class LoginSuccess implements Serializable
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("data")
+    @SerializedName("validators")
     @Expose
-    private User user;
-    private final static long serialVersionUID = -6063553094077069824L;
+    private RegisterTeacherError registerTeacherError;
+    private final static long serialVersionUID = 5757046851442873128L;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public LoginSuccess() {
+    public RegisterTeacherResponse() {
     }
 
     /**
      *
      * @param message
+     * @param registerTeacherError
      * @param status
-     * @param user
      */
-    public LoginSuccess(Integer status, String message, User user) {
+    public RegisterTeacherResponse(Integer status, String message, RegisterTeacherError registerTeacherError) {
         super();
         this.status = status;
         this.message = message;
-        this.user = user;
+        this.registerTeacherError = registerTeacherError;
     }
 
     public Integer getStatus() {
@@ -57,12 +55,12 @@ public class LoginSuccess implements Serializable
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
+    public RegisterTeacherError getRegisterTeacherError() {
+        return registerTeacherError;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRegisterTeacherError(RegisterTeacherError registerTeacherError) {
+        this.registerTeacherError = registerTeacherError;
     }
 
 }

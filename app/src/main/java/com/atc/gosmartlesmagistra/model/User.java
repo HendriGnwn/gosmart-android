@@ -2,6 +2,8 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+
+import com.atc.gosmartlesmagistra.model.response.StudentProfile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -64,7 +66,7 @@ public class User implements Serializable
     @SerializedName("teacher_profile")
     @Expose
     private TeacherProfile teacherProfile;
-    private final static long serialVersionUID = -7889676727052659458L;
+    private final static long serialVersionUID = 6464877033203885111L;
 
     /**
      * No args constructor for use in serialization
@@ -76,11 +78,13 @@ public class User implements Serializable
     /**
      *
      * @param lastName
-     * @param uniqueNumber
      * @param lastLoginAt
+     * @param uniqueNumber
      * @param status
+     * @param photo
      * @param updatedAt
      * @param phoneNumber
+     * @param firebaseToken
      * @param teacherProfile
      * @param token
      * @param address

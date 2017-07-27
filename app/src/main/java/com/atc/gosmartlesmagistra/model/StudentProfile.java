@@ -1,5 +1,5 @@
 
-package com.atc.gosmartlesmagistra.model;
+package com.atc.gosmartlesmagistra.model.response;
 
 import java.io.Serializable;
 import com.google.gson.annotations.Expose;
@@ -20,6 +20,9 @@ public class StudentProfile implements Serializable
     @SerializedName("school_address")
     @Expose
     private String schoolAddress;
+    @SerializedName("photo")
+    @Expose
+    private String photo;
     @SerializedName("formal_photo")
     @Expose
     private String formalPhoto;
@@ -33,13 +36,13 @@ public class StudentProfile implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public StudentProfile() {
     }
 
     /**
-     * 
+     *
      * @param updatedAt
      * @param degree
      * @param school
@@ -49,12 +52,13 @@ public class StudentProfile implements Serializable
      * @param schoolAddress
      * @param photo
      */
-    public StudentProfile(String school, String degree, String department, String schoolAddress, String formalPhoto, String createdAt, String updatedAt) {
+    public StudentProfile(String school, String degree, String department, String schoolAddress, String photo, String formalPhoto, String createdAt, String updatedAt) {
         super();
         this.school = school;
         this.degree = degree;
         this.department = department;
         this.schoolAddress = schoolAddress;
+        this.photo = photo;
         this.formalPhoto = formalPhoto;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -90,6 +94,14 @@ public class StudentProfile implements Serializable
 
     public void setSchoolAddress(String schoolAddress) {
         this.schoolAddress = schoolAddress;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public String getFormalPhoto() {

@@ -2,12 +2,10 @@
 package com.atc.gosmartlesmagistra.model.response;
 
 import java.io.Serializable;
-
-import com.atc.gosmartlesmagistra.model.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LoginSuccess implements Serializable
+public class ChangePasswordResponse implements Serializable
 {
 
     @SerializedName("status")
@@ -16,29 +14,29 @@ public class LoginSuccess implements Serializable
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("data")
+    @SerializedName("validators")
     @Expose
-    private User user;
-    private final static long serialVersionUID = -6063553094077069824L;
+    private ChangePasswordError changePasswordError;
+    private final static long serialVersionUID = 8261992111483658110L;
 
     /**
      * No args constructor for use in serialization
      *
      */
-    public LoginSuccess() {
+    public ChangePasswordResponse() {
     }
 
     /**
      *
      * @param message
      * @param status
-     * @param user
+     * @param changePasswordError
      */
-    public LoginSuccess(Integer status, String message, User user) {
+    public ChangePasswordResponse(Integer status, String message, ChangePasswordError changePasswordError) {
         super();
         this.status = status;
         this.message = message;
-        this.user = user;
+        this.changePasswordError = changePasswordError;
     }
 
     public Integer getStatus() {
@@ -57,12 +55,12 @@ public class LoginSuccess implements Serializable
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
+    public ChangePasswordError getChangePasswordError() {
+        return changePasswordError;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setChangePasswordError(ChangePasswordError changePasswordError) {
+        this.changePasswordError = changePasswordError;
     }
 
 }

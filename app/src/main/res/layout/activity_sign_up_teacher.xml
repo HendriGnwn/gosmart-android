@@ -103,30 +103,32 @@
                 android:orientation="vertical"
                 android:layout_alignParentTop="true">
 
+                <android.support.design.widget.TextInputLayout
+                   android:id="@+id/input_layout_title"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/shape_border_bottom"
+                   android:layout_marginBottom="@dimen/input_bottom">
+
+                   <Spinner
+                       android:id="@+id/title"
+                       android:layout_width="match_parent"
+                       android:layout_height="49dp"
+                       android:hint="@string/prompt_title"
+                       android:imeOptions="actionNext"
+                       android:inputType="number"
+                       android:entries="@array/title_arrays"
+                       android:prompt="@string/prompt_title"
+                       android:maxLines="1"
+                       android:nextFocusDown="@+id/first_name"
+                       android:singleLine="true" />
+
+               </android.support.design.widget.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                   <android.support.design.widget.TextInputLayout
-                       android:id="@+id/input_layout_title"
-                       android:layout_width="0dp"
-                       android:layout_height="wrap_content"
-                       android:layout_weight=".20"
-                       android:layout_marginBottom="@dimen/input_bottom">
-
-                       <AutoCompleteTextView
-                           android:id="@+id/title"
-                           android:layout_width="match_parent"
-                           android:layout_height="wrap_content"
-                           android:hint="@string/prompt_title"
-                           android:imeOptions="actionNext"
-                           android:inputType="number"
-                           android:maxLines="1"
-                           android:nextFocusDown="@+id/first_name"
-                           android:singleLine="true" />
-
-                   </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/input_layout_first"
@@ -198,7 +200,7 @@
                     android:layout_marginBottom="@dimen/input_bottom">
 
                     <AutoCompleteTextView
-                        android:id="@+id/message"
+                        android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:inputType="text|textMultiLine"
@@ -260,6 +262,15 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/fontInputBig"
                     android:background="@drawable/shape_rectanglebutton" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

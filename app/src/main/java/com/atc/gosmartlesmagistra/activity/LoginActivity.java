@@ -151,7 +151,6 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             launchDialog();
-            progressBar.setVisibility(View.VISIBLE);
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Retrofit retrofit = new Retrofit.Builder()
@@ -189,7 +188,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<LoginSuccess> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Login is failed, please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Login is failed", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });

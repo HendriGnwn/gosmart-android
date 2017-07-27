@@ -33,9 +33,30 @@ public class Course implements Serializable
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Course() {
+    }
+
+    /**
+     *
+     * @param id
+     * @param courseLevel
+     * @param courseLevelId
+     * @param description
+     * @param name
+     * @param sectionTime
+     * @param section
+     */
+    public Course(Integer id, Integer courseLevelId, String name, String description, Integer section, String sectionTime, CourseLevel courseLevel) {
+        super();
+        this.id = id;
+        this.courseLevelId = courseLevelId;
+        this.name = name;
+        this.description = description;
+        this.section = section;
+        this.sectionTime = sectionTime;
+        this.courseLevel = courseLevel;
     }
 
     /**
@@ -55,27 +76,6 @@ public class Course implements Serializable
         this.description = description;
         this.section = section;
         this.sectionTime = sectionTime;
-    }
-
-    /**
-     * 
-     * @param id
-     * @param courseLevel
-     * @param courseLevelId
-     * @param description
-     * @param name
-     * @param sectionTime
-     * @param section
-     */
-    public Course(Integer id, Integer courseLevelId, String name, String description, Integer section, String sectionTime, CourseLevel courseLevel) {
-        super();
-        this.id = id;
-        this.courseLevelId = courseLevelId;
-        this.name = name;
-        this.description = description;
-        this.section = section;
-        this.sectionTime = sectionTime;
-        this.courseLevel = courseLevel;
     }
 
     public Integer getId() {

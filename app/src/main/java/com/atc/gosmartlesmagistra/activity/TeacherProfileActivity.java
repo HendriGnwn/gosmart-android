@@ -1,32 +1,30 @@
 package com.atc.gosmartlesmagistra.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.adapter.PagerAdapter;
 import com.atc.gosmartlesmagistra.api.UserApi;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
-import com.atc.gosmartlesmagistra.model.response.RegisterStudentResponse;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
@@ -42,49 +40,40 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by hendrigunawan on 7/4/17.
- */
+public class TeacherProfileActivity extends AppCompatActivity {
 
-public class EditProfileTeacherActivity extends AppCompatActivity {
-
+    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.action_left) ImageButton actionLeft;
-    @BindView(R.id.change_password_button) AppCompatButton changePasswordButton;
-    @BindView(R.id.first_name) AutoCompleteTextView mFirstNameView;
-    @BindView(R.id.last_name) AutoCompleteTextView mLastNameView;
-    @BindView(R.id.mobile_phone) AutoCompleteTextView mPhoneNumberView;
-    @BindView(R.id.address) AutoCompleteTextView mAddressView;
-    @BindView(R.id.email) AutoCompleteTextView mEmailView;
-    @BindView(R.id.progress_bar) ProgressBar progressBar;
-    @BindView(R.id.title) Spinner titleSpinner;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.pager) ViewPager viewPager;
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
 
-    public Integer titleSelected;
     SessionManager sessionManager;
+    PagerAdapter pagerAdapter;
     DatabaseHelper databaseHelper;
-    User user;
+    public static User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile_teacher);
+        setContentView(R.layout.activity_teacher_profile);
         ButterKnife.bind(this);
         setActionLeftIcon();
+
         sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
 
-        if (!sessionManager.isLoggedIn()) {
-            Toast.makeText(this, "You must login", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
+        final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
+        iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        fab.setImageDrawable(iconFab);
 
-        user = databaseHelper.getUserByUniqueNumber(sessionManager.getUserCode());
-        mFirstNameView.setText(user.getFirstName());
-        mLastNameView.setText(user.getLastName());
-        mPhoneNumberView.setText(user.getPhoneNumber());
-        mAddressView.setText(user.getAddress());
-        mEmailView.setText(user.getEmail());
+        setTabLayout();
 
+        requestApi();
+    }
+
+    protected void requestApi() {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -109,7 +98,6 @@ public class EditProfileTeacherActivity extends AppCompatActivity {
 
                 if (response.raw().isSuccessful()) {
                     user = response.body().getUser();
-                    titleSpinner.setSelection(user.getTeacherProfile().getTitle() - 1);
                 }
             }
 
@@ -118,32 +106,29 @@ public class EditProfileTeacherActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        changePasswordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChangePasswordActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                titleSelected = position + 1;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                titleSelected = 1;
-            }
-        });
+    public static User getUser() {
+        return user;
     }
 
     private void setActionLeftIcon() {
         final Drawable iconLeft = ContextCompat.getDrawable(this, R.drawable.zzz_arrow_left);
         iconLeft.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         actionLeft.setImageDrawable(iconLeft);
+    }
+
+    private void setTabLayout() {
+        tabLayout.addTab(tabLayout.newTab().setText("info"));
+        tabLayout.addTab(tabLayout.newTab().setText("courses"));
+        tabLayout.addTab(tabLayout.newTab().setText("histories"));
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabTextColors(getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorAccent));
+
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
     @Override

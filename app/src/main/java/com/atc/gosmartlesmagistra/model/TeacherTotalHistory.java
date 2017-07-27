@@ -20,36 +20,46 @@ public class TeacherTotalHistory implements Serializable
     @SerializedName("total")
     @Expose
     private String total;
+    @SerializedName("evidence")
+    @Expose
+    private String evidence;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
-    private final static long serialVersionUID = 182041310247650252L;
+    private final static long serialVersionUID = -3518989595867204791L;
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public TeacherTotalHistory() {
     }
 
     /**
-     * 
+     *
      * @param updatedAt
      * @param total
      * @param id
      * @param operation
+     * @param status
      * @param createdAt
+     * @param evidence
      * @param privateId
      */
-    public TeacherTotalHistory(Integer id, Integer privateId, Integer operation, String total, String createdAt, String updatedAt) {
+    public TeacherTotalHistory(Integer id, Integer privateId, Integer operation, String total, String evidence, Integer status, String createdAt, String updatedAt) {
         super();
         this.id = id;
         this.privateId = privateId;
         this.operation = operation;
         this.total = total;
+        this.evidence = evidence;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -84,6 +94,22 @@ public class TeacherTotalHistory implements Serializable
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getEvidence() {
+        return evidence;
+    }
+
+    public void setEvidence(String evidence) {
+        this.evidence = evidence;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getCreatedAt() {
