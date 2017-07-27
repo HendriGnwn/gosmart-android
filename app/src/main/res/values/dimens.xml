@@ -19,6 +19,9 @@
     <dimen name="textTitle">26dp</dimen>
 
     <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_label">4dp</dimen>
+    <dimen name="margin_text">8dp</dimen>
+    <dimen name="margin_text_end">12dp</dimen>
 
     <dimen name="control_inset_material">4dp</dimen>
     <dimen name="control_inset_material_big">10dp</dimen>

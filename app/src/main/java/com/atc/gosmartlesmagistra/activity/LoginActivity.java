@@ -174,13 +174,14 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
 
                     if (response.raw().isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login is success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_LONG).show();
 
                         User user = response.body().getUser();
                         session.setLogin(true, user);
 
                         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-                        db.createUser(user);
+                        db.createUser(response.body().getUser());
+                        db.createUser(response.body());
 
                         Intent intent;
                         intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -208,14 +209,14 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login is failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
                     }
                     progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onFailure(Call<LoginSuccess> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Login is failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Login failed, please try again", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });

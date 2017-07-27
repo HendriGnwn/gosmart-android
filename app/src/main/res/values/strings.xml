@@ -2,6 +2,7 @@
     <string name="app_name">Go Smart Les Magistra</string>
     <string name="go_smart">Go Smart</string>
     <string name="les_magistra">Les Magistra</string>
+    <string name="profile">Profile</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -46,6 +47,13 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+
+    <string name="text_email">Email</string>
+    <string name="text_first_name">First Name</string>
+    <string name="text_last_name">Last Name</string>
+    <string name="text_phone_number">Phone Number</string>
+    <string name="text_address">Address</string>
+    <string name="text_title">Title</string>
 
 
     <string name="term_and_condition">Term and Conditions</string>

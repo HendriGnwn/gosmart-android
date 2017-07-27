@@ -123,12 +123,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleTeacher) {
-                    Intent intent = new Intent(getApplicationContext(), EditProfileTeacherActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), TeacherProfileActivity.class);
                     startActivity(intent);
                 } else if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleStudent) {
                     Intent intent = new Intent(getApplicationContext(), EditProfileStudentActivity.class);
                     startActivity(intent);
                 }
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
 
@@ -136,12 +137,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleTeacher) {
-                    Intent intent = new Intent(getApplicationContext(), EditProfileTeacherActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), TeacherProfileActivity.class);
                     startActivity(intent);
                 } else if (Integer.parseInt(sessionManager.getKeyUserRole()) == User.roleStudent) {
                     Intent intent = new Intent(getApplicationContext(), EditProfileStudentActivity.class);
                     startActivity(intent);
                 }
+                drawer.closeDrawer(GravityCompat.START);
             }
         });
     }
