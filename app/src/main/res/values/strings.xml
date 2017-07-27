@@ -29,6 +29,8 @@
     <string name="action_submit">Submit</string>
     <string name="action_change_password">Change Password</string>
     <string name="action_checkout">Checkout</string>
+    <string name="action_update_profile">Update Profile</string>
+    <string name="action_update_bank">Update Bank</string>
 
     <!-- prompt -->
     <string name="prompt_email">Email*</string>
@@ -54,7 +56,11 @@
     <string name="text_phone_number">Phone Number</string>
     <string name="text_address">Address</string>
     <string name="text_title">Title</string>
-
+    <string name="text_izajah_number">Izajah Number</string>
+    <string name="text_graduated">Graduated</string>
+    <string name="text_bio">Bio</string>
+    <string name="text_total">Total</string>
+    <string name="text_total_updated_at">Total Updated At</string>
 
     <string name="term_and_condition">Term and Conditions</string>
     <string name="aggree">Aggree</string>

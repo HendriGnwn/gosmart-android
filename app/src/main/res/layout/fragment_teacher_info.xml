@@ -5,65 +5,366 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/activity_vertical_margin"
-        android:orientation="vertical">
+        android:layout_below="@+id/appbar"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_first_name"
-                android:textSize="@dimen/text_size_caption_material"
-                fontPath="fonts/latoRegular.ttf"
-                tools:ignore="MissingPrefix"
-                android:layout_marginBottom="@dimen/margin_label"
-                />
-            <TextView
-                android:id="@+id/first_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
+                android:padding="@dimen/margin_10"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium_material"
-                android:text="Hendri"
-                fontPath="fonts/latoRegular.ttf"
-                tools:ignore="MissingPrefix"
-                android:layout_marginBottom="@dimen/margin_text"
-                />
-        </LinearLayout>
+                android:background="@color/colorWhiteSmoke">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_text"
-            android:orientation="vertical">
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/update_profile_button"
+                    android:layout_alignParentLeft="true"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_update_profile"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSmall"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:background="@drawable/shape_rectanglebutton" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_last_name"
-                android:textSize="@dimen/text_size_caption_material"
-                fontPath="fonts/latoRegular.ttf"
-                tools:ignore="MissingPrefix"
-                android:layout_marginBottom="@dimen/margin_label"
-                />
-            <TextView
-                android:id="@+id/last_name"
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/update_bank_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_update_bank"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSmall"
+                    android:background="@drawable/shape_rectanglebutton" />
+
+            </RelativeLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium_material"
-                android:text="Hendri"
-                fontPath="fonts/latoRegular.ttf"
-                tools:ignore="MissingPrefix"
-                android:layout_marginBottom="@dimen/margin_text"
-                />
+                android:layout_height="match_parent"
+                android:padding="@dimen/activity_vertical_margin"
+                android:orientation="vertical">
+
+                <com.pkmmte.view.CircularImageView
+                    android:id="@+id/image"
+                    android:background="@drawable/shape_circle"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/user"
+                    android:layout_gravity="center"
+                    app:border="true"
+                    app:border_width="1dp"
+                    app:border_color="@color/colorWhiteSmoke"
+                    app:shadow="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_title"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Sarjana"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_first_name"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Hendri"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_last_name"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Hendri"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_phone_number"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Hendri"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_email"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="hendri.gnw@gmail.com"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_address"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Jl Lapangan Tembak 300"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_izajah_number"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/izajah_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="NB-120201-012"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_graduated"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/graduated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Universitas Mercu Buana Jakarta"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_total"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="NB-120201-012"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_total_updated_at"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/total_updated_at"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="NB-120201-012"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_text"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_bio"
+                        android:textSize="@dimen/text_size_caption_material"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_label"
+                        />
+                    <TextView
+                        android:id="@+id/bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="NB-120201-012"
+                        fontPath="fonts/latoRegular.ttf"
+                        tools:ignore="MissingPrefix"
+                        android:layout_marginBottom="@dimen/margin_text"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
-
-    </LinearLayout>
-
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

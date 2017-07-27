@@ -20,9 +20,14 @@ import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.api.UserApi;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.request.LoginRequest;
+import com.atc.gosmartlesmagistra.model.response.LoginResponse;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.action_sign_up_teacher)
     protected void setActionSignUpTeacher() {
-        Intent intent = new Intent(this, SignUpTeacherActivity.class);
+        Intent intent = new Intent(this, TeacherTermConditionActivity.class);
         startActivity(intent);
     }
 
@@ -151,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
 
             launchDialog();
+            progressBar.setVisibility(View.VISIBLE);
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             Retrofit retrofit = new Retrofit.Builder()
@@ -168,27 +174,49 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
 
                     if (response.raw().isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login is success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Login success", Toast.LENGTH_LONG).show();
 
                         User user = response.body().getUser();
                         session.setLogin(true, user);
 
                         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-                        db.createUser(user);
+                        db.createUser(response.body().getUser());
+                        db.createUser(response.body());
 
                         Intent intent;
                         intent = new Intent(getApplicationContext(), MainActivity.class);
 
                         startActivity(intent);
+                    } else if (response.raw().code() == 400) {
+
+                        Gson gson = new GsonBuilder().create();
+                        LoginResponse mError =new LoginResponse();
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(),LoginResponse.class);
+                            Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+
+                            if (mError.getLoginError().getEmail() != null) {
+                                mEmailView.setError(mError.getLoginError().getEmail());
+                                mEmailView.requestFocus();
+                            }
+                            if (mError.getLoginError().getPassword() != null) {
+                                mPasswordView.setError(mError.getLoginError().getPassword());
+                                mPasswordView.requestFocus();
+                            }
+
+                        } catch (IOException e) {
+                            // handle failure to read error
+                        }
+
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login is failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_LONG).show();
                     }
                     progressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onFailure(Call<LoginSuccess> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Login is failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Login failed, please try again", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.INVISIBLE);
                 }
             });

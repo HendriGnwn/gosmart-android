@@ -1,5 +1,6 @@
 package com.atc.gosmartlesmagistra.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.activity.EditProfileTeacherActivity;
 import com.atc.gosmartlesmagistra.activity.TeacherProfileActivity;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
@@ -16,6 +18,7 @@ import com.atc.gosmartlesmagistra.util.SessionManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by cranium-01 on 27/07/17.
@@ -25,6 +28,15 @@ public class TeacherInfoFragment extends Fragment {
 
     @BindView(R.id.first_name) TextView firstName;
     @BindView(R.id.last_name) TextView lastName;
+    @BindView(R.id.title) TextView title;
+    @BindView(R.id.phone_number) TextView phoneNumber;
+    @BindView(R.id.email) TextView email;
+    @BindView(R.id.address) TextView address;
+    @BindView(R.id.izajah_number) TextView izajahNumber;
+    @BindView(R.id.graduated) TextView graduated;
+    @BindView(R.id.total) TextView total;
+    @BindView(R.id.total_updated_at) TextView totalUpdatedAt;
+    @BindView(R.id.bio) TextView bio;
 
     DatabaseHelper databaseHelper;
     SessionManager sessionManager;
@@ -41,7 +53,33 @@ public class TeacherInfoFragment extends Fragment {
 
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
+        phoneNumber.setText(user.getPhoneNumber());
+        email.setText(user.getEmail());
+        address.setText(user.getAddress());
+        if (user.getTeacherProfile().getIzajahNumber() != null) {
+            izajahNumber.setText(user.getTeacherProfile().getIzajahNumber());
+        } else {
+            izajahNumber.setText(null);
+        }
+        if (user.getTeacherProfile().getGraduated() != null) {
+            graduated.setText(user.getTeacherProfile().getGraduated());
+        } else {
+            graduated.setText(null);
+        }
+        total.setText(user.getTeacherProfile().getTotal());
+        totalUpdatedAt.setText(user.getTeacherProfile().getTotalUpdatedAt());
+        if (user.getTeacherProfile().getGraduated() != null) {
+            bio.setText(user.getTeacherProfile().getBio());
+        } else {
+            bio.setText(null);
+        }
 
         return view;
+    }
+
+    @OnClick(R.id.update_profile_button)
+    protected void updateProfileClick() {
+        Intent intent = new Intent(getActivity(), EditProfileTeacherActivity.class);
+        startActivity(intent);
     }
 }

@@ -78,46 +78,15 @@ public class EditProfileTeacherActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        user = databaseHelper.getUserByUniqueNumber(sessionManager.getUserCode());
+        user = databaseHelper.getUser(sessionManager.getUserCode());
         mFirstNameView.setText(user.getFirstName());
         mLastNameView.setText(user.getLastName());
         mPhoneNumberView.setText(user.getPhoneNumber());
         mAddressView.setText(user.getAddress());
         mEmailView.setText(user.getEmail());
-
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request newRequest  = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
-                        .addHeader("Content-Type", "application/json")
-                        .build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                .baseUrl(App.API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        UserApi service = retrofit.create(UserApi.class);
-        Call<LoginSuccess> call = service.getUserByUniqueNumber(sessionManager.getUserCode());
-        call.enqueue(new Callback<LoginSuccess>() {
-            @Override
-            public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
-
-                if (response.raw().isSuccessful()) {
-                    user = response.body().getUser();
-                    titleSpinner.setSelection(user.getTeacherProfile().getTitle() - 1);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<LoginSuccess> call, Throwable t) {
-
-            }
-        });
+        if (!user.getTeacherProfile().getTitle().equals(null)) {
+            titleSpinner.setSelection(user.getTeacherProfile().getTitle() - 1);
+        }
 
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
