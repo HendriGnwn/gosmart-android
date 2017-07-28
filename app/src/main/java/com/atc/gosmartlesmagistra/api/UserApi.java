@@ -5,6 +5,9 @@ import com.atc.gosmartlesmagistra.model.request.ForgotPasswordRequest;
 import com.atc.gosmartlesmagistra.model.request.LoginRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
+import com.atc.gosmartlesmagistra.model.request.UpdateStudentProfileRequest;
+import com.atc.gosmartlesmagistra.model.request.UpdateTeacherBankRequest;
+import com.atc.gosmartlesmagistra.model.request.UpdateTeacherProfileRequest;
 import com.atc.gosmartlesmagistra.model.response.ForgotPasswordSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
@@ -14,6 +17,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -63,4 +67,22 @@ public interface UserApi {
             "Content-Type: application/json"
     })
     Call<LoginSuccess> getUserByUniqueNumber(@Path("uniqueNumber") String uniqueNumber);
+
+    @PUT("user/update-teacher")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> updateTeacherProfile(@Body UpdateTeacherProfileRequest body);
+
+    @PUT("user/update-student")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> updateStudentProfile(@Body UpdateStudentProfileRequest body);
+
+    @POST("teacher/update-teacher-bank/{uniqueNumber}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> updateTeacherBank(@Path("uniqueNumber") String uniqueNumber, @Body UpdateTeacherBankRequest body);
 }

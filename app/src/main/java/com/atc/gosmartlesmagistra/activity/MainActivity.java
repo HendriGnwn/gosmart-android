@@ -85,8 +85,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-        user = databaseHelper.getUserByUniqueNumber(sessionManager.getUserCode());
-        Log.i("atc", sessionManager.getKeyUserRole());
+        user = databaseHelper.getUser(sessionManager.getUserCode());
 
         final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
         iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);

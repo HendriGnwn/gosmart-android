@@ -57,12 +57,19 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/photoText"/>
+
             <com.pkmmte.view.CircularImageView
                 android:id="@+id/image"
                 android:background="@drawable/shape_circle"
                 android:layout_marginTop="20dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/user"
                 app:border="true"
                 app:border_width="1dp"
@@ -186,6 +193,82 @@
 
                 </android.support.design.widget.TextInputLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/school"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_school"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/degree"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_degree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/degree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_graduated"
+                        android:inputType="number"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/department"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/department"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_department"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_school_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/school_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:inputType="text|textMultiLine"
+                        android:gravity="top"
+                        android:hint="@string/prompt_school_address"
+                        android:imeOptions="actionDone"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical" />
+
+                </android.support.design.widget.TextInputLayout>
+
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/change_password_button"
                     style="?android:textAppearanceSmall"
@@ -205,6 +288,15 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/fontInputBig"
                     android:background="@drawable/shape_rectanglebutton" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginBottom="18dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible" />
 
             </LinearLayout>
 

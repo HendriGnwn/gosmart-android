@@ -9,12 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.activity.EditProfileTeacherActivity;
 import com.atc.gosmartlesmagistra.activity.TeacherProfileActivity;
+import com.atc.gosmartlesmagistra.activity.UpdateTeacherBankActivity;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
+import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +41,7 @@ public class TeacherInfoFragment extends Fragment {
     @BindView(R.id.total) TextView total;
     @BindView(R.id.total_updated_at) TextView totalUpdatedAt;
     @BindView(R.id.bio) TextView bio;
+    @BindView(R.id.image) CircularImageView imageView;
 
     DatabaseHelper databaseHelper;
     SessionManager sessionManager;
@@ -51,11 +56,17 @@ public class TeacherInfoFragment extends Fragment {
 
         User user = databaseHelper.getUser(sessionManager.getUserCode());
 
+        String[] titles = getResources().getStringArray(R.array.title_arrays);
+
         firstName.setText(user.getFirstName());
         lastName.setText(user.getLastName());
         phoneNumber.setText(user.getPhoneNumber());
         email.setText(user.getEmail());
         address.setText(user.getAddress());
+
+        if (!user.getTeacherProfile().getTitle().equals(null)) {
+            title.setText(titles[user.getTeacherProfile().getTitle() - 1]);
+        }
         if (user.getTeacherProfile().getIzajahNumber() != null) {
             izajahNumber.setText(user.getTeacherProfile().getIzajahNumber());
         } else {
@@ -68,11 +79,12 @@ public class TeacherInfoFragment extends Fragment {
         }
         total.setText(user.getTeacherProfile().getTotal());
         totalUpdatedAt.setText(user.getTeacherProfile().getTotalUpdatedAt());
-        if (user.getTeacherProfile().getGraduated() != null) {
+        if (user.getTeacherProfile().getBio() != null) {
             bio.setText(user.getTeacherProfile().getBio());
         } else {
             bio.setText(null);
         }
+        Picasso.with(getContext()).load(App.URL + "/files/users/" + user.getPhoto()).error(R.drawable.user).into(imageView);
 
         return view;
     }
@@ -80,6 +92,12 @@ public class TeacherInfoFragment extends Fragment {
     @OnClick(R.id.update_profile_button)
     protected void updateProfileClick() {
         Intent intent = new Intent(getActivity(), EditProfileTeacherActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.update_bank_button)
+    protected void updateBankClick() {
+        Intent intent = new Intent(getActivity(), UpdateTeacherBankActivity.class);
         startActivity(intent);
     }
 }

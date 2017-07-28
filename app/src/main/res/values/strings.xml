@@ -17,6 +17,7 @@
     <string name="edit_profile_teacher">Edit Profile</string>
     <string name="change_password">Change Password</string>
     <string name="private_order">Private Order</string>
+    <string name="update_bank_information">Update Bank Information</string>
 
     <!-- action -->
     <string name="action_settings">Settings</string>
@@ -43,7 +44,17 @@
     <string name="prompt_current_password">Current Password*</string>
     <string name="prompt_new_password">New Password*</string>
     <string name="prompt_confirm_password">Confirm New Password*</string>
-
+    <string name="prompt_izajah_number">Izazjah Number</string>
+    <string name="prompt_graduated">Graduated</string>
+    <string name="prompt_bio">Bio*</string>
+    <string name="prompt_bank_name">Bank Name*</string>
+    <string name="prompt_bank_account">Bank Account*</string>
+    <string name="prompt_bank_branch">Bank Branch*</string>
+    <string name="prompt_behalf_of">Account Holder*</string>
+    <string name="prompt_school">School*</string>
+    <string name="prompt_degree">Degree*</string>
+    <string name="prompt_department">Department*</string>
+    <string name="prompt_school_address">School Address*</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

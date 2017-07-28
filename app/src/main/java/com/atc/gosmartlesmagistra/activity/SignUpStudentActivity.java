@@ -175,7 +175,7 @@ public class SignUpStudentActivity extends AppCompatActivity {
                         sessionManager.setLogin(true, user);
 
                         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-                        db.createUser(user);
+                        db.createUser(response.body());
 
                         Intent intent;
                         intent = new Intent(getApplicationContext(), MainActivity.class);

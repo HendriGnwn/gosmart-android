@@ -57,6 +57,25 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/photoText"/>
+
+            <com.pkmmte.view.CircularImageView
+                android:id="@+id/image"
+                android:background="@drawable/shape_circle"
+                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user"
+                app:border="true"
+                app:border_width="1dp"
+                app:border_color="@android:color/white"
+                app:shadow="false" />
+
             <LinearLayout
                 android:id="@+id/edit_profile_form"
                 android:layout_width="match_parent"
@@ -73,6 +92,11 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_border_bottom"
                     android:layout_marginBottom="@dimen/input_bottom">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prompt_title"/>
 
                     <Spinner
                         android:id="@+id/title"
@@ -190,9 +214,67 @@
                         android:hint="@string/prompt_email"
                         android:inputType="textEmailAddress"
                         android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/izajah_number"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_izajah_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/izajah_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_izajah_number"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/graduated"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_graduated"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/graduated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_graduated"
+                        android:inputType="text"
+                        android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/password"
                         android:maxLines="1"
                         android:singleLine="true" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/input_bottom">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:inputType="text|textMultiLine"
+                        android:gravity="top"
+                        android:hint="@string/prompt_bio"
+                        android:imeOptions="actionDone"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical" />
 
                 </android.support.design.widget.TextInputLayout>
 
