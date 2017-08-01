@@ -1,8 +1,8 @@
-
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -38,6 +38,17 @@ public class CourseLevel implements Serializable
         this.id = id;
         this.name = name;
         this.courses = courses;
+    }
+
+    /**
+     *
+     * @param id
+     * @param name
+     */
+    public CourseLevel(Integer id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
     }
 
     public Integer getId() {

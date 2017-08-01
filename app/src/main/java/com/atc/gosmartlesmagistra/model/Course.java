@@ -1,7 +1,8 @@
-
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+
+import com.atc.gosmartlesmagistra.model.CourseLevel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -26,10 +27,13 @@ public class Course implements Serializable
     @SerializedName("section_time")
     @Expose
     private String sectionTime;
+    @SerializedName("teacher_availability")
+    @Expose
+    private Integer teacherAvailability;
     @SerializedName("course_level")
     @Expose
     private CourseLevel courseLevel;
-    private final static long serialVersionUID = -3424268255977883989L;
+    private final static long serialVersionUID = -8139161846886396207L;
 
     /**
      * No args constructor for use in serialization
@@ -42,13 +46,14 @@ public class Course implements Serializable
      *
      * @param id
      * @param courseLevel
+     * @param teacherAvailability
      * @param courseLevelId
      * @param description
      * @param name
      * @param sectionTime
      * @param section
      */
-    public Course(Integer id, Integer courseLevelId, String name, String description, Integer section, String sectionTime, CourseLevel courseLevel) {
+    public Course(Integer id, Integer courseLevelId, String name, String description, Integer section, String sectionTime, Integer teacherAvailability, CourseLevel courseLevel) {
         super();
         this.id = id;
         this.courseLevelId = courseLevelId;
@@ -56,26 +61,8 @@ public class Course implements Serializable
         this.description = description;
         this.section = section;
         this.sectionTime = sectionTime;
+        this.teacherAvailability = teacherAvailability;
         this.courseLevel = courseLevel;
-    }
-
-    /**
-     *
-     * @param id
-     * @param courseLevelId
-     * @param description
-     * @param name
-     * @param sectionTime
-     * @param section
-     */
-    public Course(Integer id, Integer courseLevelId, String name, String description, Integer section, String sectionTime) {
-        super();
-        this.id = id;
-        this.courseLevelId = courseLevelId;
-        this.name = name;
-        this.description = description;
-        this.section = section;
-        this.sectionTime = sectionTime;
     }
 
     public Integer getId() {
@@ -124,6 +111,14 @@ public class Course implements Serializable
 
     public void setSectionTime(String sectionTime) {
         this.sectionTime = sectionTime;
+    }
+
+    public Integer getTeacherAvailability() {
+        return teacherAvailability;
+    }
+
+    public void setTeacherAvailability(Integer teacherAvailability) {
+        this.teacherAvailability = teacherAvailability;
     }
 
     public CourseLevel getCourseLevel() {

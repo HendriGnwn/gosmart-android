@@ -75,6 +75,10 @@
 
     <string name="term_and_condition">Term and Conditions</string>
     <string name="aggree">Aggree</string>
+    <string name="courses">Courses</string>
+    <string name="section">Section</string>
+    <string name="teacher_availability">Teachers Availability</string>
+    <string name="request_failed_please_try_again">Request failed, please try again</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

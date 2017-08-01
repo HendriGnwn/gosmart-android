@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_cource"
             android:icon="@drawable/zzz_book_multiple_variant"
             android:title="Courses" />
         <item
