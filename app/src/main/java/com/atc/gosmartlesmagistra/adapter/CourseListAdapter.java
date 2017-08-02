@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.activity.CourseAvailabilityActivity;
 import com.atc.gosmartlesmagistra.model.Course;
 import com.squareup.picasso.Picasso;
 
@@ -38,10 +39,10 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.My
             view.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     Intent intent;
-//                    intent = new Intent(mContext, WhatsNewDetailActivity.class);
-//                    Article article = articleList.get(getAdapterPosition());
-//                    intent.putExtra("article", article);
-//                    mContext.startActivity(intent);
+                    intent = new Intent(mContext, CourseAvailabilityActivity.class);
+                    Course course = list.get(getAdapterPosition());
+                    intent.putExtra("course", course);
+                    mContext.startActivity(intent);
                 }
             });
         }

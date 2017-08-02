@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            android:clipChildren="false"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            app:contentScrim="?attr/colorPrimary"
+            app:collapsedTitleTextAppearance="@style/AppTheme.TextLight"
+            app:expandedTitleTextAppearance="@style/AppTheme.TextTransparent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <FrameLayout
+                android:id="@+id/toolbarImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:background="@color/colorPrimary"
+                app:layout_collapseMode="parallax">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:background="@color/colorPrimary"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin">
+
+                    <TextView
+                        android:id="@+id/course_level"
+                        fontPath="fonts/latoRegular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sekolah Dasar"
+                        android:textColor="@color/colorYellow"
+                        android:textSize="@dimen/text_size_caption_material"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/course_name"
+                        fontPath="fonts/latoRegular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/course_level"
+                        android:text="Matematika II"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_size_large_material"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/course_section"
+                        fontPath="fonts/latoRegular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/course_name"
+                        android:layout_marginBottom="4dp"
+                        android:text="Test"
+                        android:textColor="@color/colorWhiteSmoke"
+                        android:textSize="@dimen/text_size_caption_material"
+                        tools:ignore="MissingPrefix" />
+
+                    <TextView
+                        android:id="@+id/course_description"
+                        fontPath="fonts/latoRegular.ttf"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/course_section"
+                        android:text="Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de "
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_size_small_material"
+                        tools:ignore="MissingPrefix" />
+
+                </RelativeLayout>
+
+            </FrameLayout>
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                app:contentInsetStart="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                app:elevation="@null">
+
+                <ImageButton
+                    android:id="@+id/action_left"
+                    style="@style/AppTheme.ButtonActionBar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/title_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="left"
+                    android:text="@string/teacher_availability"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_size_medium_material" />
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v4.widget.NestedScrollView
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/search"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:hint="@string/prompt_search"
+                        android:inputType="textAutoComplete"
+                        android:maxLines="1"
+                        android:focusable="true"
+                        android:textSize="14sp"
+                        android:singleLine="true" />
+
+                    <Spinner
+                        android:id="@+id/sort_by_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:entries="@array/sort_arrays"
+                        android:hint="@string/prompt_title"
+                        android:maxLines="1"
+                        android:prompt="@string/prompt_title"
+                        android:singleLine="true" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/courses_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:clipToPadding="false"
+                    android:elevation="@null"
+                    android:scrollbars="none" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/colorAccent"
+                    android:layout_marginTop="-380dp"/>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

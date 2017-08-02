@@ -76,4 +76,12 @@ public class App extends Application {
 
         return connected;
     }
+    public static String getCutString(String string, Integer cut) {
+        if (string.length() > cut) {
+            return string.substring(0, cut) + "...";
+        }
+
+        return string;
+    }
+
 }

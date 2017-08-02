@@ -1,4 +1,3 @@
-
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
@@ -38,7 +37,10 @@ public class TeacherCourse implements Serializable
     @SerializedName("course")
     @Expose
     private Course course;
-    private final static long serialVersionUID = 3941109321883854335L;
+    @SerializedName("user")
+    @Expose
+    private User user;
+    private final static long serialVersionUID = 8532724415160316263L;
 
     /**
      * No args constructor for use in serialization
@@ -58,9 +60,10 @@ public class TeacherCourse implements Serializable
      * @param description
      * @param adminFee
      * @param courseId
+     * @param user
      * @param expectedCostUpdatedAt
      */
-    public TeacherCourse(Integer id, Integer courseId, String description, String expectedCost, String expectedCostUpdatedAt, String additionalCost, String adminFee, String finalCost, String module, Course course) {
+    public TeacherCourse(Integer id, Integer courseId, String description, String expectedCost, String expectedCostUpdatedAt, String additionalCost, String adminFee, String finalCost, String module, Course course, User user) {
         super();
         this.id = id;
         this.courseId = courseId;
@@ -72,6 +75,7 @@ public class TeacherCourse implements Serializable
         this.finalCost = finalCost;
         this.module = module;
         this.course = course;
+        this.user = user;
     }
 
     public Integer getId() {
@@ -152,6 +156,14 @@ public class TeacherCourse implements Serializable
 
     public void setCourse(Course course) {
         this.course = course;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

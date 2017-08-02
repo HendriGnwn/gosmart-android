@@ -3,6 +3,7 @@ package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
 
+import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.model.response.StudentProfile;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -260,6 +261,19 @@ public class User implements Serializable
 
     public void setTeacherProfile(TeacherProfile teacherProfile) {
         this.teacherProfile = teacherProfile;
+    }
+
+    public String getFullName() {
+        String lastName = "";
+        if (this.getLastName() != null) {
+            lastName = this.getLastName();
+        }
+
+        return this.getFirstName() + " " + lastName;
+    }
+
+    public String getShortAddress() {
+        return App.getCutString(this.getAddress(), 47);
     }
 
 }

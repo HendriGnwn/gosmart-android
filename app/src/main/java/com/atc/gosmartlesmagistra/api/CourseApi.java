@@ -2,6 +2,7 @@ package com.atc.gosmartlesmagistra.api;
 
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
+import com.atc.gosmartlesmagistra.model.response.CourseAvailabilitiesSuccess;
 import com.atc.gosmartlesmagistra.model.response.CoursesSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
@@ -26,5 +27,17 @@ public interface CourseApi {
             "Content-Type: application/json"
     })
     Call<CoursesSuccess> courses(@Query("name") String name);
+
+    @GET("courses-availability")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<CourseAvailabilitiesSuccess> courseAvailabilities(
+            @Query("course_id") Integer courseId,
+            @Query("name") String name,
+            @Query("latitude") String latitude,
+            @Query("longitude") String longitude,
+            @Query("radius") String radius
+    );
 
 }

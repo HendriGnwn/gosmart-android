@@ -44,51 +44,62 @@
                 android:gravity="left">
 
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/price"
                     fontPath="fonts/latoRegular.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Matematika II"
+                    android:text="Rp30.000"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_medium_material"
+                    android:textSize="@dimen/text_size_large_material"
                     tools:ignore="MissingPrefix" />
 
                 <TextView
-                    android:id="@+id/section"
+                    android:id="@+id/name"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:text="Hendri Gunawan"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_medium_small_material"
+                    tools:ignore="MissingPrefix" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/order_button"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/name"
+                    android:minHeight="35dp"
+                    android:minWidth="100dp"
+                    android:text="@string/private_text"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/address"
                     fontPath="fonts/latoRegular.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
-                    android:text="3 Section"
+                    android:text="Jl Lapangan Tembak 300 Ciaruteun Ilir Cibungbulang Bogor"
                     android:textColor="@color/colorBlackSecondary"
-                    android:textSize="@dimen/text_size_caption_material"
+                    android:textSize="10sp"
                     tools:ignore="MissingPrefix" />
 
                 <TextView
-                    android:id="@+id/course_level"
+                    android:id="@+id/phone"
                     fontPath="fonts/latoLight.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:gravity="left"
-                    android:text="Sekolah Mengenah Atas X"
+                    android:text="08561471500"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_caption_material"
-                    tools:ignore="MissingPrefix" />
-
-                <TextView
-                    android:id="@+id/teacher_availability"
-                    fontPath="fonts/latoLight.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:gravity="left"
-                    android:text="10 Teacher's Available"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_size_caption_material"
+                    android:textSize="10sp"
                     tools:ignore="MissingPrefix" />
 
             </RelativeLayout>
