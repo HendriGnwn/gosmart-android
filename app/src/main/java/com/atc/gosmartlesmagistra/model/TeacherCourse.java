@@ -1,6 +1,8 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+
+import com.atc.gosmartlesmagistra.App;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -164,6 +166,10 @@ public class TeacherCourse implements Serializable
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getFormattedFinalCost() {
+        return App.getFormattedCurrencyRupiah(this.getFinalCost());
     }
 
 }

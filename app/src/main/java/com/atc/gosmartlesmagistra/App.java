@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import java.io.ByteArrayOutputStream;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
@@ -76,12 +78,20 @@ public class App extends Application {
 
         return connected;
     }
+
     public static String getCutString(String string, Integer cut) {
         if (string.length() > cut) {
             return string.substring(0, cut) + "...";
         }
 
         return string;
+    }
+
+    public static String getFormattedCurrencyRupiah(String currency) {
+        Locale locale = new Locale("id", "ID");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+
+        return currencyFormatter.format(Double.parseDouble(currency));
     }
 
 }

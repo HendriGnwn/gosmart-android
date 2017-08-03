@@ -10,11 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -24,12 +21,12 @@ import android.widget.Toast;
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.adapter.CourseAvailabilityListAdapter;
-import com.atc.gosmartlesmagistra.adapter.CourseListAdapter;
+import com.atc.gosmartlesmagistra.adapter.SimiliarTeacherCourseListAdapter;
 import com.atc.gosmartlesmagistra.api.CourseApi;
 import com.atc.gosmartlesmagistra.model.Course;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
+import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.response.CourseAvailabilitiesSuccess;
-import com.atc.gosmartlesmagistra.model.response.CoursesSuccess;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 
 import java.io.IOException;
@@ -52,55 +49,58 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by hendrigunawan on 7/4/17.
  */
 
-public class CourseAvailabilityActivity extends AppCompatActivity {
+public class TeacherCourseDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.action_left) ImageButton actionLeft;
     @BindView(R.id.title_bar) TextView titleBar;
-    @BindView(R.id.courses_recycler_view) RecyclerView coursesRecyclerView;
-    @BindView(R.id.progress_bar) ProgressBar progressBar;
-    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.course_level) TextView courseLevel;
     @BindView(R.id.course_name) TextView courseName;
-    @BindView(R.id.course_description) TextView courseDescription;
     @BindView(R.id.course_section) TextView courseSection;
-    @BindView(R.id.sort_by_spinner) Spinner sortBySpinner;
-    @BindView(R.id.search) AutoCompleteTextView mSearchView;
+    @BindView(R.id.course_description) TextView courseDescription;
+    @BindView(R.id.username) TextView username;
+    @BindView(R.id.phone) TextView phone;
+    @BindView(R.id.address) TextView address;
+    @BindView(R.id.price) TextView price;
+    @BindView(R.id.similiar_course_recycler_view) RecyclerView similiarCourseRecyclerView;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
 
     SessionManager sessionManager;
-    CourseAvailabilityListAdapter courseListAdapter;
-    List<TeacherCourse> courseList;
     Retrofit retrofit;
     Course course;
-    String[] sorts;
+    List<TeacherCourse> teacherCourseList;
+    TeacherCourse teacherCourse;
+    User user;
+    SimiliarTeacherCourseListAdapter similiarTeacherCourseListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_course_availability);
+        setContentView(R.layout.activity_teacher_course_detail);
         ButterKnife.bind(this);
         setActionLeftIcon();
 
         sessionManager = new SessionManager(this);
-        course = (Course) getIntent().getSerializableExtra("course");
-        titleBar.setText(course.getName());
+        teacherCourse = (TeacherCourse) getIntent().getSerializableExtra("teacherCourse");
+        course = teacherCourse.getCourse();
+        user = teacherCourse.getUser();
+
+        titleBar.setText(user.getFullName());
         courseName.setText(course.getName());
         courseLevel.setText(course.getCourseLevel().getName());
+        courseDescription.setText(teacherCourse.getDescription());
         courseSection.setText(course.getSection() + " " + getString(R.string.section) + ", " + course.getSectionTime() + " " + getString(R.string.time));
-        courseDescription.setText(course.getDescription());
-        sorts = getResources().getStringArray(R.array.sort_arrays);
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(
-                this, R.layout.spinner_item, sorts
-        );
-        sortBySpinner.setAdapter(spinnerArrayAdapter);
+        address.setText(user.getAddress());
+        phone.setText(user.getPhoneNumber());
+        username.setText(user.getFullName());
+        price.setText(teacherCourse.getFormattedFinalCost());
 
-        courseList = new ArrayList<>();
-        courseListAdapter = new CourseAvailabilityListAdapter(this, courseList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        coursesRecyclerView.setLayoutManager(layoutManager);
-        coursesRecyclerView.setNestedScrollingEnabled(false);
-        coursesRecyclerView.setHorizontalScrollBarEnabled(true);
-        coursesRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        coursesRecyclerView.setAdapter(courseListAdapter);
+        teacherCourseList = new ArrayList<>();
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        similiarCourseRecyclerView.setLayoutManager(layoutManager);
+        similiarCourseRecyclerView.setNestedScrollingEnabled(false);
+        similiarCourseRecyclerView.setVerticalScrollBarEnabled(true);
+        similiarTeacherCourseListAdapter = new SimiliarTeacherCourseListAdapter(this, teacherCourseList);
+        similiarCourseRecyclerView.setAdapter(similiarTeacherCourseListAdapter);
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -117,53 +117,29 @@ public class CourseAvailabilityActivity extends AppCompatActivity {
                 .baseUrl(App.API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-        swipeContainer.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadCourses();
-            }
-        });
-        loadCourses();
-
-        mSearchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    App.hideSoftKeyboard(CourseAvailabilityActivity.this);
-                    courseList.clear();
-                    courseListAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.VISIBLE);
-                    loadCourses();
-                    return true;
-                }
-                return false;
-            }
-        });
+        loadSimiliarCourse();
     }
 
-    private void loadCourses() {
+    private void loadSimiliarCourse() {
+        progressBar.setVisibility(View.VISIBLE);
         CourseApi courseApi = retrofit.create(CourseApi.class);
 
-        Call<CourseAvailabilitiesSuccess> call = courseApi.courseAvailabilities(course.getId(),mSearchView.getText().toString(),null,null,null);
+        Call<CourseAvailabilitiesSuccess> call = courseApi.similiarTeacherCourses(teacherCourse.getId());
         call.enqueue(new Callback<CourseAvailabilitiesSuccess>() {
             @Override
             public void onResponse(Call<CourseAvailabilitiesSuccess> call, Response<CourseAvailabilitiesSuccess> response) {
                 if(response.raw().isSuccessful()) {
-                    courseList.clear();
-                    courseList.addAll(response.body().getTeacherCourses());
-                    courseListAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.INVISIBLE);
+                    teacherCourseList.clear();
+                    teacherCourseList.addAll(response.body().getTeacherCourses());
+                    similiarTeacherCourseListAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getApplicationContext(), getString(R.string.request_failed_please_try_again), Toast.LENGTH_SHORT).show();
                 }
-                swipeContainer.setRefreshing(false);
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<CourseAvailabilitiesSuccess> call, Throwable t) {
-                swipeContainer.setRefreshing(false);
                 Toast.makeText(getApplicationContext(), getString(R.string.request_failed_please_try_again), Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.INVISIBLE);
             }

@@ -137,6 +137,17 @@
                 android:value="com.atc.gosmartlesmagistra.activity.CoursesActivity" />
         </activity>
         <activity
+            android:name=".activity.TeacherCourseDetailActivity"
+            android:label="@string/courses"
+            android:parentActivityName=".activity.CourseAvailabilityActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|adjustNothing|stateAlwaysHidden|adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atc.gosmartlesmagistra.activity.CourseAvailabilityActivity" />
+        </activity>
+        <activity
             android:name=".activity.PrivateOrderActivity"
             android:label="@string/private_order"
             android:parentActivityName=".activity.MainActivity"

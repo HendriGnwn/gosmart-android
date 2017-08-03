@@ -34,10 +34,18 @@ public interface CourseApi {
     })
     Call<CourseAvailabilitiesSuccess> courseAvailabilities(
             @Query("course_id") Integer courseId,
-            @Query("name") String name,
+            @Query("search") String name,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude,
             @Query("radius") String radius
+    );
+
+    @GET("similiar-courses/{id}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<CourseAvailabilitiesSuccess> similiarTeacherCourses(
+            @Path("id") Integer id
     );
 
 }

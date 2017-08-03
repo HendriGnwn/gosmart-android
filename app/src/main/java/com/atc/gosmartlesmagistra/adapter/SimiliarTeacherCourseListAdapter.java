@@ -7,13 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.activity.TeacherCourseDetailActivity;
-import com.atc.gosmartlesmagistra.model.Course;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
@@ -24,24 +22,18 @@ import java.util.List;
  * Created by ACER on 01/08/2017.
  */
 
-public class CourseAvailabilityListAdapter extends RecyclerView.Adapter<CourseAvailabilityListAdapter.MyViewHolder> {
+public class SimiliarTeacherCourseListAdapter extends RecyclerView.Adapter<SimiliarTeacherCourseListAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<TeacherCourse> list;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, address, phone;
-        public CircularImageView userImage;
-        public AppCompatButton orderButton;
+        public TextView name, price;
 
         public MyViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.name);
-            phone = (TextView) view.findViewById(R.id.phone);
             price = (TextView) view.findViewById(R.id.price);
-            address = (TextView) view.findViewById(R.id.address);
-            userImage = (CircularImageView) view.findViewById(R.id.image);
-            orderButton = (AppCompatButton) view.findViewById(R.id.order_button);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -54,7 +46,7 @@ public class CourseAvailabilityListAdapter extends RecyclerView.Adapter<CourseAv
         }
     }
 
-    public CourseAvailabilityListAdapter(Context mContext, List<TeacherCourse> list) {
+    public SimiliarTeacherCourseListAdapter(Context mContext, List<TeacherCourse> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -62,7 +54,7 @@ public class CourseAvailabilityListAdapter extends RecyclerView.Adapter<CourseAv
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.course_availability_list, parent, false);
+                .inflate(R.layout.similiar_teacher_course_card, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -71,11 +63,8 @@ public class CourseAvailabilityListAdapter extends RecyclerView.Adapter<CourseAv
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         TeacherCourse teacherCourse = list.get(position);
-        holder.name.setText(teacherCourse.getUser().getFullName());
-        holder.address.setText(teacherCourse.getUser().getShortAddress());
+        holder.name.setText(teacherCourse.getCourse().getName());
         holder.price.setText(teacherCourse.getFormattedFinalCost());
-        holder.phone.setText(teacherCourse.getUser().getPhoneNumber());
-        Picasso.with(mContext).load(App.URL + "files/users/" + teacherCourse.getUser().getPhoto()).error(R.drawable.user).into(holder.userImage);
     }
 
     @Override
