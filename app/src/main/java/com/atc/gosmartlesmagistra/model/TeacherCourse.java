@@ -1,6 +1,10 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import com.atc.gosmartlesmagistra.App;
 import com.google.gson.annotations.Expose;
@@ -42,6 +46,12 @@ public class TeacherCourse implements Serializable
     @SerializedName("user")
     @Expose
     private User user;
+    @SerializedName("approved_at")
+    @Expose
+    private String approvedAt;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
     private final static long serialVersionUID = 8532724415160316263L;
 
     /**
@@ -76,6 +86,69 @@ public class TeacherCourse implements Serializable
         this.adminFee = adminFee;
         this.finalCost = finalCost;
         this.module = module;
+        this.course = course;
+        this.user = user;
+    }
+
+    /**
+     *
+     * @param course
+     * @param id
+     * @param module
+     * @param additionalCost
+     * @param status
+     * @param finalCost
+     * @param expectedCost
+     * @param description
+     * @param adminFee
+     * @param courseId
+     * @param approvedAt
+     * @param expectedCostUpdatedAt
+     */
+    public TeacherCourse(Integer id, Integer courseId, String description, String expectedCost, String expectedCostUpdatedAt, String additionalCost, String adminFee, String finalCost, String approvedAt, String module, Integer status, Course course) {
+        super();
+        this.id = id;
+        this.courseId = courseId;
+        this.description = description;
+        this.expectedCost = expectedCost;
+        this.expectedCostUpdatedAt = expectedCostUpdatedAt;
+        this.additionalCost = additionalCost;
+        this.adminFee = adminFee;
+        this.finalCost = finalCost;
+        this.approvedAt = approvedAt;
+        this.module = module;
+        this.status = status;
+        this.course = course;
+    }
+
+    /**
+     *
+     * @param course
+     * @param id
+     * @param module
+     * @param additionalCost
+     * @param status
+     * @param finalCost
+     * @param expectedCost
+     * @param description
+     * @param adminFee
+     * @param courseId
+     * @param approvedAt
+     * @param expectedCostUpdatedAt
+     */
+    public TeacherCourse(Integer id, Integer courseId, String description, String expectedCost, String expectedCostUpdatedAt, String additionalCost, String adminFee, String finalCost, String approvedAt, String module, Integer status, Course course, User user) {
+        super();
+        this.id = id;
+        this.courseId = courseId;
+        this.description = description;
+        this.expectedCost = expectedCost;
+        this.expectedCostUpdatedAt = expectedCostUpdatedAt;
+        this.additionalCost = additionalCost;
+        this.adminFee = adminFee;
+        this.finalCost = finalCost;
+        this.approvedAt = approvedAt;
+        this.module = module;
+        this.status = status;
         this.course = course;
         this.user = user;
     }
@@ -160,6 +233,22 @@ public class TeacherCourse implements Serializable
         this.course = course;
     }
 
+    public String getApprovedAt() {
+        return approvedAt;
+    }
+
+    public void setApprovedAt(String approvedAt) {
+        this.approvedAt = approvedAt;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public User getUser() {
         return user;
     }
@@ -170,6 +259,25 @@ public class TeacherCourse implements Serializable
 
     public String getFormattedFinalCost() {
         return App.getFormattedCurrencyRupiah(this.getFinalCost());
+    }
+
+    public String getFormattedExpectedCost() {
+        return App.getFormattedCurrencyRupiah(this.getExpectedCost());
+    }
+
+    public String getFormattedApprovedAt() {
+        String formattedDate;
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(this.getApprovedAt());
+
+            SimpleDateFormat outGoing = new SimpleDateFormat("dd MMM yyyy", new Locale("id", "ID"));
+            formattedDate = outGoing.format(date);
+        } catch (ParseException e) {
+            formattedDate = this.getApprovedAt();
+            e.printStackTrace();
+        }
+
+        return formattedDate;
     }
 
 }

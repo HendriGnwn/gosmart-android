@@ -3,6 +3,7 @@ package com.atc.gosmartlesmagistra.api;
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
 import com.atc.gosmartlesmagistra.model.response.CourseAvailabilitiesSuccess;
+import com.atc.gosmartlesmagistra.model.response.CourseLevelSpinnerSuccess;
 import com.atc.gosmartlesmagistra.model.response.CoursesSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
@@ -47,5 +48,11 @@ public interface CourseApi {
     Call<CourseAvailabilitiesSuccess> similiarTeacherCourses(
             @Path("id") Integer id
     );
+
+    @GET("courses-spinner")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<CourseLevelSpinnerSuccess> courseLevelSpinners();
 
 }

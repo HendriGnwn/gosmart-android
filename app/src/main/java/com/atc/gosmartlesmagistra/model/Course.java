@@ -45,6 +45,27 @@ public class Course implements Serializable
     /**
      *
      * @param id
+     * @param teacherAvailability
+     * @param courseLevelId
+     * @param description
+     * @param name
+     * @param sectionTime
+     * @param section
+     */
+    public Course(Integer id, Integer courseLevelId, String name, String description, Integer section, String sectionTime, Integer teacherAvailability) {
+        super();
+        this.id = id;
+        this.courseLevelId = courseLevelId;
+        this.name = name;
+        this.description = description;
+        this.section = section;
+        this.sectionTime = sectionTime;
+        this.teacherAvailability = teacherAvailability;
+    }
+
+    /**
+     *
+     * @param id
      * @param courseLevel
      * @param teacherAvailability
      * @param courseLevelId

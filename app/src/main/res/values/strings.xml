@@ -32,6 +32,8 @@
     <string name="action_checkout">Checkout</string>
     <string name="action_update_profile">Update Profile</string>
     <string name="action_update_bank">Update Bank</string>
+    <string name="action_update">Update</string>
+    <string name="action_delete">Delete</string>
 
     <!-- prompt -->
     <string name="prompt_email">Email*</string>
@@ -47,6 +49,8 @@
     <string name="prompt_izajah_number">Izazjah Number</string>
     <string name="prompt_graduated">Graduated</string>
     <string name="prompt_bio">Bio*</string>
+    <string name="prompt_description">Description*</string>
+    <string name="prompt_expected_cost">Expected Cost*</string>
     <string name="prompt_bank_name">Bank Name*</string>
     <string name="prompt_bank_account">Bank Account*</string>
     <string name="prompt_bank_branch">Bank Branch*</string>
@@ -56,6 +60,10 @@
     <string name="prompt_department">Department*</string>
     <string name="prompt_school_address">School Address*</string>
     <string name="prompt_search">Search</string>
+    <string name="prompt_course_level">Course Level*</string>
+    <string name="prompt_select_course_level">Select a Course Level</string>
+    <string name="prompt_course">Course*</string>
+    <string name="prompt_select_course">Select a Course</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

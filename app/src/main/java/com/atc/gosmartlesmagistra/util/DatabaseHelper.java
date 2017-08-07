@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.atc.gosmartlesmagistra.model.CourseLevel;
 import com.atc.gosmartlesmagistra.model.TeacherTermCondition;
 import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.response.CourseLevelSpinnerSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.TeacherTermConditionSuccess;
 import com.google.gson.Gson;
@@ -30,6 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_USER = "user";
     private static final String TABLE_USER_RAW = "user_raw";
     private static final String TABLE_TERM_CONDITION = "termcondition";
+    private static final String TABLE_COURSE_LEVEL = "course_level";
 
     // column name
     private static final String COLUMN_ID = "id";
@@ -51,6 +54,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_TERM_CONDITION = "CREATE TABLE "
             + TABLE_TERM_CONDITION + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_RAW + " BLOB, "
+            + COLUMN_CREATED_AT + " datetime default current_timestamp)";
+
+    private static final String CREATE_TABLE_COURSE_LEVEL = "CREATE TABLE "
+            + TABLE_COURSE_LEVEL + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + COLUMN_RAW + " BLOB, "
             + COLUMN_CREATED_AT + " datetime default current_timestamp)";
 
@@ -84,6 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_USER_RAW);
         db.execSQL(CREATE_TABLE_TERM_CONDITION);
+        db.execSQL(CREATE_TABLE_COURSE_LEVEL);
     }
 
     @Override
@@ -91,6 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_RAW);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TERM_CONDITION);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSE_LEVEL);
 
         onCreate(db);
     }
@@ -214,6 +224,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 return loginSuccess.getUser();
             }
             return user;
+        }finally {
+            cursor.close();
+        }
+    }
+
+    public void createCourseLevel(CourseLevelSpinnerSuccess terms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_COURSE_LEVEL, null, null);
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RAW, new Gson().toJson(terms).getBytes());
+        db.insert(TABLE_COURSE_LEVEL, null, values);
+
+        db.close();
+    }
+
+    public List<CourseLevel> getCourseLevels() {
+        List<CourseLevel> courseLevels = new ArrayList();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_COURSE_LEVEL, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                Gson gson = new Gson();
+                CourseLevelSpinnerSuccess term = gson.fromJson(new String(cursor.getBlob(1)), CourseLevelSpinnerSuccess.class);
+                courseLevels.addAll(term.getCourseLevels());
+            }
+            return courseLevels;
         }finally {
             cursor.close();
         }

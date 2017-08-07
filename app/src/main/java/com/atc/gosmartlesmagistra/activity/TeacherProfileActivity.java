@@ -1,5 +1,6 @@
 package com.atc.gosmartlesmagistra.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -20,8 +21,10 @@ import android.widget.TextView;
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.adapter.PagerAdapter;
+import com.atc.gosmartlesmagistra.api.CourseApi;
 import com.atc.gosmartlesmagistra.api.UserApi;
 import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.response.CourseLevelSpinnerSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
@@ -67,10 +70,23 @@ public class TeacherProfileActivity extends AppCompatActivity {
         final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
         iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         fab.setImageDrawable(iconFab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
+                intent.putExtra("isNewRecord", true);
+                startActivity(intent);
+            }
+        });
 
         setTabLayout();
 
         requestApi();
+
+        Boolean setToCourse = getIntent().getBooleanExtra("setToCourse", false);
+        if (setToCourse) {
+            viewPager.setCurrentItem(1, true);
+        }
     }
 
     protected void requestApi() {
@@ -145,11 +161,38 @@ public class TeacherProfileActivity extends AppCompatActivity {
 
             }
         });
+
+        loadCourseLevels();
+    }
+
+    private void loadCourseLevels() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(App.API)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        CourseApi service = retrofit.create(CourseApi.class);
+        Call<CourseLevelSpinnerSuccess> call = service.courseLevelSpinners();
+        call.enqueue(new Callback<CourseLevelSpinnerSuccess>() {
+            @Override
+            public void onResponse(Call<CourseLevelSpinnerSuccess> call, Response<CourseLevelSpinnerSuccess> response) {
+
+                if (response.raw().isSuccessful()) {
+                    databaseHelper.createCourseLevel(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CourseLevelSpinnerSuccess> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.action_left)
