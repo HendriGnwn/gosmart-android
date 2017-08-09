@@ -94,7 +94,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Sorry page is not available", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
+                intent.putExtra("isNewRecord", true);
+                startActivity(intent);
             }
         });
 

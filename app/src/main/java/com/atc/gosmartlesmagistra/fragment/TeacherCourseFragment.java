@@ -6,17 +6,21 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.adapter.TeacherProfileCourseListAdapter;
+import com.atc.gosmartlesmagistra.api.UserApi;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 
@@ -29,6 +33,9 @@ import butterknife.ButterKnife;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -86,7 +93,7 @@ public class TeacherCourseFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadCourses();
+                refreshCourses();
             }
         });
         loadCourses();
@@ -94,17 +101,40 @@ public class TeacherCourseFragment extends Fragment {
         return view;
     }
 
-    private void loadCourses() {
-
-        courseList.clear();
-        if (user.getTeacherProfile() != null) {
-            if (user.getTeacherProfile().getTeacherCourses() != null) {
-                courseList.addAll(user.getTeacherProfile().getTeacherCourses());
+    private void refreshCourses() {
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<LoginSuccess> call = userApi.getUserByUniqueNumber(sessionManager.getUserCode());
+        call.enqueue(new Callback<LoginSuccess>() {
+            @Override
+            public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
+                if (response.raw().isSuccessful()) {
+                    if (user.getTeacherProfile() != null) {
+                        if (user.getTeacherProfile().getTeacherCourses() != null) {
+                            courseList.clear();
+                            courseList.addAll(user.getTeacherProfile().getTeacherCourses());
+                        }
+                    }
+                    teacherProfileCourseListAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid load data, please try again", Toast.LENGTH_LONG).show();
+                }
+                progressBar.setVisibility(View.INVISIBLE);
+                swipeContainer.setRefreshing(false);
             }
-        }
-        teacherProfileCourseListAdapter.notifyDataSetChanged();
+
+            @Override
+            public void onFailure(Call<LoginSuccess> call, Throwable t) {
+                Toast.makeText(getActivity(), "Invalid load data, please try again", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.INVISIBLE);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+    }
+
+    private void loadCourses() {
+        courseList.clear();
+        courseList.addAll(user.getTeacherProfile().getTeacherCourses());
         progressBar.setVisibility(View.INVISIBLE);
         swipeContainer.setRefreshing(false);
-
     }
 }

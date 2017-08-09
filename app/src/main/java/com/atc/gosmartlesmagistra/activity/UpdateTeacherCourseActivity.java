@@ -60,6 +60,8 @@ public class UpdateTeacherCourseActivity extends AppCompatActivity {
 
     @BindView(R.id.action_left) ImageButton actionLeft;
     @BindView(R.id.title_bar) TextView titleBar;
+    @BindView(R.id.status) TextView statusApproval;
+    @BindView(R.id.approved_at) TextView approvedAt;
     @BindView(R.id.progress_bar) ProgressBar progressBar;
     @BindView(R.id.course_level) Spinner courseLevelSpinner;
     @BindView(R.id.course) Spinner courseSpinner;
@@ -103,11 +105,15 @@ public class UpdateTeacherCourseActivity extends AppCompatActivity {
         if (isNewRecord) {
             submitButton.setText(getString(R.string.action_submit));
             deleteButton.setVisibility(View.GONE);
+            statusApproval.setText("");
+            approvedAt.setText("");
         } else {
             deleteButton.setVisibility(View.VISIBLE);
             submitButton.setText(getString(R.string.action_update));
             mDescriptionView.setText(teacherCourse.getDescription());
             mExpectedCostView.setText(teacherCourse.getExpectedCost());
+            statusApproval.setText(teacherCourse.getStatusText());
+            approvedAt.setText(teacherCourse.getFormattedApprovedAt());
 
             for (int i=0;i<courseLevelList.size();i++) {
                 Integer cityId = courseLevelList.get(i).getId();

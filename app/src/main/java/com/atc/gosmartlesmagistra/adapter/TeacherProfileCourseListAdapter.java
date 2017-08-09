@@ -29,14 +29,16 @@ public class TeacherProfileCourseListAdapter extends RecyclerView.Adapter<Teache
     private List<TeacherCourse> list;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, courseLevel, courseSection;
+        public TextView name, price, courseLevel, courseSection, status, approvedAt;
 
         public MyViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.name);
             courseSection = (TextView) view.findViewById(R.id.section);
             price = (TextView) view.findViewById(R.id.price);
-            courseLevel= (TextView) view.findViewById(R.id.course_level);
+            courseLevel = (TextView) view.findViewById(R.id.course_level);
+            status = (TextView) view.findViewById(R.id.status);
+            approvedAt = (TextView) view.findViewById(R.id.approved_at);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -70,6 +72,8 @@ public class TeacherProfileCourseListAdapter extends RecyclerView.Adapter<Teache
         holder.name.setText(teacherCourse.getCourse().getName());
         holder.courseSection.setText(teacherCourse.getCourse().getSection() + " " + mContext.getString(R.string.section) + ", " + teacherCourse.getCourse().getSectionTime() + " " + mContext.getString(R.string.time));
         holder.courseLevel.setText(teacherCourse.getCourse().getCourseLevel().getName());
+        holder.status.setText(teacherCourse.getStatusText());
+        holder.approvedAt.setText(teacherCourse.getFormattedApprovedAt());
     }
 
     @Override

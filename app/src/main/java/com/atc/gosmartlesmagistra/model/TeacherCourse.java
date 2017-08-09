@@ -1,5 +1,7 @@
 package com.atc.gosmartlesmagistra.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,57 +39,28 @@ public class TeacherCourse implements Serializable
     @SerializedName("final_cost")
     @Expose
     private String finalCost;
+    @SerializedName("approved_at")
+    @Expose
+    private String approvedAt;
     @SerializedName("module")
     @Expose
     private String module;
+    @SerializedName("status")
+    @Expose
+    private Integer status;
     @SerializedName("course")
     @Expose
     private Course course;
     @SerializedName("user")
     @Expose
     private User user;
-    @SerializedName("approved_at")
-    @Expose
-    private String approvedAt;
-    @SerializedName("status")
-    @Expose
-    private Integer status;
-    private final static long serialVersionUID = 8532724415160316263L;
+    private final static long serialVersionUID = 8130222537541333959L;
 
     /**
      * No args constructor for use in serialization
      *
      */
     public TeacherCourse() {
-    }
-
-    /**
-     *
-     * @param course
-     * @param id
-     * @param module
-     * @param additionalCost
-     * @param finalCost
-     * @param expectedCost
-     * @param description
-     * @param adminFee
-     * @param courseId
-     * @param user
-     * @param expectedCostUpdatedAt
-     */
-    public TeacherCourse(Integer id, Integer courseId, String description, String expectedCost, String expectedCostUpdatedAt, String additionalCost, String adminFee, String finalCost, String module, Course course, User user) {
-        super();
-        this.id = id;
-        this.courseId = courseId;
-        this.description = description;
-        this.expectedCost = expectedCost;
-        this.expectedCostUpdatedAt = expectedCostUpdatedAt;
-        this.additionalCost = additionalCost;
-        this.adminFee = adminFee;
-        this.finalCost = finalCost;
-        this.module = module;
-        this.course = course;
-        this.user = user;
     }
 
     /**
@@ -119,6 +92,35 @@ public class TeacherCourse implements Serializable
         this.module = module;
         this.status = status;
         this.course = course;
+    }
+
+    /**
+     *
+     * @param course
+     * @param id
+     * @param module
+     * @param additionalCost
+     * @param finalCost
+     * @param expectedCost
+     * @param description
+     * @param adminFee
+     * @param courseId
+     * @param user
+     * @param expectedCostUpdatedAt
+     */
+    public TeacherCourse(Integer id, Integer courseId, String description, String expectedCost, String expectedCostUpdatedAt, String additionalCost, String adminFee, String finalCost, String module, Course course, User user) {
+        super();
+        this.id = id;
+        this.courseId = courseId;
+        this.description = description;
+        this.expectedCost = expectedCost;
+        this.expectedCostUpdatedAt = expectedCostUpdatedAt;
+        this.additionalCost = additionalCost;
+        this.adminFee = adminFee;
+        this.finalCost = finalCost;
+        this.module = module;
+        this.course = course;
+        this.user = user;
     }
 
     /**
@@ -267,6 +269,10 @@ public class TeacherCourse implements Serializable
 
     public String getFormattedApprovedAt() {
         String formattedDate;
+        if (this.getApprovedAt() == null) {
+            return "-";
+        }
+
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(this.getApprovedAt());
 
@@ -277,7 +283,15 @@ public class TeacherCourse implements Serializable
             e.printStackTrace();
         }
 
-        return formattedDate;
+        return "Approved at " + formattedDate;
+    }
+
+    public String getStatusText() {
+        if (this.getStatus() == 1) {
+            return "Approved";
+        } else {
+            return "Waiting for Approve";
+        }
     }
 
 }
