@@ -1,11 +1,13 @@
 package com.atc.gosmartlesmagistra.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.text.TextUtils;
@@ -30,8 +32,10 @@ import com.atc.gosmartlesmagistra.model.CourseLevel;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.TeacherProfile;
 import com.atc.gosmartlesmagistra.model.request.ChangePasswordRequest;
+import com.atc.gosmartlesmagistra.model.request.TeacherCourseRequest;
 import com.atc.gosmartlesmagistra.model.response.ChangePasswordResponse;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
+import com.atc.gosmartlesmagistra.model.response.TeacherCourseResponse;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.google.gson.Gson;
@@ -84,6 +88,11 @@ public class UpdateTeacherCourseActivity extends AppCompatActivity {
     @OnClick(R.id.submit_button)
     protected void submitClick() {
         attemptSubmit();
+    }
+
+    @OnClick(R.id.delete_button)
+    protected void deleteButton() {
+        attemptDelete();
     }
 
     @Override
@@ -176,108 +185,261 @@ public class UpdateTeacherCourseActivity extends AppCompatActivity {
         actionLeft.setImageDrawable(iconLeft);
     }
 
-    private void attemptSubmit() {
+    private void attemptInsert() {
         App.hideSoftKeyboard(this);
 
         boolean cancel = false;
         View focusView = null;
 
-//        if (!TextUtils.isEmpty(confirmPassword) && !isPasswordValid(confirmPassword)) {
-//            mConfirmPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mConfirmPasswordView;
-//            cancel = true;
-//        }
-//
-//        if (TextUtils.isEmpty(confirmPassword)) {
-//            mConfirmPasswordView.setError(getString(R.string.error_field_required));
-//            focusView = mConfirmPasswordView;
-//            cancel = true;
-//        }
-//
-//        if (!TextUtils.isEmpty(newPassword) && !isPasswordValid(newPassword)) {
-//            mNewPasswordView.setError(getString(R.string.error_invalid_password));
-//            focusView = mNewPasswordView;
-//            cancel = true;
-//        }
-//
-//        if (TextUtils.isEmpty(newPassword)) {
-//            mNewPasswordView.setError(getString(R.string.error_field_required));
-//            focusView = mNewPasswordView;
-//            cancel = true;
-//        }
-//
-//        if (TextUtils.isEmpty(currentPassword)) {
-//            mCurrentPasswordView.setError(getString(R.string.error_field_required));
-//            focusView = mCurrentPasswordView;
-//            cancel = true;
-//        }
-//
-//        if (cancel) {
-//            // There was an error; don't attempt login and focus the first
-//            // form field with an error.
-//            focusView.requestFocus();
-//        } else {
-//            progressBar.setVisibility(View.VISIBLE);
-//
-//            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
-//                @Override
-//                public okhttp3.Response intercept(Chain chain) throws IOException {
-//                    Request newRequest  = chain.request().newBuilder()
-//                            .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
-//                            .addHeader("Content-Type", "application/json")
-//                            .build();
-//                    return chain.proceed(newRequest);
-//                }
-//            }).build();
-//            Retrofit retrofit = new Retrofit.Builder()
-//                    .client(client)
-//                    .baseUrl(App.API)
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build();
-//            UserApi service = retrofit.create(UserApi.class);
-//            ChangePasswordRequest request = new ChangePasswordRequest(currentPassword, newPassword, confirmPassword);
-//            Call<LoginSuccess> call = service.changePassword(sessionManager.getUserCode(), request);
-//            call.enqueue(new Callback<LoginSuccess>() {
-//                @Override
-//                public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
-//                    if (response.raw().isSuccessful()) {
-//
-//                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
-//                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                        startActivity(intent);
-//
-//                    } else if (response.raw().code() == 400) {
-//
-//                        Gson gson = new GsonBuilder().create();
-//                        ChangePasswordResponse mError =new ChangePasswordResponse();
-//                        try {
-//                            mError = gson.fromJson(response.errorBody().string(),ChangePasswordResponse.class);
-//                            Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
-//
-//                        } catch (IOException e) {
-//                            // handle failure to read error
-//                        }
-//
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "Change password failed", Toast.LENGTH_LONG).show();
-//                    }
-//
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                }
-//
-//                @Override
-//                public void onFailure(Call<LoginSuccess> call, Throwable t) {
-//                    Toast.makeText(getApplicationContext(), "Change password failed, Please try again.", Toast.LENGTH_LONG).show();
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                }
-//            });
-//
-//        }
+        String description = mDescriptionView.getText().toString();
+        String expectedCost = mExpectedCostView.getText().toString();
+
+        if (TextUtils.isEmpty(expectedCost)) {
+            mExpectedCostView.setError(getString(R.string.error_field_required));
+            focusView = mExpectedCostView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(description)) {
+            mDescriptionView.setError(getString(R.string.error_field_required));
+            focusView = mDescriptionView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+                @Override
+                public okhttp3.Response intercept(Chain chain) throws IOException {
+                    Request newRequest  = chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
+                            .addHeader("Content-Type", "application/json")
+                            .build();
+                    return chain.proceed(newRequest);
+                }
+            }).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(App.API)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            UserApi service = retrofit.create(UserApi.class);
+            TeacherCourseRequest request = new TeacherCourseRequest(selectedCourse, description, expectedCost);
+            Call<LoginSuccess> call = service.chooseCourse(sessionManager.getUserCode(), request);
+            call.enqueue(new Callback<LoginSuccess>() {
+                @Override
+                public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
+                    if (response.raw().isSuccessful()) {
+                        databaseHelper.createUser(response.body().getUser());
+                        databaseHelper.createUser(response.body());
+
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), TeacherProfileActivity.class);
+                        intent.putExtra("setToCourse", true);
+                        startActivity(intent);
+
+                    } else if (response.raw().code() == 400) {
+
+                        Gson gson = new GsonBuilder().create();
+                        TeacherCourseResponse mError =new TeacherCourseResponse();
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(),TeacherCourseResponse.class);
+                            Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+
+                        } catch (IOException e) {
+                            // handle failure to read error
+                        }
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Choose Course failed, please try again", Toast.LENGTH_LONG).show();
+                    }
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onFailure(Call<LoginSuccess> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Choose Course failed, please try again", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        }
     }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 5;
+    private void attemptUpdate() {
+        App.hideSoftKeyboard(this);
+
+        boolean cancel = false;
+        View focusView = null;
+
+        String description = mDescriptionView.getText().toString();
+        String expectedCost = mExpectedCostView.getText().toString();
+
+        if (TextUtils.isEmpty(expectedCost)) {
+            mExpectedCostView.setError(getString(R.string.error_field_required));
+            focusView = mExpectedCostView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(description)) {
+            mDescriptionView.setError(getString(R.string.error_field_required));
+            focusView = mDescriptionView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+
+            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+                @Override
+                public okhttp3.Response intercept(Chain chain) throws IOException {
+                    Request newRequest  = chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
+                            .addHeader("Content-Type", "application/json")
+                            .build();
+                    return chain.proceed(newRequest);
+                }
+            }).build();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(client)
+                    .baseUrl(App.API)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            UserApi service = retrofit.create(UserApi.class);
+            TeacherCourseRequest request = new TeacherCourseRequest(selectedCourse, description, expectedCost);
+            Call<LoginSuccess> call = service.updateCourse(sessionManager.getUserCode(), teacherCourse.getId(), request);
+            call.enqueue(new Callback<LoginSuccess>() {
+                @Override
+                public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
+                    if (response.raw().isSuccessful()) {
+                        databaseHelper.createUser(response.body().getUser());
+                        databaseHelper.createUser(response.body());
+
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), TeacherProfileActivity.class);
+                        intent.putExtra("setToCourse", true);
+                        startActivity(intent);
+
+                    } else if (response.raw().code() == 400) {
+
+                        Gson gson = new GsonBuilder().create();
+                        TeacherCourseResponse mError =new TeacherCourseResponse();
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(),TeacherCourseResponse.class);
+                            Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+
+                        } catch (IOException e) {
+                            // handle failure to read error
+                        }
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Update Course failed, please try again", Toast.LENGTH_LONG).show();
+                    }
+
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onFailure(Call<LoginSuccess> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Update Course failed, please try again", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        }
+    }
+
+    private void attemptSubmit() {
+
+        if (isNewRecord) {
+            attemptInsert();
+        } else {
+            attemptUpdate();
+        }
+
+    }
+
+    private void attemptDelete() {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete This Course?")
+                .setMessage("Do you really want to delete this course?")
+                .setIcon(android.R.drawable.ic_delete)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        deleting();
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    private void deleting() {
+        App.hideSoftKeyboard(this);
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest  = chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(App.API)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        UserApi service = retrofit.create(UserApi.class);
+        Call<LoginSuccess> call = service.deleteCourse(sessionManager.getUserCode(), teacherCourse.getId());
+        call.enqueue(new Callback<LoginSuccess>() {
+            @Override
+            public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
+                if (response.raw().isSuccessful()) {
+                    databaseHelper.createUser(response.body().getUser());
+                    databaseHelper.createUser(response.body());
+
+                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getApplicationContext(), TeacherProfileActivity.class);
+                    intent.putExtra("setToCourse", true);
+                    startActivity(intent);
+
+                } else if (response.raw().code() == 400) {
+
+                    Gson gson = new GsonBuilder().create();
+                    TeacherCourseResponse mError =new TeacherCourseResponse();
+                    try {
+                        mError = gson.fromJson(response.errorBody().string(),TeacherCourseResponse.class);
+                        Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+
+                    } catch (IOException e) {
+                        // handle failure to read error
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Delete Course failed, please try again", Toast.LENGTH_LONG).show();
+                }
+
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<LoginSuccess> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Delete Course failed, please try again", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.atc.gosmartlesmagistra.model.request.ForgotPasswordRequest;
 import com.atc.gosmartlesmagistra.model.request.LoginRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
+import com.atc.gosmartlesmagistra.model.request.TeacherCourseRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateStudentProfileRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateTeacherBankRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateTeacherProfileRequest;
@@ -14,6 +15,7 @@ import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -85,4 +87,24 @@ public interface UserApi {
             "Content-Type: application/json"
     })
     Call<LoginSuccess> updateTeacherBank(@Path("uniqueNumber") String uniqueNumber, @Body UpdateTeacherBankRequest body);
+
+    @POST("teacher/choose-course/{uniqueNumber}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> chooseCourse(@Path("uniqueNumber") String uniqueNumber, @Body TeacherCourseRequest body);
+
+    @PUT("teacher/choose-course/update/{uniqueNumber}/{teacherCourseId}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> updateCourse(@Path("uniqueNumber") String uniqueNumber, @Path("teacherCourseId") Integer teacherCourseId, @Body TeacherCourseRequest body);
+
+    @DELETE("teacher/choose-course/delete/{uniqueNumber}/{teacherCourseId}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> deleteCourse(@Path("uniqueNumber") String uniqueNumber, @Path("teacherCourseId") Integer teacherCourseId);
+
+
 }

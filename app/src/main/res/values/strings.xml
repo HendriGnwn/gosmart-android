@@ -89,7 +89,7 @@
     <string name="time">Time</string>
     <string name="private_text">Private</string>
     <string name="similiar_course">Similiar Courses</string>
-    <string name="teacher_availability">Teachers Availability</string>
+    <string name="teacher_availability">Teachers Available</string>
     <string name="request_failed_please_try_again">Request failed, please try again</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
