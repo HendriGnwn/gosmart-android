@@ -2,6 +2,12 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import com.atc.gosmartlesmagistra.App;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -126,6 +132,44 @@ public class TeacherTotalHistory implements Serializable
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getStatusText() {
+        switch (this.getStatus()) {
+            case 0:
+                return "Rejected";
+            case 1:
+                return "Approved";
+            case 5:
+                return "Waiting for Approve";
+            case 10:
+                return "Done";
+        }
+
+        return "-";
+    }
+
+    public String getFormattedTotal() {
+        return App.getFormattedCurrencyRupiah(this.getTotal());
+    }
+
+    public String getFormattedCreatedAt() {
+        String formattedDate;
+        if (this.getCreatedAt() == null) {
+            return "-";
+        }
+
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(this.getCreatedAt());
+
+            SimpleDateFormat outGoing = new SimpleDateFormat("dd MMM yyyy h:m", new Locale("id", "ID"));
+            formattedDate = outGoing.format(date);
+        } catch (ParseException e) {
+            formattedDate = this.getCreatedAt();
+            e.printStackTrace();
+        }
+
+        return formattedDate;
     }
 
 }
