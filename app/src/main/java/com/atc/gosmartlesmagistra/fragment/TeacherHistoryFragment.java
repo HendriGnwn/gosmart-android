@@ -1,11 +1,16 @@
 package com.atc.gosmartlesmagistra.fragment;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,12 +105,16 @@ public class TeacherHistoryFragment extends Fragment {
     }
 
     private void refreshHistories() {
+        Log.i("cranium", "id");
         UserApi userApi = retrofit.create(UserApi.class);
         Call<LoginSuccess> call = userApi.getUserByUniqueNumber(sessionManager.getUserCode());
         call.enqueue(new Callback<LoginSuccess>() {
             @Override
             public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
                 if (response.raw().isSuccessful()) {
+                    databaseHelper.createUser(response.body());
+                    databaseHelper.createUser(response.body().getUser());
+                    user = response.body().getUser();
                     if (user.getTeacherProfile() != null) {
                         if (user.getTeacherProfile().getTeacherCourses() != null) {
                             totalHistoryList.clear();

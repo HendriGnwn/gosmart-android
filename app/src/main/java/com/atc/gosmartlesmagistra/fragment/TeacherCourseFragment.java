@@ -108,6 +108,9 @@ public class TeacherCourseFragment extends Fragment {
             @Override
             public void onResponse(Call<LoginSuccess> call, Response<LoginSuccess> response) {
                 if (response.raw().isSuccessful()) {
+                    databaseHelper.createUser(response.body());
+                    databaseHelper.createUser(response.body().getUser());
+                    user = response.body().getUser();
                     if (user.getTeacherProfile() != null) {
                         if (user.getTeacherProfile().getTeacherCourses() != null) {
                             courseList.clear();

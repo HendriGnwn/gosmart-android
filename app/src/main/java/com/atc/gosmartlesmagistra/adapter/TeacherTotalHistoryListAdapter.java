@@ -2,6 +2,10 @@ package com.atc.gosmartlesmagistra.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +32,7 @@ public class TeacherTotalHistoryListAdapter extends RecyclerView.Adapter<Teacher
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView total, privateName, created;
         public ImageView operator;
+        //public boolean isAdd;
 
         public MyViewHolder(View view) {
             super(view);
@@ -35,6 +40,7 @@ public class TeacherTotalHistoryListAdapter extends RecyclerView.Adapter<Teacher
             total = (TextView) view.findViewById(R.id.total);
             privateName = (TextView) view.findViewById(R.id.private_name);
             created = (TextView) view.findViewById(R.id.created);
+            //isAdd = list.get(getAdapterPosition()).getOperation() == 1 ? true : false;
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
@@ -63,9 +69,21 @@ public class TeacherTotalHistoryListAdapter extends RecyclerView.Adapter<Teacher
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
+        Integer primary = mContext.getResources().getColor(R.color.colorPrimary);
+        Integer accent = mContext.getResources().getColor(R.color.colorAccent);
+        Integer success = mContext.getResources().getColor(R.color.colorGreen);
         TeacherTotalHistory history = list.get(position);
         holder.total.setText(history.getFormattedTotal());
-        holder.created.setText(history.getFormattedCreatedAt());
+        holder.created.setText(history.getDescriptionOperationTimeAt(mContext));
+
+        if (history.getOperation() == 1) {
+            holder.total.setTextColor(primary);
+            setOperatorPlus(holder);
+        } else {
+            holder.total.setTextColor(history.getStatusColor(mContext));
+            setOperatorMinus(holder);
+            holder.privateName.setText(history.getStatusText());
+        }
     }
 
     @Override
@@ -88,5 +106,17 @@ public class TeacherTotalHistoryListAdapter extends RecyclerView.Adapter<Teacher
     public void add(TeacherTotalHistory course) {
         list.add(course);
         notifyDataSetChanged();
+    }
+
+    private void setOperatorMinus(final MyViewHolder holder) {
+        final Drawable minus = ContextCompat.getDrawable(mContext, R.drawable.zzz_minus_circle_outline);
+        minus.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        holder.operator.setImageDrawable(minus);
+    }
+
+    private void setOperatorPlus(final MyViewHolder holder) {
+        final Drawable minus = ContextCompat.getDrawable(mContext, R.drawable.zzz_plus_circle_outline);
+        minus.setColorFilter(mContext.getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.SRC_ATOP);
+        holder.operator.setImageDrawable(minus);
     }
 }

@@ -31,6 +31,7 @@
                 android:id="@+id/operator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
                 android:src="@drawable/zzz_plus_circle_outline" />
 
@@ -53,16 +54,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Matematika XIII"
+                android:layout_alignParentLeft="true"
                 android:id="@+id/private_name"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/text_size_medium_material"
+                android:textSize="@dimen/text_size_medium_small_material"
                 android:layout_marginBottom="6dp"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/created"
-                android:textSize="@dimen/text_size_caption_material"
+                android:textSize="10sp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:text="10 Jul 2017 10:00"/>

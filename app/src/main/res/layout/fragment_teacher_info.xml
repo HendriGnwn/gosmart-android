@@ -29,23 +29,23 @@
                     android:layout_alignParentLeft="true"
                     style="?android:textAppearanceSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:text="@string/action_update_profile"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSmall"
+                    android:textSize="@dimen/text_size_small_material"
                     android:layout_marginRight="@dimen/margin_10"
-                    android:background="@drawable/shape_rectanglebutton" />
+                    android:background="@drawable/shape_rectanglebutton_small" />
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/update_bank_button"
-                    style="?android:textAppearanceSmall"
+                    style="?android:buttonStyleSmall"
                     android:layout_alignParentRight="true"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:text="@string/action_update_bank"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSmall"
-                    android:background="@drawable/shape_rectanglebutton" />
+                    android:textSize="@dimen/text_size_small_material"
+                    android:background="@drawable/shape_rectanglebutton_small" />
 
             </RelativeLayout>
 
