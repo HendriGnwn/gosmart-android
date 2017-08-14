@@ -131,7 +131,7 @@
             android:parentActivityName=".activity.CoursesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|adjustNothing|stateAlwaysHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.atc.gosmartlesmagistra.activity.CoursesActivity" />
@@ -153,7 +153,7 @@
             android:parentActivityName=".activity.CourseAvailabilityActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|adjustNothing|stateAlwaysHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.atc.gosmartlesmagistra.activity.CourseAvailabilityActivity" />
