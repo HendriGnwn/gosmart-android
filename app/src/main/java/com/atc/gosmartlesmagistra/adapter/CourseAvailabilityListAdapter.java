@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.activity.FillOrderActivity;
 import com.atc.gosmartlesmagistra.activity.TeacherCourseDetailActivity;
 import com.atc.gosmartlesmagistra.model.Course;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
@@ -42,6 +43,15 @@ public class CourseAvailabilityListAdapter extends RecyclerView.Adapter<CourseAv
             address = (TextView) view.findViewById(R.id.address);
             userImage = (CircularImageView) view.findViewById(R.id.image);
             orderButton = (AppCompatButton) view.findViewById(R.id.order_button);
+
+            orderButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, FillOrderActivity.class);
+                    intent.putExtra("teacherCourse", list.get(getAdapterPosition()));
+                    mContext.startActivity(intent);
+                }
+            });
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {

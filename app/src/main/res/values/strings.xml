@@ -64,6 +64,7 @@
     <string name="prompt_select_course_level">Select a Course Level</string>
     <string name="prompt_course">Course*</string>
     <string name="prompt_select_course">Select a Course</string>
+    <string name="prompt_name">Name</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

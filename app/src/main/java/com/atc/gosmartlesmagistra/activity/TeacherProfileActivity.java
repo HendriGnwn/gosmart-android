@@ -13,10 +13,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
@@ -149,6 +151,36 @@ public class TeacherProfileActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                    case 1:
+                        final Drawable iconFab = ContextCompat.getDrawable(getApplicationContext(), R.drawable.zzz_book_plus);
+                        iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                        fab.setImageDrawable(iconFab);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
+                                intent.putExtra("isNewRecord", true);
+                                startActivity(intent);
+                            }
+                        });
+                        break;
+                    case 2:
+                        final Drawable iconFab2 = ContextCompat.getDrawable(getApplicationContext(), R.drawable.zzz_plus_circle);
+                        iconFab2.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                        fab.setImageDrawable(iconFab2);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(getApplicationContext(), "Request Honor page is not available", Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
+//                                intent.putExtra("isNewRecord", true);
+//                                startActivity(intent);
+                            }
+                        });
+                        break;
+                }
             }
 
             @Override

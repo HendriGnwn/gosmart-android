@@ -87,18 +87,22 @@ public class MainActivity extends AppCompatActivity
 
         user = databaseHelper.getUser(sessionManager.getUserCode());
 
-        final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
-        iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        fab.setImageDrawable(iconFab);
+        if (user.getRole() == 3) {
+            fab.setVisibility(View.GONE);
+        } else {
+            final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
+            iconFab.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+            fab.setImageDrawable(iconFab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
-                intent.putExtra("isNewRecord", true);
-                startActivity(intent);
-            }
-        });
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
+                    intent.putExtra("isNewRecord", true);
+                    startActivity(intent);
+                }
+            });
+        }
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

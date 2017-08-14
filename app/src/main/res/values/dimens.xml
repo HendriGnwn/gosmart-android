@@ -52,7 +52,7 @@
     <dimen name="text_size_small_material">14sp</dimen>
 
     <dimen name="enter_text_bottom">2dp</dimen>
-    <dimen name="width_course_card">120dp</dimen>
+    <dimen name="width_course_card">85dp</dimen>
 
 
 </resources>

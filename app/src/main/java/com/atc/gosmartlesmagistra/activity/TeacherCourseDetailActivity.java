@@ -1,5 +1,6 @@
 package com.atc.gosmartlesmagistra.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,6 +65,7 @@ public class TeacherCourseDetailActivity extends AppCompatActivity {
     @BindView(R.id.price) TextView price;
     @BindView(R.id.similiar_course_recycler_view) RecyclerView similiarCourseRecyclerView;
     @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.private_button) AppCompatButton privateButton;
 
     SessionManager sessionManager;
     Retrofit retrofit;
@@ -71,6 +74,13 @@ public class TeacherCourseDetailActivity extends AppCompatActivity {
     TeacherCourse teacherCourse;
     User user;
     SimiliarTeacherCourseListAdapter similiarTeacherCourseListAdapter;
+
+    @OnClick(R.id.private_button)
+    protected void privateClick() {
+        Intent intent = new Intent(this, FillOrderActivity.class);
+        intent.putExtra("teacherCourse", teacherCourse);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
