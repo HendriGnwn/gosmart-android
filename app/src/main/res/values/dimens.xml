@@ -9,13 +9,13 @@
 
     <dimen name="activity_vertical_margin_small">8dp</dimen>
     <dimen name="input_bottom">16dp</dimen>
+    <dimen name="input_bottom_small">8dp</dimen>
     <dimen name="input_bottom_last">30dp</dimen>
     <dimen name="image_bottom">46dp</dimen>
     <dimen name="fontInputBig">18sp</dimen>
     <dimen name="input_right">5dp</dimen>
     <dimen name="textSmall">14sp</dimen>
     <dimen name="textSmallSecondary">16sp</dimen>
-    <dimen name="input_bottom_small">5dp</dimen>
     <dimen name="textTitle">26dp</dimen>
 
     <dimen name="margin_10">10dp</dimen>

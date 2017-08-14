@@ -71,6 +71,7 @@
         android:scrollbars="vertical"
         android:fillViewport="true"
         android:layout_below="@+id/appbar"
+        android:layout_above="@+id/bottombar"
         android:layout_alignParentStart="true">
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,44 +91,261 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/colorWhiteSmoke"
-                    android:padding="8dp"
-                    android:layout_marginBottom="@dimen/input_bottom">
+                    android:padding="8dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Course Details"/>
+                        android:text="@string/course_details" />
                 </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_first"
+                        android:id="@+id/input_course_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom_small"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/course_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:nextFocusRight="@+id/course_section"
+                            android:singleLine="true"
+                            android:text="Matematika II" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_course_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom_small"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/course_section"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_section"
+                            android:imeOptions="actionNext"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:nextFocusRight="@+id/last_name"
+                            android:singleLine="true"
+                            android:text="5, 90 Minutes" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_course_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/input_bottom"
                         android:layout_marginRight="@dimen/control_inset_material">
 
                         <AutoCompleteTextView
-                            android:id="@+id/first_name"
+                            android:id="@+id/course_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_name"
-                            android:inputType="textAutoComplete"
-                            android:imeOptions="actionNext"
-                            android:nextFocusRight="@+id/last_name"
-                            android:maxLines="1"
+                            android:cursorVisible="true"
                             android:editable="false"
                             android:focusable="false"
-                            android:cursorVisible="true"
-                            android:text="Hendri Gunawan"
-                            android:singleLine="true" />
+                            android:hint="@string/prompt_description"
+                            android:imeOptions="actionNext"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:nextFocusRight="@+id/last_name"
+                            android:text="Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de "
+                            android:inputType="text|textMultiLine"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
 
                     </android.support.design.widget.TextInputLayout>
 
-                </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteSmoke"
+                    android:padding="8dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/teacher_details"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_teacher_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom_small"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/teacher_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:nextFocusRight="@+id/teacher_phone"
+                            android:singleLine="true"
+                            android:text="Hendri Gunawan, S.Pd" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_teacher_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom_small"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/teacher_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_phone_number"
+                            android:imeOptions="actionNext"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:nextFocusRight="@+id/teacher_address"
+                            android:singleLine="true"
+                            android:text="5, 90 Minutes"
+                            android:textSize="@dimen/text_size_small_material" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_teacher_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/teacher_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_address"
+                            android:imeOptions="actionNext"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:nextFocusRight="@+id/teacher_bio"
+                            android:text="Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de "
+                            android:inputType="text|textMultiLine"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_teacher_bio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/teacher_bio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_bio"
+                            android:imeOptions="actionDone"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:text="Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de Lorem ipsum dolor de "
+                            android:inputType="text|textMultiLine"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteSmoke"
+                    android:padding="8dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fill_details"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_on_at"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/input_bottom_small"
+                        android:layout_marginRight="@dimen/control_inset_material">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/on_at"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/prompt_on_at"
+                            android:imeOptions="actionNext"
+                            android:inputType="textAutoComplete"
+                            android:maxLines="1"
+                            android:textSize="@dimen/text_size_small_material"
+                            android:nextFocusRight="@+id/teacher_phone"
+                            android:singleLine="true"
+                            android:text="Senin, 20 Okt 2017 10:00" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
