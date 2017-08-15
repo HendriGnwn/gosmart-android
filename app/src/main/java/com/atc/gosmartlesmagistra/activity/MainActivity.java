@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "You must be a login", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            return;
         }
 
         user = databaseHelper.getUser(sessionManager.getUserCode());

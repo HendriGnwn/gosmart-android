@@ -67,6 +67,7 @@
     <string name="prompt_name">Name</string>
     <string name="prompt_section">Section</string>
     <string name="prompt_on_at">On At</string>
+    <string name="prompt_choose_section">Choose Section</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -97,6 +98,8 @@
     <string name="course_details">Course Details</string>
     <string name="teacher_details">Teacher Details</string>
     <string name="fill_details">Fill Details</string>
+    <string name="final_total">Final Total</string>
+    <string name="bill_details">Bill Details</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

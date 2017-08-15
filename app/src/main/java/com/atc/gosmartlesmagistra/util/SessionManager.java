@@ -30,6 +30,7 @@ public class SessionManager {
     private static final String KEY_USER_TOKEN = "getToken";
     private static final String KEY_USER_CODE = "getUserCode";
     private static final String KEY_USER_ROLE = "getUserRole";
+    private static final String KEY_HAVE_AN_ORDER = "getHaveAnOrder";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -65,5 +66,14 @@ public class SessionManager {
 
     public String getUserCode(){
         return pref.getString(KEY_USER_CODE, null);
+    }
+
+    public boolean getHaveAnOrder(){
+        return pref.getBoolean(KEY_HAVE_AN_ORDER, false);
+    }
+
+    public void setKeyHaveAnOrder(boolean set){
+        editor.putBoolean(KEY_HAVE_AN_ORDER, set);
+        editor.commit();
     }
 }

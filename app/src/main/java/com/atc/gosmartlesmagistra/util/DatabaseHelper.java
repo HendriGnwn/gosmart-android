@@ -7,10 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.atc.gosmartlesmagistra.model.CourseLevel;
+import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.TeacherTermCondition;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.response.CourseLevelSpinnerSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
+import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
 import com.atc.gosmartlesmagistra.model.response.TeacherTermConditionSuccess;
 import com.google.gson.Gson;
 
@@ -23,7 +25,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 1;
 
     // database name
     private static final String DATABASE_NANE = "gosmartdb";
@@ -33,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_USER_RAW = "user_raw";
     private static final String TABLE_TERM_CONDITION = "termcondition";
     private static final String TABLE_COURSE_LEVEL = "course_level";
+    private static final String TABLE_ORDER = "order_raw";
 
     // column name
     private static final String COLUMN_ID = "id";
@@ -54,6 +57,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_TERM_CONDITION = "CREATE TABLE "
             + TABLE_TERM_CONDITION + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_RAW + " BLOB, "
+            + COLUMN_CREATED_AT + " datetime default current_timestamp)";
+
+    private static final String CREATE_TABLE_ORDER = "CREATE TABLE "
+            + TABLE_ORDER + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + COLUMN_CODE + " TEXT, "
             + COLUMN_RAW + " BLOB, "
             + COLUMN_CREATED_AT + " datetime default current_timestamp)";
 
@@ -93,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_USER_RAW);
         db.execSQL(CREATE_TABLE_TERM_CONDITION);
         db.execSQL(CREATE_TABLE_COURSE_LEVEL);
+        db.execSQL(CREATE_TABLE_ORDER);
     }
 
     @Override
@@ -101,6 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_RAW);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TERM_CONDITION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSE_LEVEL);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
 
         onCreate(db);
     }
@@ -255,6 +266,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 courseLevels.addAll(term.getCourseLevels());
             }
             return courseLevels;
+        }finally {
+            cursor.close();
+        }
+    }
+
+    public void createOrder(String uniqueNumber, OrderSuccess orderSuccess) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ORDER, null, null);
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CODE, uniqueNumber);
+        values.put(COLUMN_RAW, new Gson().toJson(orderSuccess).getBytes());
+        db.insert(TABLE_ORDER, null, values);
+
+        db.close();
+    }
+
+    public Order getOrder(String uniqueNumber) {
+        Order order = new Order();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_ORDER + " WHERE " + COLUMN_CODE + "=?", new String[] {uniqueNumber});
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                Gson gson = new Gson();
+                OrderSuccess orderSuccess = gson.fromJson(new String(cursor.getBlob(2)), OrderSuccess.class);
+                return orderSuccess.getOrder();
+            }
+            return order;
         }finally {
             cursor.close();
         }
