@@ -14,4 +14,8 @@
     <color name="colorButtonBackgroundPrimary">#C80000</color>
     <color name="colorButtonBackgroundSecondary">#80C80000</color>
     <color name="colorButtonBackgroundThirdy">#60C80000</color>
+
+    <color name="colorButtonBlueBackgroundPrimary">#43339F</color>
+    <color name="colorButtonBlueBackgroundSecondary">#8043339F</color>
+    <color name="colorButtonBlueBackgroundThirdy">#6043339F</color>
 </resources>

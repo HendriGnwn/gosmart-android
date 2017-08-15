@@ -68,11 +68,13 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:fillViewport="true"
         android:layout_below="@+id/appbar"
         android:layout_above="@+id/bottombar"
-        android:scrollbars="vertical"
-        android:fillViewport="true">
+        android:layout_alignParentStart="true">
         <LinearLayout
+            android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -87,6 +89,102 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:orientation="vertical"
                 android:layout_alignParentTop="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorWhiteSmoke"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/course_section"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_small_material"
+                        android:text="3 Section"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/teacher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_small_material"
+                        android:text="Sekolah Dasar"/>
+
+                    <TextView
+                        android:id="@+id/invoice_number"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_large_material"
+                        android:text="Matematika" />
+
+                    <TextView
+                        android:id="@+id/course_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_medium_material"
+                        android:text="Hendri Gunawan S,Pd"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true">
+
+                        <Button
+                            android:id="@+id/edit_button"
+                            android:layout_width="50dp"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@drawable/shape_rectanglebutton_primary_small"
+                            android:text="@string/action_edit"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_size_caption_material" />
+
+                        <Button
+                            android:id="@+id/delete_button"
+                            android:layout_width="65dp"
+                            android:layout_height="30dp"
+                            android:text="@string/action_delete"
+                            android:textSize="@dimen/text_size_caption_material"
+                            android:textColor="@color/colorWhite"
+                            android:background="@drawable/shape_rectanglebutton_small"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhiteSmoke"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:text="Final Total"
+                        android:textSize="@dimen/text_size_medium_small_material" />
+
+                    <TextView
+                        android:id="@+id/final_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rp20.000"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_large_material"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

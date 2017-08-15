@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.api.OrderApi;
+import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
 import com.atc.gosmartlesmagistra.model.response.LoginResponse;
@@ -93,6 +94,8 @@ public class FillOrderActivity extends AppCompatActivity {
     SessionManager sessionManager;
     DatabaseHelper databaseHelper;
     Retrofit retrofit;
+    Order order;
+    boolean isEdit = false;
 
     int _intLineCount;
     private List<AutoCompleteTextView> autoCompleteTextViewList = new ArrayList<AutoCompleteTextView>();
@@ -111,11 +114,23 @@ public class FillOrderActivity extends AppCompatActivity {
         mCourseNameView.setText(teacherCourse.getCourse().getName());
         mCourseSectionView.setText(teacherCourse.getCourse().getSection() + ", " + teacherCourse.getCourse().getSectionTime() + " " + getString(R.string.time));
         mCourseDescriptionView.setText(teacherCourse.getCourse().getDescription());
-        mTeacherNameView.setText(teacherCourse.getUser().getFullName());
-        mTeacherPhoneNumberView.setText(teacherCourse.getUser().getPhoneNumber());
-        mTeacherAddressView.setText(teacherCourse.getUser().getAddress());
-        mTeacherBioView.setText(teacherCourse.getUser().getTeacherProfile().getBio());
         finalAmount.setText(teacherCourse.getFormattedFinalCost());
+
+        isEdit = getIntent().getBooleanExtra("isEdit", false);
+        if (isEdit) {
+            order = (Order) getIntent().getSerializableExtra("order");
+            mTeacherNameView.setText(order.getUser().getFullName());
+            mTeacherPhoneNumberView.setText(order.getUser().getPhoneNumber());
+            mTeacherAddressView.setText(order.getUser().getAddress());
+            mTeacherBioView.setText(order.getUser().getTeacherProfile().getBio());
+            checkoutButton.setText(getString(R.string.action_edit));
+        } else {
+            mTeacherNameView.setText(teacherCourse.getUser().getFullName());
+            mTeacherPhoneNumberView.setText(teacherCourse.getUser().getPhoneNumber());
+            mTeacherAddressView.setText(teacherCourse.getUser().getAddress());
+            mTeacherBioView.setText(teacherCourse.getUser().getTeacherProfile().getBio());
+            checkoutButton.setText(getString(R.string.action_submit));
+        }
 
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
@@ -143,65 +158,93 @@ public class FillOrderActivity extends AppCompatActivity {
             _intLineCount++;
         }
 
+        if (isEdit) {
+            Integer i = 0;
+            List<String> onDetails = order.getOrderDetails().get(0).getOnDetails();
+            for(AutoCompleteTextView autoCompleteTextView : autoCompleteTextViewList) {
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(onDetails.get(i));
+                    SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy H:m:s", new Locale("id", "ID"));
+                    autoCompleteTextView.setText(formatted.format(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                i++;
+            }
+        }
+
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                Boolean cancel = false;
-                String onAt = null;
-                for(final AutoCompleteTextView autoCompleteTextView : autoCompleteTextViewList) {
-                    Log.i("hendrigunawan", autoCompleteTextView.getText().toString());
-                    String choose = autoCompleteTextView.getText().toString();
+                if (isEdit) {
 
-                    autoCompleteTextView.setError(null);
-                    if (TextUtils.isEmpty(choose)) {
-                        cancel = true;
-                        autoCompleteTextView.setError(getResources().getString(R.string.error_field_required));
-                    } else {
-                        if (TextUtils.isEmpty(onAt)) {
-                            onAt = choose;
+                } else {
+                    progressBar.setVisibility(View.VISIBLE);
+                    Boolean cancel = false;
+                    String onAt = null;
+                    for(final AutoCompleteTextView autoCompleteTextView : autoCompleteTextViewList) {
+                        Log.i("hendrigunawan", autoCompleteTextView.getText().toString());
+                        String choose = autoCompleteTextView.getText().toString();
+                        Date date = null;
+                        try {
+                            date = new SimpleDateFormat("EEEE, dd MMM yyyy H:m:s", new Locale("id", "ID")).parse(choose);
+                            SimpleDateFormat formatted = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID"));
+                            choose = formatted.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        autoCompleteTextView.setError(null);
+                        if (TextUtils.isEmpty(choose)) {
+                            cancel = true;
+                            autoCompleteTextView.setError(getResources().getString(R.string.error_field_required));
                         } else {
-                            onAt += "," + choose;
+                            if (TextUtils.isEmpty(onAt)) {
+                                onAt = choose;
+                            } else {
+                                onAt += "," + choose;
+                            }
                         }
                     }
-                }
 
-                if (cancel) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_field_required), Toast.LENGTH_SHORT).show();
-                } else {
-                    OrderApi service = retrofit.create(OrderApi.class);
-                    OrderRequest request = new OrderRequest(teacherCourse.getUser().getUniqueNumber(), teacherCourse.getId(), onAt);
-                    Call<OrderSuccess> call = service.orderCreate(sessionManager.getUserCode(), request);
-                    call.enqueue(new Callback<OrderSuccess>() {
-                        @Override
-                        public void onResponse(Call<OrderSuccess> call, Response<OrderSuccess> response) {
-                            if (response.raw().isSuccessful()) {
-                                sessionManager.setKeyHaveAnOrder(true);
-                                databaseHelper.createOrder(sessionManager.getUserCode(), response.body());
-                                Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                startActivity(intent);
-                            } else if (response.raw().code() == 400) {
-                                Gson gson = new GsonBuilder().create();
-                                OrderResponse mError =new OrderResponse();
-                                try {
-                                    mError = gson.fromJson(response.errorBody().string(),OrderResponse.class);
-                                    Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
-                                } catch (IOException e) {
-                                    // handle failure to read error
+                    if (cancel) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_field_required), Toast.LENGTH_SHORT).show();
+                    } else {
+                        OrderApi service = retrofit.create(OrderApi.class);
+                        OrderRequest request = new OrderRequest(teacherCourse.getUser().getUniqueNumber(), teacherCourse.getId(), onAt);
+                        Call<OrderSuccess> call = service.orderCreate(sessionManager.getUserCode(), request);
+                        call.enqueue(new Callback<OrderSuccess>() {
+                            @Override
+                            public void onResponse(Call<OrderSuccess> call, Response<OrderSuccess> response) {
+                                if (response.raw().isSuccessful()) {
+                                    sessionManager.setKeyHaveAnOrder(true);
+                                    databaseHelper.createOrder(sessionManager.getUserCode(), response.body());
+                                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.putExtra("submitSuccess", true);
+                                    startActivity(intent);
+                                } else if (response.raw().code() == 400) {
+                                    Gson gson = new GsonBuilder().create();
+                                    OrderResponse mError =new OrderResponse();
+                                    try {
+                                        mError = gson.fromJson(response.errorBody().string(),OrderResponse.class);
+                                        Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+                                    } catch (IOException e) {
+                                        // handle failure to read error
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Order failed, please try again", Toast.LENGTH_LONG).show();
                                 }
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Order failed, please try again", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
 
-                        @Override
-                        public void onFailure(Call<OrderSuccess> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Order failed, please try again", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<OrderSuccess> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Order failed, please try again", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
                 }
             }
         });

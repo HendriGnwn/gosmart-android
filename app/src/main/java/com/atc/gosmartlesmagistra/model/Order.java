@@ -3,6 +3,7 @@ package com.atc.gosmartlesmagistra.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.model.User;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -258,6 +259,10 @@ public class Order implements Serializable
 
     public void setOrderDetails(List<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public String getFormattedFinalAmount() {
+        return App.getFormattedCurrencyRupiah(this.getFinalAmount());
     }
 
 }
