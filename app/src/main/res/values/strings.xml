@@ -102,6 +102,7 @@
     <string name="final_total">Final Total</string>
     <string name="bill_details">Bill Details</string>
     <string name="there_is_no_private_order">There is no private order</string>
+    <string name="transfer_options">Bank Transfer Options</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

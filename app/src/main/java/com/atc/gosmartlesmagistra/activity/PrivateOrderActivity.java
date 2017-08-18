@@ -2,26 +2,39 @@ package com.atc.gosmartlesmagistra.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.adapter.BankListAdapter;
 import com.atc.gosmartlesmagistra.api.OrderApi;
+import com.atc.gosmartlesmagistra.api.RequestApi;
+import com.atc.gosmartlesmagistra.model.Bank;
 import com.atc.gosmartlesmagistra.model.Order;
+import com.atc.gosmartlesmagistra.model.Payment;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.response.OrderResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
+import com.atc.gosmartlesmagistra.model.response.PaymentBankSuccess;
 import com.atc.gosmartlesmagistra.model.response.ResponseSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
@@ -29,6 +42,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,12 +70,17 @@ public class PrivateOrderActivity extends AppCompatActivity {
     @BindView(R.id.course_section) TextView sectionView;
     @BindView(R.id.final_amount) TextView finalAmountView;
     @BindView(R.id.linear) LinearLayout linearView;
+    @BindView(R.id.bank_recycler_view) RecyclerView bankRecyclerView;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     DatabaseHelper databaseHelper;
     SessionManager sessionManager;
     Order order;
     Retrofit retrofit;
     boolean isSubmitSuccess;
+
+    BankListAdapter bankListAdapter;
+    List<Bank> bankList;
 
     @OnClick(R.id.delete_button)
     protected void deleteButton(View v) {
@@ -117,6 +137,58 @@ public class PrivateOrderActivity extends AppCompatActivity {
         } else {
             getOrders();
         }
+
+        bankList = new ArrayList<>();
+        bankListAdapter = new BankListAdapter(this, bankList);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        bankRecyclerView.setLayoutManager(mLayoutManager);
+        bankRecyclerView.setNestedScrollingEnabled(false);
+        bankRecyclerView.setHasFixedSize(true);
+        bankRecyclerView.setHorizontalScrollBarEnabled(true);
+        bankRecyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(16), true));
+        bankRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        bankRecyclerView.setAdapter(bankListAdapter);
+
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getBanks();
+            }
+        });
+        getBanks();
+    }
+
+    private void getBanks() {
+        RequestApi requestApi = retrofit.create(RequestApi.class);
+        Call<PaymentBankSuccess> call = requestApi.paymentBanks();
+        call.enqueue(new Callback<PaymentBankSuccess>() {
+            @Override
+            public void onResponse(Call<PaymentBankSuccess> call, Response<PaymentBankSuccess> response) {
+                if (response.raw().isSuccessful()) {
+                    databaseHelper.createPayment(response.body());
+                    bankList.clear();
+                    bankList.addAll(response.body().getPayments().get(0).getBanks());
+                } else {
+                    List<Payment> payments = databaseHelper.getPayments();
+                    if (payments.size() > 0) {
+                        bankList.addAll(payments.get(0).getBanks());
+                    }
+                }
+                bankListAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(Call<PaymentBankSuccess> call, Throwable t) {
+                List<Payment> payments = databaseHelper.getPayments();
+                if (payments.size() > 0) {
+                    bankList.addAll(payments.get(0).getBanks());
+                }
+                bankListAdapter.notifyDataSetChanged();
+                swipeContainer.setRefreshing(false);
+            }
+        });
     }
 
     private void deleting() {
@@ -213,5 +285,48 @@ public class PrivateOrderActivity extends AppCompatActivity {
     @OnClick(R.id.action_left)
     public void doActionLeft(View view) {
         onBackPressed();
+    }
+
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 }

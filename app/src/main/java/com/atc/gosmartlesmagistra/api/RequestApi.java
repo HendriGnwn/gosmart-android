@@ -5,6 +5,7 @@ import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
+import com.atc.gosmartlesmagistra.model.response.PaymentBankSuccess;
 import com.atc.gosmartlesmagistra.model.response.TeacherTermConditionSuccess;
 
 import retrofit2.Call;
@@ -25,20 +26,9 @@ public interface RequestApi {
     })
     Call<TeacherTermConditionSuccess> teacherTermCondition();
 
-    @POST("auth/register-student")
+    @GET("payments")
     @Headers({
             "Content-Type: application/json"
     })
-    Call<LoginSuccess> registerStudent(@Body RegisterStudentRequest body);
-
-    @POST("auth/register-teacher")
-    @Headers({
-            "Content-Type: application/json"
-    })
-    Call<LoginSuccess> registerTeacher(@Body RegisterTeacherRequest body);
-    @POST("auth/logout")
-    @Headers({
-            "Content-Type: application/json"
-    })
-    Call<LogoutSuccess> logout();
+    Call<PaymentBankSuccess> paymentBanks();
 }
