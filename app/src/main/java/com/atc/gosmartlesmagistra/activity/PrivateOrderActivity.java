@@ -153,7 +153,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getBanks();
+                getOrders();getBanks();
             }
         });
         getBanks();
@@ -172,6 +172,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
                 } else {
                     List<Payment> payments = databaseHelper.getPayments();
                     if (payments.size() > 0) {
+                        bankList.clear();
                         bankList.addAll(payments.get(0).getBanks());
                     }
                 }
@@ -183,6 +184,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
             public void onFailure(Call<PaymentBankSuccess> call, Throwable t) {
                 List<Payment> payments = databaseHelper.getPayments();
                 if (payments.size() > 0) {
+                    bankList.clear();
                     bankList.addAll(payments.get(0).getBanks());
                 }
                 bankListAdapter.notifyDataSetChanged();

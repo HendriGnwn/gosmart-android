@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.nav_view) NavigationView navigationView;
 
     @BindColor(R.color.colorWhite) int white;
+    @BindColor(R.color.colorAccent) int accent;
+    @BindColor(R.color.colorYellow) int yellow;
 
     boolean doubleBackToExitPressedOnce = false;
     SessionManager sessionManager;
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
         user = databaseHelper.getUser(sessionManager.getUserCode());
 
-        if (user.getRole() == 3) {
+        if (user.getRole() == User.roleStudent) {
             fab.setVisibility(View.GONE);
         } else {
             final Drawable iconFab = ContextCompat.getDrawable(this, R.drawable.zzz_book_plus);
@@ -181,8 +183,17 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        Drawable notificationNotAvailable = ContextCompat.getDrawable(this, R.drawable.zzz_clock);
+        notificationNotAvailable.setColorFilter(white, PorterDuff.Mode.SRC_ATOP);
+        Drawable notificationAvailable = ContextCompat.getDrawable(this, R.drawable.zzz_clock_alert);
+        notificationAvailable.setColorFilter(yellow, PorterDuff.Mode.SRC_ATOP);
         Drawable cartDrawable = ContextCompat.getDrawable(this, R.drawable.zzz_cart);
-        cartDrawable.setColorFilter(white, PorterDuff.Mode.SRC_ATOP);
+        if (sessionManager.getHaveAnOrder()) {
+            cartDrawable.setColorFilter(yellow, PorterDuff.Mode.SRC_ATOP);
+        } else {
+            cartDrawable.setColorFilter(white, PorterDuff.Mode.SRC_ATOP);
+        }
+
         menu.findItem(R.id.action_cart)
                 .setIcon(cartDrawable)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -195,6 +206,17 @@ public class MainActivity extends AppCompatActivity
                         return false;
                     }
                 });
+        menu.findItem(R.id.action_notification)
+                .setIcon(notificationAvailable);
+
+        if (user.getRole() == User.roleTeacher) {
+            menu.findItem(R.id.action_cart)
+                    .setVisible(false);
+        } else {
+            menu.findItem(R.id.action_cart)
+                    .setVisible(true);
+        }
+
         return true;
     }
 

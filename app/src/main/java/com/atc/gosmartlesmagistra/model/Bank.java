@@ -16,6 +16,9 @@ public class Bank implements Serializable
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("number")
+    @Expose
+    private String number;
     @SerializedName("image")
     @Expose
     private String image;
@@ -47,11 +50,12 @@ public class Bank implements Serializable
      * @param image
      * @param behalfOf
      */
-    public Bank(Integer id, Integer paymentId, String name, String image, String description, String branch, String behalfOf) {
+    public Bank(Integer id, Integer paymentId, String name, String number, String image, String description, String branch, String behalfOf) {
         super();
         this.id = id;
         this.paymentId = paymentId;
         this.name = name;
+        this.number = number;
         this.image = image;
         this.description = description;
         this.branch = branch;
@@ -80,6 +84,14 @@ public class Bank implements Serializable
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNumber() {
+        return "2240026255";
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getImage() {

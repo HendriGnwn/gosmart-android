@@ -27,13 +27,15 @@ public class BankListAdapter extends RecyclerView.Adapter<BankListAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
-        public TextView name, branch;
+        public TextView name, branch, bankNumber, holderName;
 
         public MyViewHolder(View view) {
             super(view);
             image = (ImageView) view.findViewById(R.id.image);
             name = (TextView) view.findViewById(R.id.name);
+            bankNumber = (TextView) view.findViewById(R.id.bank_number);
             branch = (TextView) view.findViewById(R.id.branch);
+            holderName = (TextView) view.findViewById(R.id.holder_name);
 
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -68,6 +70,8 @@ public class BankListAdapter extends RecyclerView.Adapter<BankListAdapter.MyView
 
         holder.branch.setText(bank.getBranch());
         holder.name.setText(bank.getName());
+        holder.holderName.setText(bank.getBehalfOf());
+        holder.bankNumber.setText(bank.getNumber());
         Picasso.with(mContext).load(App.URL + "files/banks/" + bank.getImage()).error(R.drawable.zzz_alert).into(holder.image);
     }
 
