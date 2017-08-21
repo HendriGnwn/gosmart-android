@@ -17,21 +17,27 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.adapter.BankListAdapter;
+import com.atc.gosmartlesmagistra.adapter.BankSpinnerAdapter;
 import com.atc.gosmartlesmagistra.api.OrderApi;
 import com.atc.gosmartlesmagistra.api.RequestApi;
 import com.atc.gosmartlesmagistra.model.Bank;
 import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.Payment;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
+import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.response.OrderResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
 import com.atc.gosmartlesmagistra.model.response.PaymentBankSuccess;
@@ -42,8 +48,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,14 +80,21 @@ public class PrivateOrderActivity extends AppCompatActivity {
     @BindView(R.id.course_section) TextView sectionView;
     @BindView(R.id.final_amount) TextView finalAmountView;
     @BindView(R.id.linear) LinearLayout linearView;
+    @BindView(R.id.linear_schedule) LinearLayout linearScheduleView;
     @BindView(R.id.bank_recycler_view) RecyclerView bankRecyclerView;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.bank_account) AutoCompleteTextView mBankAccountView;
+    @BindView(R.id.bank_holder_name) AutoCompleteTextView mBankHolderNameView;
+    @BindView(R.id.amount) AutoCompleteTextView mAmountView;
+    @BindView(R.id.bank_spinner) Spinner bankSpinner;
 
     DatabaseHelper databaseHelper;
     SessionManager sessionManager;
     Order order;
+    User user;
     Retrofit retrofit;
     boolean isSubmitSuccess;
+    Integer selectedBankSpinner;
 
     BankListAdapter bankListAdapter;
     List<Bank> bankList;
@@ -113,6 +130,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
+        user = databaseHelper.getUser(sessionManager.getUserCode());
 
         linearView.setVisibility(View.INVISIBLE);
         isSubmitSuccess = getIntent().getBooleanExtra("submitSuccess", false);
@@ -159,6 +177,22 @@ public class PrivateOrderActivity extends AppCompatActivity {
         getBanks();
     }
 
+    private void loadBankSpinner() {
+        BankSpinnerAdapter bankSpinnerAdapter = new BankSpinnerAdapter(this, bankList);
+        bankSpinner.setAdapter(bankSpinnerAdapter);
+        bankSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedBankSpinner = bankList.get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
     private void getBanks() {
         RequestApi requestApi = retrofit.create(RequestApi.class);
         Call<PaymentBankSuccess> call = requestApi.paymentBanks();
@@ -178,6 +212,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
                 }
                 bankListAdapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
+                loadBankSpinner();
             }
 
             @Override
@@ -189,6 +224,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
                 }
                 bankListAdapter.notifyDataSetChanged();
                 swipeContainer.setRefreshing(false);
+                loadBankSpinner();
             }
         });
     }
@@ -231,7 +267,26 @@ public class PrivateOrderActivity extends AppCompatActivity {
                     finalAmountView.setText(order.getFormattedFinalAmount());
                     invoiceNumberView.setText(order.getCode());
                     courseNameView.setText(order.getOrderDetails().get(0).getTeacherCourse().getCourse().getName());
-                    sectionView.setText(order.getOrderDetails().get(0).getTeacherCourse().getCourse().getSection() + " " + getString(R.string.section));
+                    sectionView.setText(order.getFormattedCreatedAt());
+                    mAmountView.setText(order.getFinalAmount());
+                    Integer count = 1;
+                    for (String onAt : order.getOrderDetails().get(0).getOnDetails()) {
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        layoutParams.setMargins(dpToPx(4),dpToPx(4), 0, 0);
+                        TextView textView = new TextView(PrivateOrderActivity.this);
+                        textView.setLayoutParams(layoutParams);
+                        String choose = onAt;
+                        Date date = null;
+                        try {
+                            date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(choose);
+                            SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy H:00", new Locale("id", "ID"));
+                            choose = formatted.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        textView.setText(getString(R.string.section) + " " + count++ + ": " + choose);
+                        linearScheduleView.addView(textView);
+                    }
                     return;
                 } else if (response.raw().code() == 404) {
                     Toast.makeText(getApplicationContext(), getString(R.string.there_is_no_private_order), Toast.LENGTH_SHORT).show();
@@ -270,7 +325,26 @@ public class PrivateOrderActivity extends AppCompatActivity {
         finalAmountView.setText(order.getFormattedFinalAmount());
         invoiceNumberView.setText(order.getCode());
         courseNameView.setText(order.getOrderDetails().get(0).getTeacherCourse().getCourse().getName());
-        sectionView.setText(order.getOrderDetails().get(0).getTeacherCourse().getCourse().getSection() + " " + getString(R.string.section));
+        sectionView.setText(order.getFormattedCreatedAt());
+        mAmountView.setText(order.getFinalAmount());
+        Integer count = 1;
+        for (String onAt : order.getOrderDetails().get(0).getOnDetails()) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(dpToPx(4),dpToPx(4), 0, 0);
+            TextView textView = new TextView(this);
+            textView.setLayoutParams(layoutParams);
+            String choose = onAt;
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(choose);
+                SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy H:00", new Locale("id", "ID"));
+                choose = formatted.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            textView.setText(getString(R.string.section) + " " + count++ + ": " + choose);
+            linearScheduleView.addView(textView);
+        }
     }
 
     private void setActionLeftIcon() {

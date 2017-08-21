@@ -35,6 +35,8 @@
     <string name="action_update">Update</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
+    <string name="action_confirmation">Confirmation</string>
+    <string name="action_evicende">Upload Evidence</string>
 
     <!-- prompt -->
     <string name="prompt_email">Email*</string>
@@ -69,6 +71,9 @@
     <string name="prompt_section">Section</string>
     <string name="prompt_on_at">On At</string>
     <string name="prompt_choose_section">Choose Section</string>
+    <string name="prompt_amount">Amount</string>
+    <string name="prompt_bank_transfer_to">Transfer To</string>
+    <string name="prompt_select_bank_transfer_to">Select Transfer To</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -103,7 +108,9 @@
     <string name="bill_details">Bill Details</string>
     <string name="there_is_no_private_order">There is no private order</string>
     <string name="transfer_options">Bank Transfer Options</string>
+    <string name="fill_confirmation">Fill Confirmation Form</string>
     <string name="notification">Notification</string>
+    <string name="private_schedule">Schedule</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

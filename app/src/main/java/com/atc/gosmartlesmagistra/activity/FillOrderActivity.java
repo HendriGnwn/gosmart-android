@@ -41,6 +41,7 @@ import com.atc.gosmartlesmagistra.api.OrderApi;
 import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
+import com.atc.gosmartlesmagistra.model.request.UpdateOrderRequest;
 import com.atc.gosmartlesmagistra.model.response.LoginResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
@@ -178,7 +179,71 @@ public class FillOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isEdit) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    Boolean cancel = false;
+                    String onAt = null;
+                    for(final AutoCompleteTextView autoCompleteTextView : autoCompleteTextViewList) {
+                        Log.i("hendrigunawan", autoCompleteTextView.getText().toString());
+                        String choose = autoCompleteTextView.getText().toString();
+                        Date date = null;
+                        try {
+                            date = new SimpleDateFormat("EEEE, dd MMM yyyy H:m:s", new Locale("id", "ID")).parse(choose);
+                            SimpleDateFormat formatted = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID"));
+                            choose = formatted.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        autoCompleteTextView.setError(null);
+                        if (TextUtils.isEmpty(choose)) {
+                            cancel = true;
+                            autoCompleteTextView.setError(getResources().getString(R.string.error_field_required));
+                        } else {
+                            if (TextUtils.isEmpty(onAt)) {
+                                onAt = choose;
+                            } else {
+                                onAt += "," + choose;
+                            }
+                        }
+                    }
 
+                    if (cancel) {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_field_required), Toast.LENGTH_SHORT).show();
+                    } else {
+                        OrderApi service = retrofit.create(OrderApi.class);
+                        UpdateOrderRequest request = new UpdateOrderRequest(teacherCourse.getId(), onAt);
+                        Call<OrderSuccess> call = service.orderUpdate(sessionManager.getUserCode(), order.getId(), request);
+                        call.enqueue(new Callback<OrderSuccess>() {
+                            @Override
+                            public void onResponse(Call<OrderSuccess> call, Response<OrderSuccess> response) {
+                                if (response.raw().isSuccessful()) {
+                                    sessionManager.setKeyHaveAnOrder(true);
+                                    databaseHelper.createOrder(sessionManager.getUserCode(), response.body());
+                                    Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    intent.putExtra("submitSuccess", true);
+                                    startActivity(intent);
+                                } else if (response.raw().code() == 400) {
+                                    Gson gson = new GsonBuilder().create();
+                                    OrderResponse mError =new OrderResponse();
+                                    try {
+                                        mError = gson.fromJson(response.errorBody().string(),OrderResponse.class);
+                                        Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+                                    } catch (IOException e) {
+                                        // handle failure to read error
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Order failed, please try again", Toast.LENGTH_LONG).show();
+                                }
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public void onFailure(Call<OrderSuccess> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Order failed, please try again", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    }
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
                     Boolean cancel = false;

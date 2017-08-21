@@ -1,7 +1,11 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.model.User;
@@ -263,6 +267,25 @@ public class Order implements Serializable
 
     public String getFormattedFinalAmount() {
         return App.getFormattedCurrencyRupiah(this.getFinalAmount());
+    }
+
+    public String getFormattedCreatedAt() {
+        String formattedDate;
+        if (this.getCreatedAt() == null) {
+            return "-";
+        }
+
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(this.getCreatedAt());
+
+            SimpleDateFormat outGoing = new SimpleDateFormat("dd MMM yyyy H:m", new Locale("id", "ID"));
+            formattedDate = outGoing.format(date);
+        } catch (ParseException e) {
+            formattedDate = this.getCreatedAt();
+            e.printStackTrace();
+        }
+
+        return formattedDate;
     }
 
 }

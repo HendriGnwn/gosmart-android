@@ -3,6 +3,7 @@ package com.atc.gosmartlesmagistra.api;
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
+import com.atc.gosmartlesmagistra.model.request.UpdateOrderRequest;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
@@ -14,6 +15,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -40,4 +42,10 @@ public interface OrderApi {
             "Content-Type: application/json"
     })
     Call<ResponseSuccess> orderDelete(@Path("uniqueNumber") String uniqueNumber, @Path("orderId") Integer orderId);
+
+    @PATCH("order/update/on-at/{uniqueNumber}/{orderId}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<OrderSuccess> orderUpdate(@Path("uniqueNumber") String uniqueNumber, @Path("orderId") Integer orderId, @Body UpdateOrderRequest body);
 }
