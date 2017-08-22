@@ -160,6 +160,36 @@
                 android:value="com.atc.gosmartlesmagistra.activity.CourseAvailabilityActivity" />
         </activity>
         <activity
+            android:name=".activity.NotificationActivity"
+            android:label="@string/notification"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atc.gosmartlesmagistra.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.OrderHistoryActivity"
+            android:label="@string/order_history"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atc.gosmartlesmagistra.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.PrivateOrderHistoryActivity"
+            android:label="@string/private_order_history"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atc.gosmartlesmagistra.activity.MainActivity" />
+        </activity>
+        <activity
             android:name=".activity.PrivateOrderActivity"
             android:label="@string/private_order"
             android:parentActivityName=".activity.MainActivity"

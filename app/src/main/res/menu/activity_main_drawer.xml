@@ -5,15 +5,15 @@
         <item
             android:id="@+id/nav_cource"
             android:icon="@drawable/zzz_book_multiple_variant"
-            android:title="Courses" />
+            android:title="@string/courses" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_private"
             android:icon="@drawable/zzz_history"
-            android:title="Private Histories" />
+            android:title="@string/private_order_history" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_order"
             android:icon="@drawable/zzz_cart_outline"
-            android:title="Order Histories" />
+            android:title="@string/order_history" />
     </group>
 
     <item android:title="Account">
@@ -21,7 +21,16 @@
             <item
                 android:id="@+id/nav_sign_out"
                 android:icon="@drawable/zzz_logout"
-                android:title="Sign Out" />
+                android:title="@string/action_sign_out" />
+        </menu>
+    </item>
+
+    <item android:title="Feedback">
+        <menu>
+            <item
+                android:id="@+id/nav_contact"
+                android:icon="@drawable/zzz_email_outline"
+                android:title="@string/send_feedback" />
         </menu>
     </item>
 

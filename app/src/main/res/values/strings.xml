@@ -37,6 +37,8 @@
     <string name="action_edit">Edit</string>
     <string name="action_confirmation">Confirmation</string>
     <string name="action_evicende">Upload Evidence</string>
+    <string name="action_sign_out">Sign Out</string>
+
 
     <!-- prompt -->
     <string name="prompt_email">Email*</string>
@@ -111,6 +113,9 @@
     <string name="fill_confirmation">Fill Confirmation Form</string>
     <string name="notification">Notification</string>
     <string name="private_schedule">Schedule</string>
+    <string name="order_history">Order Histories</string>
+    <string name="private_order_history">Private Order Histories</string>
+    <string name="send_feedback">Send Feedback</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

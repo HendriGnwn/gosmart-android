@@ -270,6 +270,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
                     sectionView.setText(order.getFormattedCreatedAt());
                     mAmountView.setText(order.getFinalAmount());
                     Integer count = 1;
+                    linearScheduleView.removeAllViews();
                     for (String onAt : order.getOrderDetails().get(0).getOnDetails()) {
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         layoutParams.setMargins(dpToPx(4),dpToPx(4), 0, 0);

@@ -207,7 +207,15 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         menu.findItem(R.id.action_notification)
-                .setIcon(notificationAvailable);
+                .setIcon(notificationAvailable)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Intent intent = new Intent(getApplicationContext(), NotificationActivity.class);
+                        startActivity(intent);
+                        return false;
+                    }
+                });
 
         if (user.getRole() == User.roleTeacher) {
             menu.findItem(R.id.action_cart)
@@ -246,10 +254,12 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, CoursesActivity.class);
             startActivity(intent);
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_private) {
+            Intent intent = new Intent(this, PrivateOrderHistoryActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_order) {
+            Intent intent = new Intent(this, OrderHistoryActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_sign_out) {
             drawer.closeDrawer(GravityCompat.START);
             attemptLogout();
