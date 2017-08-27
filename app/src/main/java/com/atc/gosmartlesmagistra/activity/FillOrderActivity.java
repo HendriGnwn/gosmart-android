@@ -40,6 +40,7 @@ import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.api.OrderApi;
 import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
+import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateOrderRequest;
 import com.atc.gosmartlesmagistra.model.response.LoginResponse;
@@ -96,6 +97,7 @@ public class FillOrderActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     Retrofit retrofit;
     Order order;
+    User user;
     boolean isEdit = false;
 
     int _intLineCount;
@@ -111,11 +113,18 @@ public class FillOrderActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
+        user = databaseHelper.getUser(sessionManager.getUserCode());
         teacherCourse = (TeacherCourse) getIntent().getSerializableExtra("teacherCourse");
         mCourseNameView.setText(teacherCourse.getCourse().getName());
         mCourseSectionView.setText(teacherCourse.getCourse().getSection() + ", " + teacherCourse.getCourse().getSectionTime() + " " + getString(R.string.time));
         mCourseDescriptionView.setText(teacherCourse.getCourse().getDescription());
         finalAmount.setText(teacherCourse.getFormattedFinalCost());
+
+        if (user.getRole() == User.roleTeacher) {
+            Toast.makeText(this, "Private Order hanya untuk Siswa", Toast.LENGTH_SHORT).show();
+            super.onBackPressed();
+            return;
+        }
 
         isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {

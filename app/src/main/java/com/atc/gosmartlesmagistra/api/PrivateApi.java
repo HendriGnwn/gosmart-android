@@ -1,15 +1,11 @@
 package com.atc.gosmartlesmagistra.api;
 
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
-import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
-import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateOrderRequest;
-import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
-import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
 import com.atc.gosmartlesmagistra.model.response.OrderHistorySuccess;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
+import com.atc.gosmartlesmagistra.model.response.PrivateOrderHistorySuccess;
 import com.atc.gosmartlesmagistra.model.response.ResponseSuccess;
-import com.atc.gosmartlesmagistra.model.response.TeacherTermConditionSuccess;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,7 +20,7 @@ import retrofit2.http.Path;
  * Created by hendrigunawan on 07/07/17.
  */
 
-public interface OrderApi {
+public interface PrivateApi {
 
     @GET("order/show/{uniqueNumber}")
     @Headers({
@@ -50,9 +46,9 @@ public interface OrderApi {
     })
     Call<OrderSuccess> orderUpdate(@Path("uniqueNumber") String uniqueNumber, @Path("orderId") Integer orderId, @Body UpdateOrderRequest body);
 
-    @GET("order/histories/{uniqueNumber}")
+    @GET("private/histories/{uniqueNumber}")
     @Headers({
             "Content-Type: application/json"
     })
-    Call<OrderHistorySuccess> orderHistories(@Path("uniqueNumber") String uniqueNumber);
+    Call<PrivateOrderHistorySuccess> privateHistories(@Path("uniqueNumber") String uniqueNumber);
 }

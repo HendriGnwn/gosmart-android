@@ -1,13 +1,18 @@
 package com.atc.gosmartlesmagistra.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -15,12 +20,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -46,7 +54,12 @@ import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sw926.imagefileselector.ErrorResult;
+import com.sw926.imagefileselector.ImageFileSelector;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,6 +100,12 @@ public class PrivateOrderActivity extends AppCompatActivity {
     @BindView(R.id.bank_holder_name) AutoCompleteTextView mBankHolderNameView;
     @BindView(R.id.amount) AutoCompleteTextView mAmountView;
     @BindView(R.id.bank_spinner) Spinner bankSpinner;
+    @BindView(R.id.image_upload_result) ImageView imageUpload;
+    @BindView(R.id.photoText) EditText photoText;
+
+    ImageFileSelector mImageFileSelector;
+    private int PICK_IMAGE_REQUEST = 1;
+    String pathPhoto = "";
 
     DatabaseHelper databaseHelper;
     SessionManager sessionManager;
@@ -98,6 +117,11 @@ public class PrivateOrderActivity extends AppCompatActivity {
 
     BankListAdapter bankListAdapter;
     List<Bank> bankList;
+
+    @OnClick(R.id.upload_evidence_button)
+    protected void doUploadEvidence(View v) {
+        capturePhoto();
+    }
 
     @OnClick(R.id.delete_button)
     protected void deleteButton(View v) {
@@ -175,6 +199,68 @@ public class PrivateOrderActivity extends AppCompatActivity {
             }
         });
         getBanks();
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    1201); // define this constant yourself
+        }
+        mImageFileSelector = new ImageFileSelector(this);
+        mImageFileSelector.setCallback(new ImageFileSelector.Callback() {
+            @Override
+            public void onError(@NotNull ErrorResult errorResult) {
+                switch (errorResult) {
+                    case permissionDenied:
+                        break;
+                    case canceled:
+                        break;
+                    case error:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSuccess(@NotNull String file) {
+                Bitmap bm = BitmapFactory.decodeFile(file);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 70, baos); //bm is the bitmap object
+                byte[] b = baos.toByteArray();
+                String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+                pathPhoto = encodedImage;
+                imageUpload.setImageBitmap(bm);
+
+                String mensagem = "data:image/jpeg;base64," + pathPhoto.replaceAll("\r*\n*", "");
+                photoText.setText(mensagem);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mImageFileSelector.onActivityResult(this, requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mImageFileSelector.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mImageFileSelector.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mImageFileSelector.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
     }
 
     private void loadBankSpinner() {
@@ -405,5 +491,12 @@ public class PrivateOrderActivity extends AppCompatActivity {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    private void capturePhoto()
+    {
+        //mImageFileSelector.setOutPutImageSize(400, 400);
+        mImageFileSelector.setQuality(70);
+        mImageFileSelector.selectImage(this, PICK_IMAGE_REQUEST);
     }
 }

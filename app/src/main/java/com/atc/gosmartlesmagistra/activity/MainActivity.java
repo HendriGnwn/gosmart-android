@@ -120,10 +120,12 @@ public class MainActivity extends AppCompatActivity
     private void manageHeaderView() {
         View headerView = navigationView.getHeaderView(0);
         TextView userName = (TextView) headerView.findViewById(R.id.name);
+        TextView userUniqueNumber = (TextView) headerView.findViewById(R.id.uniqueNumber);
         TextView userEmail = (TextView) headerView.findViewById(R.id.email);
         CircularImageView userPhoto = (CircularImageView) headerView.findViewById(R.id.image);
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
+        userUniqueNumber.setText(user.getUniqueNumber());
         userEmail.setText(user.getEmail());
         Picasso.with(this).load(App.URL + "files/users/" + user.getPhoto()).error(R.drawable.user).into(userPhoto);
 
@@ -263,6 +265,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_sign_out) {
             drawer.closeDrawer(GravityCompat.START);
             attemptLogout();
+        } else if (id == R.id.nav_contact) {
+            Intent intent = new Intent(this, SendFeedbackActivity.class);
+            startActivity(intent);
         }
 
         drawer.closeDrawer(GravityCompat.START);

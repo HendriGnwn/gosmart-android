@@ -76,6 +76,7 @@
     <string name="prompt_amount">Amount</string>
     <string name="prompt_bank_transfer_to">Transfer To</string>
     <string name="prompt_select_bank_transfer_to">Select Transfer To</string>
+    <string name="prompt_message">Message*</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

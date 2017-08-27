@@ -1,6 +1,11 @@
+
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.atc.gosmartlesmagistra.model.StudentOnDetail;
+import com.atc.gosmartlesmagistra.model.TeacherOnDetail;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -36,14 +41,23 @@ public class PrivateDetail implements Serializable
     private Integer checklist;
     @SerializedName("checklist_at")
     @Expose
-    private String checklistAt;
+    private Object checklistAt;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
-    private final static long serialVersionUID = 7645345016593927189L;
+    @SerializedName("on_details")
+    @Expose
+    private List<String> onDetails = null;
+    @SerializedName("student_on_details")
+    @Expose
+    private List<StudentOnDetail> studentOnDetails = null;
+    @SerializedName("teacher_on_details")
+    @Expose
+    private List<TeacherOnDetail> teacherOnDetails = null;
+    private final static long serialVersionUID = -6172698952796493522L;
 
     /**
      * No args constructor for use in serialization
@@ -54,20 +68,23 @@ public class PrivateDetail implements Serializable
 
     /**
      *
-     * @param updatedAt
-     * @param id
-     * @param onAt
      * @param teacherCourseId
-     * @param createdAt
+     * @param teacherOnDetails
      * @param studentDetails
-     * @param checklistAt
      * @param sectionTime
      * @param teacherDetails
-     * @param checklist
      * @param section
+     * @param checklist
+     * @param id
+     * @param updatedAt
+     * @param onAt
+     * @param onDetails
+     * @param createdAt
+     * @param studentOnDetails
+     * @param checklistAt
      * @param privateId
      */
-    public PrivateDetail(Integer id, Integer privateId, Integer teacherCourseId, String onAt, Integer section, String sectionTime, String studentDetails, String teacherDetails, Integer checklist, String checklistAt, String createdAt, String updatedAt) {
+    public PrivateDetail(Integer id, Integer privateId, Integer teacherCourseId, String onAt, Integer section, String sectionTime, String studentDetails, String teacherDetails, Integer checklist, Object checklistAt, String createdAt, String updatedAt, List<String> onDetails, List<StudentOnDetail> studentOnDetails, List<TeacherOnDetail> teacherOnDetails) {
         super();
         this.id = id;
         this.privateId = privateId;
@@ -81,6 +98,9 @@ public class PrivateDetail implements Serializable
         this.checklistAt = checklistAt;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.onDetails = onDetails;
+        this.studentOnDetails = studentOnDetails;
+        this.teacherOnDetails = teacherOnDetails;
     }
 
     public Integer getId() {
@@ -155,11 +175,11 @@ public class PrivateDetail implements Serializable
         this.checklist = checklist;
     }
 
-    public String getChecklistAt() {
+    public Object getChecklistAt() {
         return checklistAt;
     }
 
-    public void setChecklistAt(String checklistAt) {
+    public void setChecklistAt(Object checklistAt) {
         this.checklistAt = checklistAt;
     }
 
@@ -177,6 +197,30 @@ public class PrivateDetail implements Serializable
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<String> getOnDetails() {
+        return onDetails;
+    }
+
+    public void setOnDetails(List<String> onDetails) {
+        this.onDetails = onDetails;
+    }
+
+    public List<StudentOnDetail> getStudentOnDetails() {
+        return studentOnDetails;
+    }
+
+    public void setStudentOnDetails(List<StudentOnDetail> studentOnDetails) {
+        this.studentOnDetails = studentOnDetails;
+    }
+
+    public List<TeacherOnDetail> getTeacherOnDetails() {
+        return teacherOnDetails;
+    }
+
+    public void setTeacherOnDetails(List<TeacherOnDetail> teacherOnDetails) {
+        this.teacherOnDetails = teacherOnDetails;
     }
 
 }

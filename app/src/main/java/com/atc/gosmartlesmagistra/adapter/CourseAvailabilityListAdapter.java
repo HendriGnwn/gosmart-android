@@ -16,6 +16,7 @@ import com.atc.gosmartlesmagistra.activity.FillOrderActivity;
 import com.atc.gosmartlesmagistra.activity.TeacherCourseDetailActivity;
 import com.atc.gosmartlesmagistra.model.Course;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
+import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 

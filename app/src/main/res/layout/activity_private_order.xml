@@ -365,6 +365,20 @@
                             android:textColor="@color/colorWhite"
                             android:background="@drawable/shape_rectanglebutton_secondary" />
 
+                        <ImageView
+                            android:layout_marginTop="8dp"
+                            android:id="@+id/image_upload_result"
+                            style="?android:textAppearanceSmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:id="@+id/photoText"/>
+
                     </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>

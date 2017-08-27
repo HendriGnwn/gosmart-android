@@ -12,6 +12,7 @@ import com.atc.gosmartlesmagistra.model.request.UpdateTeacherProfileRequest;
 import com.atc.gosmartlesmagistra.model.response.ForgotPasswordSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
+import com.atc.gosmartlesmagistra.model.response.NotificationSuccess;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -106,5 +107,10 @@ public interface UserApi {
     })
     Call<LoginSuccess> deleteCourse(@Path("uniqueNumber") String uniqueNumber, @Path("teacherCourseId") Integer teacherCourseId);
 
+    @GET("user/notification/{uniqueNumber}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<NotificationSuccess> notification(@Path("uniqueNumber") String uniqueNumber);
 
 }
