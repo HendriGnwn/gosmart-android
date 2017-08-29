@@ -5,6 +5,7 @@ import com.atc.gosmartlesmagistra.model.request.ForgotPasswordRequest;
 import com.atc.gosmartlesmagistra.model.request.LoginRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
+import com.atc.gosmartlesmagistra.model.request.RequestHonorRequest;
 import com.atc.gosmartlesmagistra.model.request.TeacherCourseRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateStudentProfileRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateTeacherBankRequest;
@@ -112,5 +113,11 @@ public interface UserApi {
             "Content-Type: application/json"
     })
     Call<NotificationSuccess> notification(@Path("uniqueNumber") String uniqueNumber);
+
+    @POST("teacher/request-honor/{uniqueNumber}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<LoginSuccess> requestHonor(@Path("uniqueNumber") String uniqueNumber, @Body RequestHonorRequest body);
 
 }

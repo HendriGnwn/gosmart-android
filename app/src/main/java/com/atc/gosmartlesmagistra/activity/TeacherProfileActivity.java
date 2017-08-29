@@ -86,8 +86,12 @@ public class TeacherProfileActivity extends AppCompatActivity {
         requestApi();
 
         Boolean setToCourse = getIntent().getBooleanExtra("setToCourse", false);
+        Boolean setToHistories = getIntent().getBooleanExtra("setToHistories", false);
         if (setToCourse) {
             viewPager.setCurrentItem(1, true);
+        }
+        if (setToHistories) {
+            viewPager.setCurrentItem(2, true);
         }
     }
 
@@ -173,10 +177,9 @@ public class TeacherProfileActivity extends AppCompatActivity {
                         fab.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Toast.makeText(getApplicationContext(), "Request Honor page is not available", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(getApplicationContext(), UpdateTeacherCourseActivity.class);
-//                                intent.putExtra("isNewRecord", true);
-//                                startActivity(intent);
+                                Intent intent = new Intent(getApplicationContext(), RequestHonorActivity.class);
+                                intent.putExtra("isNewRecord", true);
+                                startActivity(intent);
                             }
                         });
                         break;

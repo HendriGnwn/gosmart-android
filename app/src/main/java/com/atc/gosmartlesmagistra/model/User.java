@@ -275,5 +275,4 @@ public class User implements Serializable
     public String getShortAddress() {
         return App.getCutString(this.getAddress(), 47);
     }
-
 }

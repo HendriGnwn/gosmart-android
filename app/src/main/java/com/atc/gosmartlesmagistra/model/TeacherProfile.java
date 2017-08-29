@@ -3,6 +3,8 @@ package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.atc.gosmartlesmagistra.App;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -205,6 +207,10 @@ public class TeacherProfile implements Serializable
 
     public void setTeacherTotalHistories(List<TeacherTotalHistory> teacherTotalHistories) {
         this.teacherTotalHistories = teacherTotalHistories;
+    }
+
+    public String getFormattedTotal() {
+        return App.getFormattedCurrencyRupiah(this.getTotal());
     }
 
 }

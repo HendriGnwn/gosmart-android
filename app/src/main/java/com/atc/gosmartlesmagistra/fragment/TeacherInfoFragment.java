@@ -77,7 +77,7 @@ public class TeacherInfoFragment extends Fragment {
         } else {
             graduated.setText(null);
         }
-        total.setText(user.getTeacherProfile().getTotal());
+        total.setText(user.getTeacherProfile().getFormattedTotal());
         totalUpdatedAt.setText(user.getTeacherProfile().getTotalUpdatedAt());
         if (user.getTeacherProfile().getBio() != null) {
             bio.setText(user.getTeacherProfile().getBio());
