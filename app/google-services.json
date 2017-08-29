@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "112455590093",
+    "firebase_url": "https://gosmart-lesmagistra.firebaseio.com",
+    "project_id": "gosmart-lesmagistra",
+    "storage_bucket": "gosmart-lesmagistra.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:112455590093:android:133baa9c0457b22c",
+        "android_client_info": {
+          "package_name": "com.atc.gosmartlesmagistra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "112455590093-uu4tqlgba5dsj51im3nct1ehlmed10pn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSefpgc0g-J1-RaUrhpWICEe6yN6M_GTo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

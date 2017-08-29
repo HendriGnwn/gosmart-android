@@ -2,6 +2,7 @@ package com.atc.gosmartlesmagistra.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
+import com.atc.gosmartlesmagistra.Config;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.api.UserApi;
 import com.atc.gosmartlesmagistra.model.User;
@@ -24,6 +26,7 @@ import com.atc.gosmartlesmagistra.model.response.LoginResponse;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -226,14 +229,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private String getFirebaseToken()
     {
-//        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-//        String firebaseToken = pref.getString("regId", null);
-//
-//        Log.e("cranium", "Firebase reg id: " + firebaseToken);
+            SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+            String firebaseToken = pref.getString("regId", null);
 
-        String firebaseToken = "test";
+            Log.e("cranium", "Firebase reg id: " + firebaseToken);
+            Log.e("cranium", "Firebase reg id: " + FirebaseInstanceId.getInstance().getToken());
 
-        return firebaseToken;
+            return FirebaseInstanceId.getInstance().getToken();
     }
 
     public void launchDialog() {
