@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.R;
-import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.PrivateModel;
 import com.atc.gosmartlesmagistra.model.StudentOnDetail;
 import com.atc.gosmartlesmagistra.model.TeacherOnDetail;
@@ -20,18 +19,14 @@ import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by hendrigunawan on 06/16/17.
  */
 
-public class PrivateOrderHistoryExpandableListAdapter extends BaseExpandableListAdapter {
+public class PrivateActiveExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<PrivateModel> list; // header titles
@@ -40,8 +35,8 @@ public class PrivateOrderHistoryExpandableListAdapter extends BaseExpandableList
 
     private User user;
 
-    public PrivateOrderHistoryExpandableListAdapter(Context context, List<PrivateModel> listDataHeader,
-                                                    HashMap<String, List<String>> listChildData) {
+    public PrivateActiveExpandableListAdapter(Context context, List<PrivateModel> listDataHeader,
+                                              HashMap<String, List<String>> listChildData) {
         this.context = context;
         this.list = listDataHeader;
         this._listDataChild = listChildData;
@@ -150,7 +145,6 @@ public class PrivateOrderHistoryExpandableListAdapter extends BaseExpandableList
         endDate.setText(context.getResources().getString(R.string.end_date) + ": " + order.getFormattedEndDate());
         finish.setText(context.getResources().getString(R.string.finish) + ": " + order.getPrivateDetails().get(0).getChecklistText());
         finishAt.setText(context.getResources().getString(R.string.finished_at) + ": " + order.getPrivateDetails().get(0).getFormattedChecklistAt());
-
         course.setText(context.getResources().getString(R.string.course) + ": " + order.getPrivateDetails().get(0).getTeacherCourse().getCourse().getName());
         return convertView;
     }

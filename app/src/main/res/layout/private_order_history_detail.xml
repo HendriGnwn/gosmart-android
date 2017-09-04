@@ -23,7 +23,31 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin">
                 <TextView
+                    android:id="@+id/teacher"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Guru: "
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="@dimen/margin_label"
+                    android:textSize="@dimen/text_size_small_material"
+                    tools:ignore="MissingPrefix" />
+                <TextView
+                    android:id="@+id/course"
+                    android:layout_below="@id/teacher"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Course: "
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="@dimen/margin_label"
+                    android:textSize="@dimen/text_size_small_material"
+                    tools:ignore="MissingPrefix" />
+                <TextView
                     android:id="@+id/status"
+                    android:layout_below="@id/course"
                     fontPath="fonts/latoRegular.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -34,8 +58,32 @@
                     android:textSize="@dimen/text_size_small_material"
                     tools:ignore="MissingPrefix" />
                 <TextView
-                    android:id="@+id/description"
+                    android:id="@+id/start_date"
                     android:layout_below="@id/status"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/start_date"
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="@dimen/margin_label"
+                    android:textSize="@dimen/text_size_small_material"
+                    tools:ignore="MissingPrefix" />
+                <TextView
+                    android:id="@+id/end_date"
+                    android:layout_below="@id/start_date"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/end_date"
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="@dimen/margin_label"
+                    android:textSize="@dimen/text_size_small_material"
+                    tools:ignore="MissingPrefix" />
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_below="@id/end_date"
                     fontPath="fonts/latoRegular.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,6 +107,32 @@
                     tools:ignore="MissingPrefix">
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/finish"
+                    android:layout_below="@id/on_at"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finish"
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="@dimen/margin_label"
+                    android:textSize="@dimen/text_size_small_material"
+                    tools:ignore="MissingPrefix" />
+
+                <TextView
+                    android:id="@+id/finish_at"
+                    android:layout_below="@id/finish"
+                    fontPath="fonts/latoRegular.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/finished_at"
+                    android:layout_gravity="left"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginBottom="@dimen/margin_label"
+                    android:textSize="@dimen/text_size_small_material"
+                    tools:ignore="MissingPrefix" />
 
             </RelativeLayout>
 

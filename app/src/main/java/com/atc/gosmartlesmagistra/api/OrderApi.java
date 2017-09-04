@@ -1,5 +1,6 @@
 package com.atc.gosmartlesmagistra.api;
 
+import com.atc.gosmartlesmagistra.model.request.OrderConfirmationRequest;
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterStudentRequest;
 import com.atc.gosmartlesmagistra.model.request.RegisterTeacherRequest;
@@ -55,4 +56,10 @@ public interface OrderApi {
             "Content-Type: application/json"
     })
     Call<OrderHistorySuccess> orderHistories(@Path("uniqueNumber") String uniqueNumber);
+
+    @POST("order/confirmation/{uniqueNumber}/{orderId}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<OrderSuccess> orderConfirmation(@Path("uniqueNumber") String uniqueNumber, @Path("orderId") Integer orderId, @Body OrderConfirmationRequest body);
 }

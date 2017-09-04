@@ -14,6 +14,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Order implements Serializable
 {
+    public static Integer statusCanceled = 0;
+    public static Integer statusDraft = 1;
+    public static Integer statusWaitingForPayment = 3;
+    public static Integer statusConfirmed = 5;
+    public static Integer statusPaid = 10;
 
     @SerializedName("id")
     @Expose
@@ -286,6 +291,14 @@ public class Order implements Serializable
         }
 
         return formattedDate;
+    }
+
+    public boolean getStatusIsFormConfirmation() {
+        if (this.getStatus() != Order.statusPaid || this.getStatus() != Order.statusConfirmed) {
+            return false;
+        }
+
+        return true;
     }
 
 }

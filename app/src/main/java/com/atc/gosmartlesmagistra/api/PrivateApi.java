@@ -4,6 +4,7 @@ import com.atc.gosmartlesmagistra.model.request.OrderRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateOrderRequest;
 import com.atc.gosmartlesmagistra.model.response.OrderHistorySuccess;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
+import com.atc.gosmartlesmagistra.model.response.PrivateActivesSuccess;
 import com.atc.gosmartlesmagistra.model.response.PrivateOrderHistorySuccess;
 import com.atc.gosmartlesmagistra.model.response.ResponseSuccess;
 
@@ -22,11 +23,11 @@ import retrofit2.http.Path;
 
 public interface PrivateApi {
 
-    @GET("order/show/{uniqueNumber}")
+    @GET("private/active/{uniqueNumber}")
     @Headers({
             "Content-Type: application/json"
     })
-    Call<OrderSuccess> orderShow(@Path("uniqueNumber") String uniqueNumber);
+    Call<PrivateActivesSuccess> privateActives(@Path("uniqueNumber") String uniqueNumber);
 
     @POST("order/create/{uniqueNumber}")
     @Headers({

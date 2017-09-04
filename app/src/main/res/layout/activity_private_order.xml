@@ -52,6 +52,7 @@
         android:gravity="center"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
+        style="@style/Widget.AppCompat.Button"
         android:layout_alignParentStart="true">
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/checkout_button"
@@ -59,9 +60,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/action_confirmation"
+            android:elevation="5dp"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/fontInputBig"
             android:background="@drawable/shape_rectanglebutton_secondary" />
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/progress_bar_background" />
     </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -174,6 +184,20 @@
                         android:padding="8dp">
 
                         <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorWhite"
+                        android:padding="8dp">
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/private_schedule" />
@@ -243,6 +267,7 @@
                     android:scrollbars="none"/>
 
                 <LinearLayout
+                    android:id="@+id/confirmation_linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

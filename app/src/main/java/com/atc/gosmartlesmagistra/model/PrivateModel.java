@@ -1,7 +1,12 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -41,7 +46,13 @@ public class PrivateModel implements Serializable
     @SerializedName("private_details")
     @Expose
     private List<PrivateDetail> privateDetails = null;
-    private final static long serialVersionUID = -3885477888024162584L;
+    @SerializedName("student")
+    @Expose
+    private User student;
+    @SerializedName("teacher")
+    @Expose
+    private User teacher;
+    private final static long serialVersionUID = 7995359464480305752L;
 
     /**
      * No args constructor for use in serialization
@@ -52,19 +63,21 @@ public class PrivateModel implements Serializable
 
     /**
      *
-     * @param updatedAt
-     * @param id
      * @param startDate
      * @param status
-     * @param createdAt
      * @param endDate
      * @param code
      * @param sectionTime
      * @param section
-     * @param orderId
      * @param privateDetails
+     * @param id
+     * @param updatedAt
+     * @param student
+     * @param createdAt
+     * @param teacher
+     * @param orderId
      */
-    public PrivateModel(Integer id, Integer orderId, Integer section, String sectionTime, String code, String startDate, String endDate, Integer status, String createdAt, String updatedAt, List<PrivateDetail> privateDetails) {
+    public PrivateModel(Integer id, Integer orderId, Integer section, String sectionTime, String code, String startDate, String endDate, Integer status, String createdAt, String updatedAt, List<PrivateDetail> privateDetails, User student, User teacher) {
         super();
         this.id = id;
         this.orderId = orderId;
@@ -77,6 +90,8 @@ public class PrivateModel implements Serializable
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.privateDetails = privateDetails;
+        this.student = student;
+        this.teacher = teacher;
     }
 
     public Integer getId() {
@@ -165,6 +180,62 @@ public class PrivateModel implements Serializable
 
     public void setPrivateDetails(List<PrivateDetail> privateDetails) {
         this.privateDetails = privateDetails;
+    }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
+    }
+
+    public User getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(User teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getStatusText() {
+        switch (this.getStatus()) {
+            case 1:
+                return "Menunggu Aktif";
+            case 5:
+                return "Berjalan";
+            case 10:
+                return "Selesai";
+        }
+
+        return "-";
+    }
+    public String getFormattedStartDate() {
+        String choose = this.getStartDate();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd", new Locale("id", "ID")).parse(choose);
+            SimpleDateFormat formatted = new SimpleDateFormat("dd MMM yyyy", new Locale("id", "ID"));
+            choose = formatted.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return choose;
+    }
+
+    public String getFormattedEndDate() {
+        String choose = this.getEndDate();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd", new Locale("id", "ID")).parse(choose);
+            SimpleDateFormat formatted = new SimpleDateFormat("dd MMM yyyy", new Locale("id", "ID"));
+            choose = formatted.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return choose;
     }
 
 }

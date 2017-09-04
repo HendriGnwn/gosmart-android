@@ -103,6 +103,16 @@
     <string name="aggree">Aggree</string>
     <string name="courses">Courses</string>
     <string name="section">Section</string>
+    <string name="on_at">On At</string>
+    <string name="check">Check</string>
+    <string name="check_at">Check At</string>
+    <string name="start_date">Start Date</string>
+    <string name="finish">Finish</string>
+    <string name="finished_at">Finished At</string>
+    <string name="course">Course</string>
+    <string name="teacher">Teacher</string>
+    <string name="student">Student</string>
+    <string name="end_date">End Date</string>
     <string name="time">Time</string>
     <string name="private_text">Private</string>
     <string name="similiar_course">Similiar Courses</string>
@@ -122,6 +132,8 @@
     <string name="private_order_history">Private Order Histories</string>
     <string name="send_feedback">Send Feedback</string>
     <string name="money_collection_is_not_more_than">Money collection is not more than</string>
+    <string name="status">Status</string>
+    <string name="there_is_no_schedule">There is no Schedule for Today</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

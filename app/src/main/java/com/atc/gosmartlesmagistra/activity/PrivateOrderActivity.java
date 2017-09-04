@@ -17,10 +17,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,8 @@ import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.Payment;
 import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.User;
+import com.atc.gosmartlesmagistra.model.request.OrderConfirmationRequest;
+import com.atc.gosmartlesmagistra.model.response.OrderConfirmationResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
 import com.atc.gosmartlesmagistra.model.response.PaymentBankSuccess;
@@ -54,6 +59,7 @@ import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 import com.sw926.imagefileselector.ErrorResult;
 import com.sw926.imagefileselector.ImageFileSelector;
 
@@ -102,10 +108,19 @@ public class PrivateOrderActivity extends AppCompatActivity {
     @BindView(R.id.bank_spinner) Spinner bankSpinner;
     @BindView(R.id.image_upload_result) ImageView imageUpload;
     @BindView(R.id.photoText) EditText photoText;
+    @BindView(R.id.confirmation_linear) LinearLayout confirmationLinear;
+    @BindView(R.id.status) TextView orderStatus;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.checkout_button) AppCompatButton checkOutButton;
 
     ImageFileSelector mImageFileSelector;
     private int PICK_IMAGE_REQUEST = 1;
     String pathPhoto = "";
+
+    @OnClick(R.id.checkout_button)
+    protected void doCheckoutButton(View v) {
+        submitConfirmation();
+    }
 
     DatabaseHelper databaseHelper;
     SessionManager sessionManager;
@@ -152,6 +167,7 @@ public class PrivateOrderActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setActionLeftIcon();
 
+        progressBar.setVisibility(View.INVISIBLE);
         sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
         user = databaseHelper.getUser(sessionManager.getUserCode());
@@ -349,6 +365,22 @@ public class PrivateOrderActivity extends AppCompatActivity {
                     databaseHelper.createOrder(sessionManager.getUserCode(), response.body());
                     order = response.body().getOrder();
                     sessionManager.setKeyHaveAnOrder(true);
+                    Log.i("cranium", order.getStatusIsFormConfirmation() + " " + order.getStatus());
+                    if (order.getStatus() == Order.statusConfirmed) {
+                        for (int i=0;i<bankList.size();i++) {
+                            Integer bankId = bankList.get(i).getId();
+                            if (bankId.equals(order.getOrderConfirmation().getBankId())) {
+                                selectedBankSpinner = i;
+                                break;
+                            }
+                        }
+                        bankSpinner.setSelection(selectedBankSpinner);
+                        mBankAccountView.setText(order.getOrderConfirmation().getBankNumber());
+                        mBankHolderNameView.setText(order.getOrderConfirmation().getBankBehalfOf());
+                        mAmountView.setText(order.getOrderConfirmation().getAmount());
+                        Picasso.with(getApplicationContext()).load(App.URL + "files/order-confirmation/" + order.getOrderConfirmation().getUploadBukti()).into(imageUpload);
+                    }
+                    orderStatus.setText(getResources().getString(R.string.status) + ": " + order.getStatusMessage());
                     teacherView.setText(order.getUser().getFullName());
                     finalAmountView.setText(order.getFormattedFinalAmount());
                     invoiceNumberView.setText(order.getCode());
@@ -408,6 +440,21 @@ public class PrivateOrderActivity extends AppCompatActivity {
         }
         linearView.setVisibility(View.VISIBLE);
         order = databaseHelper.getOrder(sessionManager.getUserCode());
+        orderStatus.setText(getResources().getString(R.string.status) + ": " + order.getStatusMessage());
+        if (order.getStatus() == Order.statusConfirmed) {
+            for (int i=0;i<bankList.size();i++) {
+                Integer bankId = bankList.get(i).getId();
+                if (bankId.equals(order.getOrderConfirmation().getBankId())) {
+                    selectedBankSpinner = i;
+                    break;
+                }
+            }
+            bankSpinner.setSelection(selectedBankSpinner);
+            mBankAccountView.setText(order.getOrderConfirmation().getBankNumber());
+            mBankHolderNameView.setText(order.getOrderConfirmation().getBankBehalfOf());
+            mAmountView.setText(order.getOrderConfirmation().getAmount());
+            Picasso.with(getApplicationContext()).load(App.URL + "files/order-confirmation/" + order.getOrderConfirmation().getUploadBukti()).into(imageUpload);
+        }
         teacherView.setText(order.getUser().getFullName());
         finalAmountView.setText(order.getFormattedFinalAmount());
         invoiceNumberView.setText(order.getCode());
@@ -498,5 +545,110 @@ public class PrivateOrderActivity extends AppCompatActivity {
         //mImageFileSelector.setOutPutImageSize(400, 400);
         mImageFileSelector.setQuality(70);
         mImageFileSelector.selectImage(this, PICK_IMAGE_REQUEST);
+    }
+
+    private void submitConfirmation() {
+        App.hideSoftKeyboard(this);
+
+        // Reset errors.
+        bankSpinner.setSelection(0);
+        mBankAccountView.setError(null);
+        mBankHolderNameView.setError(null);
+        mAmountView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String bankAccount = mBankAccountView.getText().toString();
+        final String bankHolderName = mBankHolderNameView.getText().toString();
+        String amount = mAmountView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(amount)) {
+            mAmountView.setError(getString(R.string.error_field_required));
+            focusView = mAmountView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(bankHolderName)) {
+            mBankHolderNameView.setError(getString(R.string.error_field_required));
+            focusView = mBankHolderNameView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(bankAccount)) {
+            mBankAccountView.setError(getString(R.string.error_field_required));
+            focusView = mBankAccountView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+
+            OrderApi service = retrofit.create(OrderApi.class);
+            OrderConfirmationRequest request = new OrderConfirmationRequest(selectedBankSpinner, Double.parseDouble(bankAccount), bankHolderName, amount, photoText.getText().toString());
+            Call<OrderSuccess> call = service.orderConfirmation(sessionManager.getUserCode(), order.getId(), request);
+            call.enqueue(new Callback<OrderSuccess>() {
+                @Override
+                public void onResponse(Call<OrderSuccess> call, Response<OrderSuccess> response) {
+
+                    if (response.raw().isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+
+                        databaseHelper.createOrder(sessionManager.getUserCode(), response.body());
+                        order = response.body().getOrder();
+                        sessionManager.setKeyHaveAnOrder(true);
+
+                        Intent intent = new Intent(getApplicationContext(), PrivateOrderActivity.class);
+                        startActivity(intent);
+
+                    } else if (response.raw().code() == 400) {
+
+                        Gson gson = new GsonBuilder().create();
+                        OrderConfirmationResponse mError =new OrderConfirmationResponse();
+                        try {
+                            mError = gson.fromJson(response.errorBody().string(),OrderConfirmationResponse.class);
+                            Toast.makeText(getApplicationContext(), mError.getMessage(), Toast.LENGTH_LONG).show();
+
+                            if (mError.getOrderConfirmationError().getBankNumber() != null) {
+                                mBankAccountView.setError(mError.getOrderConfirmationError().getBankNumber());
+                                mBankAccountView.requestFocus();
+                            }
+                            if (mError.getOrderConfirmationError().getBankHolderName() != null) {
+                                mBankHolderNameView.setError(mError.getOrderConfirmationError().getBankHolderName());
+                                mBankHolderNameView.requestFocus();
+                            }
+                            if (mError.getOrderConfirmationError().getAmount() != null) {
+                                mAmountView.setError(mError.getOrderConfirmationError().getAmount());
+                                mAmountView.requestFocus();
+                            }
+                            if (mError.getOrderConfirmationError().getEvidence() != null) {
+                                Toast.makeText(getApplicationContext(), mError.getOrderConfirmationError().getEvidence(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (IOException e) {
+                            // handle failure to read error
+                        }
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Confirmation Failed, please try again", Toast.LENGTH_LONG).show();
+                    }
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onFailure(Call<OrderSuccess> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Confirmation failed, please try again", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            });
+
+        }
     }
 }

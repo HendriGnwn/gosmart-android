@@ -1,6 +1,11 @@
 package com.atc.gosmartlesmagistra.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -60,6 +65,43 @@ public class StudentOnDetail implements Serializable
 
     public void setCheckAt(String checkAt) {
         this.checkAt = checkAt;
+    }
+
+    public String getCheckText()
+    {
+        if (this.getCheck() == 1) {
+            return "Ya";
+        } else {
+            return "Belum";
+        }
+    }
+
+    public String getFormattedOnAt() {
+        String choose = this.getOnAt();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(choose);
+            SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy H:00", new Locale("id", "ID"));
+            choose = formatted.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return choose;
+    }
+
+    public String getFormattedCheckAt() {
+        String choose = this.getCheckAt();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(choose);
+            SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy H:00", new Locale("id", "ID"));
+            choose = formatted.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return choose;
     }
 
 }

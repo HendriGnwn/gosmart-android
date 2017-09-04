@@ -1,11 +1,14 @@
-
 package com.atc.gosmartlesmagistra.model;
 
-import java.io.Serializable;
-import java.util.List;
+import android.text.TextUtils;
 
-import com.atc.gosmartlesmagistra.model.StudentOnDetail;
-import com.atc.gosmartlesmagistra.model.TeacherOnDetail;
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -41,7 +44,7 @@ public class PrivateDetail implements Serializable
     private Integer checklist;
     @SerializedName("checklist_at")
     @Expose
-    private Object checklistAt;
+    private String checklistAt;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -57,7 +60,10 @@ public class PrivateDetail implements Serializable
     @SerializedName("teacher_on_details")
     @Expose
     private List<TeacherOnDetail> teacherOnDetails = null;
-    private final static long serialVersionUID = -6172698952796493522L;
+    @SerializedName("teacher_course")
+    @Expose
+    private TeacherCourse teacherCourse;
+    private final static long serialVersionUID = 6532793039185014513L;
 
     /**
      * No args constructor for use in serialization
@@ -68,6 +74,7 @@ public class PrivateDetail implements Serializable
 
     /**
      *
+     * @param teacherCourse
      * @param teacherCourseId
      * @param teacherOnDetails
      * @param studentDetails
@@ -84,7 +91,7 @@ public class PrivateDetail implements Serializable
      * @param checklistAt
      * @param privateId
      */
-    public PrivateDetail(Integer id, Integer privateId, Integer teacherCourseId, String onAt, Integer section, String sectionTime, String studentDetails, String teacherDetails, Integer checklist, Object checklistAt, String createdAt, String updatedAt, List<String> onDetails, List<StudentOnDetail> studentOnDetails, List<TeacherOnDetail> teacherOnDetails) {
+    public PrivateDetail(Integer id, Integer privateId, Integer teacherCourseId, String onAt, Integer section, String sectionTime, String studentDetails, String teacherDetails, Integer checklist, String checklistAt, String createdAt, String updatedAt, List<String> onDetails, List<StudentOnDetail> studentOnDetails, List<TeacherOnDetail> teacherOnDetails, TeacherCourse teacherCourse) {
         super();
         this.id = id;
         this.privateId = privateId;
@@ -101,6 +108,7 @@ public class PrivateDetail implements Serializable
         this.onDetails = onDetails;
         this.studentOnDetails = studentOnDetails;
         this.teacherOnDetails = teacherOnDetails;
+        this.teacherCourse = teacherCourse;
     }
 
     public Integer getId() {
@@ -175,11 +183,11 @@ public class PrivateDetail implements Serializable
         this.checklist = checklist;
     }
 
-    public Object getChecklistAt() {
+    public String getChecklistAt() {
         return checklistAt;
     }
 
-    public void setChecklistAt(Object checklistAt) {
+    public void setChecklistAt(String checklistAt) {
         this.checklistAt = checklistAt;
     }
 
@@ -221,6 +229,42 @@ public class PrivateDetail implements Serializable
 
     public void setTeacherOnDetails(List<TeacherOnDetail> teacherOnDetails) {
         this.teacherOnDetails = teacherOnDetails;
+    }
+
+    public TeacherCourse getTeacherCourse() {
+        return teacherCourse;
+    }
+
+    public void setTeacherCourse(TeacherCourse teacherCourse) {
+        this.teacherCourse = teacherCourse;
+    }
+
+    public String getChecklistText()
+    {
+        if (this.getChecklist() == 1) {
+            return "Ya";
+        } else {
+            return "Belum";
+        }
+    }
+
+
+
+    public String getFormattedChecklistAt() {
+        String choose = this.getChecklistAt();
+        if (TextUtils.isEmpty(choose)) {
+            return "-";
+        }
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd H:m:s", new Locale("id", "ID")).parse(choose);
+            SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy H:00", new Locale("id", "ID"));
+            choose = formatted.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return choose;
     }
 
 }

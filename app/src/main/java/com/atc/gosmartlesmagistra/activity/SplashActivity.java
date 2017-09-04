@@ -1,11 +1,16 @@
 package com.atc.gosmartlesmagistra.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 
 import com.atc.gosmartlesmagistra.R;
+
+import java.util.Locale;
 
 /**
  * Created by hendrigunawan on 7/4/17.
@@ -21,6 +26,12 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Locale locale = new Locale("id", "ID");
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration,displayMetrics);
 
         new Handler().postDelayed(new Runnable() {
             @Override

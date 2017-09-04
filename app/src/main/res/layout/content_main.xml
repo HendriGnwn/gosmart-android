@@ -8,30 +8,104 @@
     tools:context="com.atc.gosmartlesmagistra.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <RelativeLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_horizontal_margin"
         android:paddingLeft="@dimen/activity_vertical_margin"
-        android:paddingRight="@dimen/activity_vertical_margin"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp">
+        android:paddingRight="@dimen/activity_vertical_margin">
 
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhiteSmoke"
-            android:padding="8dp">
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:fillViewport="true">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Private Active"/>
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorWhite"
+                    android:padding="8dp">
 
-    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/schedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/private_schedule" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorWhite"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/wording"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:text="@string/there_is_no_schedule"
+                        android:textSize="@dimen/text_size_small_material" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/schedule_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:elevation="@null"
+                    android:clipToPadding="false"
+                    android:scrollbars="none" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/colorWhite"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_height="wrap_content"
+                        android:text="@string/private_order" />
+                </LinearLayout>
+
+                <ExpandableListView
+                    android:nestedScrollingEnabled="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/private_list_view"
+                    android:background="@color/colorWhite"/>
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/colorAccent"
+                    android:layout_marginTop="-330dp"/>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

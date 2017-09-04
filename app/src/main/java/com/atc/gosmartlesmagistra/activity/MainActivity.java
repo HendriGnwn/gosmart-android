@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,20 +21,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.adapter.PrivateActiveExpandableListAdapter;
+import com.atc.gosmartlesmagistra.api.PrivateApi;
 import com.atc.gosmartlesmagistra.api.UserApi;
+import com.atc.gosmartlesmagistra.model.PrivateModel;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
+import com.atc.gosmartlesmagistra.model.response.PrivateActivesSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -57,6 +70,9 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.private_list_view) ExpandableListView privateListView;
+    @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     @BindColor(R.color.colorWhite) int white;
     @BindColor(R.color.colorAccent) int accent;
@@ -65,6 +81,9 @@ public class MainActivity extends AppCompatActivity
     boolean doubleBackToExitPressedOnce = false;
     SessionManager sessionManager;
     DatabaseHelper databaseHelper;
+    List<PrivateModel> privateModelList;
+    PrivateActiveExpandableListAdapter privateActiveExpandableListAdapter;
+    Retrofit retrofit;
     User user;
 
     @Override
@@ -115,6 +134,87 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         manageHeaderView();
+
+        swipeContainer.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getPrivateActives();
+            }
+        });
+
+        getPrivateActives();
+
+        privateListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                setListViewHeight(parent, groupPosition);
+
+                return false;
+            }
+        });
+        privateListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                PrivateActiveExpandableListAdapter listAdapter = (PrivateActiveExpandableListAdapter) privateListView.getExpandableListAdapter();
+                View groupItem = listAdapter.getGroupView(groupPosition, true, null, privateListView);
+                RelativeLayout layout = (RelativeLayout) groupItem.findViewById(R.id.group_view);
+                layout.setVisibility(View.GONE);
+            }
+        });
+        privateListView.setNestedScrollingEnabled(true);
+
+    }
+
+    private void getPrivateActives() {
+        progressBar.setVisibility(View.VISIBLE);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest  = chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(App.API)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        PrivateApi orderApi = retrofit.create(PrivateApi.class);
+        Call<PrivateActivesSuccess> call = orderApi.privateActives(sessionManager.getUserCode());
+        call.enqueue(new Callback<PrivateActivesSuccess>() {
+            @Override
+            public void onResponse(Call<PrivateActivesSuccess> call, Response<PrivateActivesSuccess> response) {
+                if (response.raw().isSuccessful()) {
+                    privateModelList = response.body().getPrivateModels();
+
+                    swipeContainer.setRefreshing(false);
+
+                    HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+                    for (PrivateModel order: privateModelList) {
+                        List<String> description = new ArrayList<String>();
+                        description.add(order.getCode());
+                        listDataChild.put(String.valueOf(order.getId()), description); // Header, Child data
+                    }
+
+                    privateActiveExpandableListAdapter= new PrivateActiveExpandableListAdapter(getApplicationContext(), privateModelList, listDataChild);
+                    privateListView.setAdapter(privateActiveExpandableListAdapter);
+                    setListViewHeightBasedOnChildren(privateListView);
+                }
+
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<PrivateActivesSuccess> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Unable to load, please try again", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void manageHeaderView() {
@@ -319,5 +419,60 @@ public class MainActivity extends AppCompatActivity
                 Log.i("cranium:save", "failed");
             }
         });
+    }
+
+    private void setListViewHeight(ExpandableListView listView,
+                                   int group) {
+        PrivateActiveExpandableListAdapter listAdapter = (PrivateActiveExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    public static void setListViewHeightBasedOnChildren(ExpandableListView listView) {
+        PrivateActiveExpandableListAdapter listAdapter = (PrivateActiveExpandableListAdapter) listView.getExpandableListAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View listItem = listAdapter.getGroupView(i, false, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }

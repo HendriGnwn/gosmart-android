@@ -94,7 +94,7 @@ public class PrivateOrderHistoryActivity extends AppCompatActivity {
         orderListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                OrderHistoryExpandableListAdapter listAdapter = (OrderHistoryExpandableListAdapter) orderListView.getExpandableListAdapter();
+                PrivateOrderHistoryExpandableListAdapter listAdapter = (PrivateOrderHistoryExpandableListAdapter) orderListView.getExpandableListAdapter();
                 View groupItem = listAdapter.getGroupView(groupPosition, true, null, orderListView);
                 RelativeLayout layout = (RelativeLayout) groupItem.findViewById(R.id.group_view);
                 layout.setVisibility(View.GONE);
