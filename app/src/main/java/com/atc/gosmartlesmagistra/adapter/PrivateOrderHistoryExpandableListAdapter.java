@@ -1,6 +1,7 @@
 package com.atc.gosmartlesmagistra.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.activity.PrivateDetailActivity;
 import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.PrivateModel;
 import com.atc.gosmartlesmagistra.model.StudentOnDetail;
@@ -192,6 +194,16 @@ public class PrivateOrderHistoryExpandableListAdapter extends BaseExpandableList
 
         name.setText(order.getCode());
         date.setText(order.getCreatedAt());
+
+        name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PrivateDetailActivity.class);
+                intent.putExtra("privateModel", order);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+            }
+        });
 
         return view;
     }

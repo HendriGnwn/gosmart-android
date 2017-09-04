@@ -12,6 +12,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class PrivateModel implements Serializable
 {
+    public static Integer statusOnGoing = 5;
+    public static Integer statusDone = 10;
+
 
     @SerializedName("id")
     @Expose

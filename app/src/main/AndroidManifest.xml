@@ -218,6 +218,16 @@
                 android:value="com.atc.gosmartlesmagistra.activity.MainActivity" />
         </activity>
         <activity
+            android:name=".activity.PrivateDetailActivity"
+            android:label="@string/private_order"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atc.gosmartlesmagistra.activity.MainActivity" />
+        </activity>
+        <activity
             android:name=".activity.FillOrderActivity"
             android:label="@string/private_order"
             android:parentActivityName=".activity.MainActivity"
@@ -252,6 +262,14 @@
                 android:value="com.atc.gosmartlesmagistra.activity.TeacherProfileActivity" />
         </activity>
         <activity android:name=".activity.SendFeedbackActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.atc.gosmartlesmagistra.activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.ReviewActivity"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden">

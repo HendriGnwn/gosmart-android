@@ -39,6 +39,7 @@
     <string name="action_evicende">Upload Bukti</string>
     <string name="action_sign_out">Keluar</string>
     <string name="action_request">Minta</string>
+    <string name="action_review">Beri Ulasan</string>
 
 
     <!-- prompt -->
@@ -79,6 +80,8 @@
     <string name="prompt_select_bank_transfer_to">Pilih Transfer ke</string>
     <string name="prompt_message">Pesan*</string>
     <string name="prompt_taking_money">Ambil Uang*</string>
+    <string name="prompt_rate">Penilaian 1-5*</string>
+    <string name="prompt_review">Ulasan*</string>
 
     <string name="error_invalid_email">Email ini tidak valid</string>
     <string name="error_invalid_password">Kata sandi terlalu singkat</string>
@@ -134,6 +137,14 @@
     <string name="money_collection_is_not_more_than">Uang tidak boleh lebih dari</string>
     <string name="status">Status</string>
     <string name="there_is_no_schedule">Jadwal tidak ada untuk hari ini</string>
+    <string name="review_title">Ulasan Performa Mengajar</string>
+    <string name="section_details">Detail Sesi</string>
+    <string name="private_details">Detail Privat</string>
+    <string name="student_details">Detail Siswa</string>
+    <string name="student_on_details">Detail Sesi Siswa</string>
+    <string name="teacher_on_details">Detail Sesi Guru</string>
+    <string name="code">Kode</string>
+    <string name="on_at_description">Sesi Ulasan</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

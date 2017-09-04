@@ -21,6 +21,9 @@ public class StudentOnDetail implements Serializable
     @SerializedName("check_at")
     @Expose
     private String checkAt;
+    @SerializedName("description")
+    @Expose
+    private String description;
     private final static long serialVersionUID = 4794788667329386300L;
 
     /**
@@ -36,11 +39,12 @@ public class StudentOnDetail implements Serializable
      * @param check
      * @param checkAt
      */
-    public StudentOnDetail(String onAt, Integer check, String checkAt) {
+    public StudentOnDetail(String onAt, Integer check, String checkAt, String description) {
         super();
         this.onAt = onAt;
         this.check = check;
         this.checkAt = checkAt;
+        this.description = description;
     }
 
     public String getOnAt() {
@@ -65,6 +69,14 @@ public class StudentOnDetail implements Serializable
 
     public void setCheckAt(String checkAt) {
         this.checkAt = checkAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getCheckText()
