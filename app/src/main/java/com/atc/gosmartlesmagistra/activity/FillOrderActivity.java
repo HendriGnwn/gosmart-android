@@ -48,6 +48,9 @@ import com.atc.gosmartlesmagistra.model.response.OrderResponse;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
+import com.codetroopers.betterpickers.radialtimepicker.RadialTimePickerDialogFragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -334,45 +337,36 @@ public class FillOrderActivity extends AppCompatActivity {
                             int mYear = calendar.get(Calendar.YEAR);
                             int mMonth = calendar.get(Calendar.MONTH);
                             int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-                            final int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                            final int minute = calendar.get(Calendar.MINUTE);
                             // date picker dialog
-                            final DatePickerDialog datePickerDialog = new DatePickerDialog(getApplicationContext(),
-                                    new DatePickerDialog.OnDateSetListener() {
+                            CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
+                                    .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                                         @Override
-                                        public void onDateSet(DatePicker view, int year,
-                                                              int monthOfYear, int dayOfMonth) {
-                                            autoCompleteTextView.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                                        public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                                            final int mYear, mMonth,mDay;
+                                            mYear = year;
+                                            mMonth = (monthOfYear + 1);
+                                            mDay = dayOfMonth;
+                                            RadialTimePickerDialogFragment rtpd = new RadialTimePickerDialogFragment()
+                                                    .setOnTimeSetListener(new RadialTimePickerDialogFragment.OnTimeSetListener() {
+                                                          @Override
+                                                          public void onTimeSet(RadialTimePickerDialogFragment dialog, int hourOfDay, int minute) {
+                                                              String datetime = mYear + "-" + mMonth + "-" + mDay;
+                                                              Date date = null;
+                                                              try {
+                                                                  date = new SimpleDateFormat("yyyy-MM-dd", new Locale("id", "ID")).parse(datetime);
+                                                                  SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy", new Locale("id", "ID"));
+                                                                  autoCompleteTextView.setText(formatted.format(date) + " " + hourOfDay + ":00:00");
+                                                              } catch (ParseException e) {
+                                                                  e.printStackTrace();
+                                                              }
+                                                          }
+                                                      }
+                                                    );
+                                            rtpd.show(getSupportFragmentManager(), "timepicker");
                                         }
-                                    }, mYear, mMonth, mDay);
-                            datePickerDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                            datePickerDialog.show();
-                            datePickerDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.i("cranium", "test");
-                                    if (which == DialogInterface.BUTTON_POSITIVE) {
-                                        final DatePicker datePicker = datePickerDialog
-                                                .getDatePicker();
-                                        TimePickerDialog timePickerDialog = new TimePickerDialog(getApplicationContext(), new TimePickerDialog.OnTimeSetListener() {
-                                            @Override
-                                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                                String datetime = datePicker.getYear() + "-" + (datePicker.getMonth() + 1) + "-" + datePicker.getDayOfMonth();
-                                                Date date = null;
-                                                try {
-                                                    date = new SimpleDateFormat("yyyy-MM-dd", new Locale("id", "ID")).parse(datetime);
-                                                    SimpleDateFormat formatted = new SimpleDateFormat("EEEE, dd MMM yyyy", new Locale("id", "ID"));
-                                                    autoCompleteTextView.setText(formatted.format(date) + " " + hourOfDay + ":00:00");
-                                                } catch (ParseException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }, hour, minute, DateFormat.is24HourFormat(getApplicationContext()));
-                                        timePickerDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                                        timePickerDialog.show();
-                                    }
-                                }
-                            });
+                                    })
+                                    .setDateRange(new MonthAdapter.CalendarDay(mYear, mMonth, mDay), new MonthAdapter.CalendarDay(mYear, mMonth+1, mDay));
+                            cdp.show(getSupportFragmentManager(), "datepicker");
                         }
                     }, 200);
                 }
