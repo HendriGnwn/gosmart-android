@@ -40,6 +40,7 @@
     <string name="action_sign_out">Sign Out</string>
     <string name="action_request">Request</string>
     <string name="action_review">Review</string>
+    <string name="action_set_done">Set Done</string>
 
 
     <!-- prompt -->
@@ -145,6 +146,11 @@
     <string name="teacher_on_details">Student On Details</string>
     <string name="code">Code</string>
     <string name="on_at_description">Section Review</string>
+    <string name="form_finish_section">Section Finish Form</string>
+    <string name="student_phone">Student Phone</string>
+    <string name="teacher_phone">Teacher Phone</string>
+    <string name="schedule">Schedule</string>
+    <string name="section_done">Section is Done</string>
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

@@ -40,6 +40,7 @@
     <string name="action_sign_out">Keluar</string>
     <string name="action_request">Minta</string>
     <string name="action_review">Beri Ulasan</string>
+    <string name="action_set_done">Klik untuk Selesai</string>
 
 
     <!-- prompt -->
@@ -145,6 +146,12 @@
     <string name="teacher_on_details">Detail Sesi Guru</string>
     <string name="code">Kode</string>
     <string name="on_at_description">Sesi Ulasan</string>
+    <string name="form_finish_section">Formulir Sesi</string>
+    <string name="student_phone">No Handphone Siswa</string>
+    <string name="teacher_phone">No Handphone Guru</string>
+    <string name="schedule">Jadwal</string>
+    <string name="section_done">Sesi sudah Selesai</string>
+
 
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 

@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,12 +32,15 @@ import android.widget.Toast;
 import com.atc.gosmartlesmagistra.App;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.adapter.PrivateActiveExpandableListAdapter;
+import com.atc.gosmartlesmagistra.adapter.ScheduleExpandableListAdapter;
 import com.atc.gosmartlesmagistra.api.PrivateApi;
 import com.atc.gosmartlesmagistra.api.UserApi;
 import com.atc.gosmartlesmagistra.model.PrivateModel;
+import com.atc.gosmartlesmagistra.model.Schedule;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
 import com.atc.gosmartlesmagistra.model.response.PrivateActivesSuccess;
+import com.atc.gosmartlesmagistra.model.response.SchedulesSuccess;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 import com.pkmmte.view.CircularImageView;
@@ -71,8 +75,10 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.private_list_view) ExpandableListView privateListView;
+    @BindView(R.id.schedule_list_view) ExpandableListView scheduleListView;
     @BindView(R.id.progress_bar) ProgressBar progressBar;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+    @BindView(R.id.wording) RelativeLayout wordingRelative;
 
     @BindColor(R.color.colorWhite) int white;
     @BindColor(R.color.colorAccent) int accent;
@@ -82,6 +88,8 @@ public class MainActivity extends AppCompatActivity
     SessionManager sessionManager;
     DatabaseHelper databaseHelper;
     List<PrivateModel> privateModelList;
+    List<Schedule> scheduleList;
+    ScheduleExpandableListAdapter scheduleExpandableListAdapter;
     PrivateActiveExpandableListAdapter privateActiveExpandableListAdapter;
     Retrofit retrofit;
     User user;
@@ -140,10 +148,31 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onRefresh() {
                 getPrivateActives();
+                getSchedules();
             }
         });
 
         getPrivateActives();
+        getSchedules();
+
+        scheduleListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                setListViewHeightSchedule(parent, groupPosition);
+
+                return false;
+            }
+        });
+        scheduleListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                ScheduleExpandableListAdapter listAdapter = (ScheduleExpandableListAdapter) scheduleListView.getExpandableListAdapter();
+                View groupItem = listAdapter.getGroupView(groupPosition, true, null, scheduleListView);
+                RelativeLayout layout = (RelativeLayout) groupItem.findViewById(R.id.group_view);
+                layout.setVisibility(View.GONE);
+            }
+        });
+        scheduleListView.setNestedScrollingEnabled(true);
 
         privateListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -164,6 +193,62 @@ public class MainActivity extends AppCompatActivity
         });
         privateListView.setNestedScrollingEnabled(true);
 
+    }
+
+    private void getSchedules() {
+        swipeContainer.setRefreshing(true);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest  = chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer " + sessionManager.getUserToken())
+                        .addHeader("Content-Type", "application/json")
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(App.API)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        UserApi userApi = retrofit.create(UserApi.class);
+        Call<SchedulesSuccess> call = userApi.getSchedules(sessionManager.getUserCode());
+        call.enqueue(new Callback<SchedulesSuccess>() {
+            @Override
+            public void onResponse(Call<SchedulesSuccess> call, Response<SchedulesSuccess> response) {
+                if (response.raw().isSuccessful()) {
+                    scheduleList = response.body().getSchedules();
+
+                    if (scheduleList == null) {
+                        wordingRelative.setVisibility(View.VISIBLE);
+                    } else {
+                        wordingRelative.setVisibility(View.GONE);
+                    }
+
+                    HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+                    for (Schedule schedule: scheduleList) {
+                        List<String> description = new ArrayList<String>();
+                        description.add(schedule.getMessage());
+                        listDataChild.put(String.valueOf(schedule.getPrivateModel().getId()), description); // Header, Child data
+                    }
+
+                    scheduleExpandableListAdapter= new ScheduleExpandableListAdapter(getApplicationContext(), scheduleList, listDataChild);
+                    scheduleListView.setAdapter(scheduleExpandableListAdapter);
+                    setListViewHeightBasedOnChildrenSchedule(scheduleListView);
+                }
+                swipeContainer.setRefreshing(false);
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure(Call<SchedulesSuccess> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Unable to load, please try again", Toast.LENGTH_SHORT).show();
+                swipeContainer.setRefreshing(false);
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void getPrivateActives() {
@@ -192,8 +277,6 @@ public class MainActivity extends AppCompatActivity
                 if (response.raw().isSuccessful()) {
                     privateModelList = response.body().getPrivateModels();
 
-                    swipeContainer.setRefreshing(false);
-
                     HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
                     for (PrivateModel order: privateModelList) {
                         List<String> description = new ArrayList<String>();
@@ -205,13 +288,14 @@ public class MainActivity extends AppCompatActivity
                     privateListView.setAdapter(privateActiveExpandableListAdapter);
                     setListViewHeightBasedOnChildren(privateListView);
                 }
-
+                swipeContainer.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(Call<PrivateActivesSuccess> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Unable to load, please try again", Toast.LENGTH_SHORT).show();
+                swipeContainer.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
             }
         });
@@ -458,6 +542,61 @@ public class MainActivity extends AppCompatActivity
 
     public static void setListViewHeightBasedOnChildren(ExpandableListView listView) {
         PrivateActiveExpandableListAdapter listAdapter = (PrivateActiveExpandableListAdapter) listView.getExpandableListAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View listItem = listAdapter.getGroupView(i, false, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    private void setListViewHeightSchedule(ExpandableListView listView,
+                                   int group) {
+        ScheduleExpandableListAdapter listAdapter = (ScheduleExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+            totalHeight += groupItem.getMeasuredHeight();
+
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+
+                    totalHeight += listItem.getMeasuredHeight();
+
+                }
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 250;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+    }
+
+    public static void setListViewHeightBasedOnChildrenSchedule(ExpandableListView listView) {
+        ScheduleExpandableListAdapter listAdapter = (ScheduleExpandableListAdapter) listView.getExpandableListAdapter();
         if (listAdapter == null) {
             // pre-condition
             return;

@@ -14,6 +14,7 @@ import com.atc.gosmartlesmagistra.model.response.ForgotPasswordSuccess;
 import com.atc.gosmartlesmagistra.model.response.LoginSuccess;
 import com.atc.gosmartlesmagistra.model.response.LogoutSuccess;
 import com.atc.gosmartlesmagistra.model.response.NotificationSuccess;
+import com.atc.gosmartlesmagistra.model.response.SchedulesSuccess;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -119,5 +120,11 @@ public interface UserApi {
             "Content-Type: application/json"
     })
     Call<LoginSuccess> requestHonor(@Path("uniqueNumber") String uniqueNumber, @Body RequestHonorRequest body);
+
+    @GET("user/schedules/{uniqueNumber}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<SchedulesSuccess> getSchedules(@Path("uniqueNumber") String uniqueNumber);
 
 }

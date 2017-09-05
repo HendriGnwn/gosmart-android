@@ -51,10 +51,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorWhite"
-                    android:padding="8dp">
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    android:id="@+id/wording">
 
                     <TextView
-                        android:id="@+id/wording"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
@@ -64,14 +65,11 @@
 
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/schedule_recycler_view"
+                <ExpandableListView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:elevation="@null"
-                    android:clipToPadding="false"
-                    android:scrollbars="none" />
+                    android:layout_height="match_parent"
+                    android:id="@+id/schedule_list_view"
+                    android:background="@color/colorWhite"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,7 +87,6 @@
                 </LinearLayout>
 
                 <ExpandableListView
-                    android:nestedScrollingEnabled="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/private_list_view"

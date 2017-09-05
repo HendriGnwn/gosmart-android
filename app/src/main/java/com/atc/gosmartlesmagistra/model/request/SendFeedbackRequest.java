@@ -1,13 +1,11 @@
 package com.atc.gosmartlesmagistra.model.request;
 
+import java.io.Serializable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by ACER on 27/08/2017.
- */
-
-public class SendFeedbackRequest {
+public class SendFeedbackRequest implements Serializable
+{
 
     @SerializedName("first_name")
     @Expose
@@ -15,16 +13,16 @@ public class SendFeedbackRequest {
     @SerializedName("last_name")
     @Expose
     private String lastName;
-    @SerializedName("phone_number")
-    @Expose
-    private String phoneNumber;
     @SerializedName("email")
     @Expose
     private String email;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
     @SerializedName("message")
     @Expose
     private String message;
-    private final static long serialVersionUID = -1207704307475214506L;
+    private final static long serialVersionUID = 6386733139480598842L;
 
     /**
      * No args constructor for use in serialization
@@ -33,12 +31,20 @@ public class SendFeedbackRequest {
     public SendFeedbackRequest() {
     }
 
-    public SendFeedbackRequest(String firstName, String lastName, String email, String phoneNumber, String message) {
+    /**
+     *
+     * @param message
+     * @param lastName
+     * @param phone
+     * @param email
+     * @param firstName
+     */
+    public SendFeedbackRequest(String firstName, String lastName, String email, String phone, String message) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
         this.email = email;
+        this.phone = phone;
         this.message = message;
     }
 
@@ -58,12 +64,20 @@ public class SendFeedbackRequest {
         this.lastName = lastName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getMessage() {
@@ -74,11 +88,4 @@ public class SendFeedbackRequest {
         this.message = message;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }
