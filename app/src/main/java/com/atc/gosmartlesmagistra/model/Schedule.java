@@ -22,6 +22,9 @@ public class Schedule implements Serializable
     @SerializedName("date")
     @Expose
     private String date;
+    @SerializedName("date_detail")
+    @Expose
+    private DateDetail dateDetail = null;
     private final static long serialVersionUID = 7862126579740171755L;
 
     /**
@@ -37,11 +40,12 @@ public class Schedule implements Serializable
      * @param privateModel
      * @param date
      */
-    public Schedule(PrivateModel privateModel, String message, String date) {
+    public Schedule(PrivateModel privateModel, String message, String date, DateDetail dateDetail) {
         super();
         this.privateModel = privateModel;
         this.message = message;
         this.date = date;
+        this.dateDetail = dateDetail;
     }
 
     public PrivateModel getPrivateModel() {
@@ -66,6 +70,14 @@ public class Schedule implements Serializable
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public DateDetail getDateDetail() {
+        return dateDetail;
+    }
+
+    public void setDateDetail(DateDetail dateDetail) {
+        this.dateDetail = dateDetail;
     }
 
     public String getFormattedDate() {

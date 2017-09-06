@@ -175,6 +175,26 @@ public class SendFeedbackActivity extends AppCompatActivity {
                 public void onResponse(Call<ResponseSuccess> call, Response<ResponseSuccess> response) {
                     if (response.raw().isSuccessful()) {
                         Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        mFirstNameView.setError(null);
+                        mLastNameView.setError(null);
+                        mEmailView.setError(null);
+                        mMobilePhoneView.setError(null);
+                        mMessageView.setError(null);
+
+                        mFirstNameView.setText("");
+                        mLastNameView.setText("");
+                        mEmailView.setText("");
+                        mMobilePhoneView.setText("");
+                        mMessageView.setText("");
+
+                        if (sessionManager.isLoggedIn()) {
+                            user = databaseHelper.getUser(sessionManager.getUserCode());
+
+                            mFirstNameView.setText(user.getFirstName());
+                            mLastNameView.setText(user.getLastName());
+                            mEmailView.setText(user.getEmail());
+                            mMobilePhoneView.setText(user.getPhoneNumber());
+                        }
 
                     } else if (response.raw().code() == 400) {
 

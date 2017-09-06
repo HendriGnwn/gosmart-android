@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.atc.gosmartlesmagistra.R;
 import com.atc.gosmartlesmagistra.activity.PrivateDetailActivity;
 import com.atc.gosmartlesmagistra.activity.SectionCheckActivity;
+import com.atc.gosmartlesmagistra.model.DateDetail;
+import com.atc.gosmartlesmagistra.model.PrivateDetail;
 import com.atc.gosmartlesmagistra.model.PrivateModel;
 import com.atc.gosmartlesmagistra.model.Schedule;
 import com.atc.gosmartlesmagistra.model.StudentOnDetail;
@@ -28,6 +30,7 @@ import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
 import com.atc.gosmartlesmagistra.util.SessionManager;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -95,6 +98,14 @@ public class ScheduleExpandableListAdapter extends BaseExpandableListAdapter {
         teacherPhone.setText(context.getString(R.string.teacher_phone) + ": " + schedule.getPrivateModel().getTeacher().getPhoneNumber());
         course.setText(context.getString(R.string.course) + ": " + schedule.getPrivateModel().getPrivateDetails().get(0).getTeacherCourse().getCourse().getName());
         jadwal.setText(context.getString(R.string.schedule) + ": " + schedule.getFormattedDate());
+
+        if (schedule.getDateDetail().getCheck().equals(DateDetail.checkTrue)) {
+            doneButton.setText(context.getString(R.string.done_label));
+            doneButton.setBackground(context.getResources().getDrawable(R.drawable.shape_rectanglebutton_small_secondary));
+        } else {
+            doneButton.setText(context.getString(R.string.action_set_done));
+            doneButton.setBackground(context.getResources().getDrawable(R.drawable.shape_rectanglebutton_small));
+        }
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override

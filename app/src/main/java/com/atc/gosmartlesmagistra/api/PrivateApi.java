@@ -1,6 +1,7 @@
 package com.atc.gosmartlesmagistra.api;
 
 import com.atc.gosmartlesmagistra.model.request.OrderRequest;
+import com.atc.gosmartlesmagistra.model.request.SectionCheckRequest;
 import com.atc.gosmartlesmagistra.model.request.UpdateOrderRequest;
 import com.atc.gosmartlesmagistra.model.response.OrderHistorySuccess;
 import com.atc.gosmartlesmagistra.model.response.OrderSuccess;
@@ -52,4 +53,10 @@ public interface PrivateApi {
             "Content-Type: application/json"
     })
     Call<PrivateOrderHistorySuccess> privateHistories(@Path("uniqueNumber") String uniqueNumber);
+
+    @POST("private/check/{uniqueNumber}/{privateId}")
+    @Headers({
+            "Content-Type: application/json"
+    })
+    Call<PrivateOrderHistorySuccess> sectionCheck(@Path("uniqueNumber") String uniqueNumber, @Path("privateId") Integer privateId, @Body SectionCheckRequest body);
 }
