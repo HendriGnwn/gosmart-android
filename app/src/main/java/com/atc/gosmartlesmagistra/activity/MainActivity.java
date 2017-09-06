@@ -143,6 +143,10 @@ public class MainActivity extends AppCompatActivity
 
         manageHeaderView();
 
+        if (user.getRole() == User.roleTeacher) {
+            navigationView.getMenu().findItem(R.id.nav_order).setVisible(false);
+        }
+
         swipeContainer.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -446,6 +450,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_order) {
             Intent intent = new Intent(this, OrderHistoryActivity.class);
             startActivity(intent);
+
         } else if (id == R.id.nav_sign_out) {
             drawer.closeDrawer(GravityCompat.START);
             attemptLogout();
