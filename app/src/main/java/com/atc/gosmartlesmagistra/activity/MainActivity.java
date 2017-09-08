@@ -310,11 +310,13 @@ public class MainActivity extends AppCompatActivity
         TextView userName = (TextView) headerView.findViewById(R.id.name);
         TextView userUniqueNumber = (TextView) headerView.findViewById(R.id.uniqueNumber);
         TextView userEmail = (TextView) headerView.findViewById(R.id.email);
+        TextView userStatus = (TextView) headerView.findViewById(R.id.status) ;
         CircularImageView userPhoto = (CircularImageView) headerView.findViewById(R.id.image);
 
         userName.setText(user.getFirstName() + " " + user.getLastName());
         userUniqueNumber.setText(user.getUniqueNumber());
         userEmail.setText(user.getEmail());
+        userStatus.setText(getResources().getString(R.string.status) + ": " + user.getStatusText());
         Picasso.with(this).load(App.URL + "files/users/" + user.getPhoto()).error(R.drawable.user).into(userPhoto);
 
         userName.setOnClickListener(new View.OnClickListener() {

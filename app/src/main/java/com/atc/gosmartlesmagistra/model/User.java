@@ -275,4 +275,17 @@ public class User implements Serializable
     public String getShortAddress() {
         return App.getCutString(this.getAddress(), 47);
     }
+
+    public String getStatusText() {
+        switch (this.getStatus()) {
+            case 1:
+                return "Aktif";
+            case 0:
+                return "Belum Aktif";
+            case 5:
+                return "Blok";
+            default:
+                return "-";
+        }
+    }
 }
