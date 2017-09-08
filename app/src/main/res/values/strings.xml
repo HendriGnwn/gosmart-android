@@ -138,6 +138,7 @@
     <string name="money_collection_is_not_more_than">Money collection is not more than</string>
     <string name="status">Status</string>
     <string name="there_is_no_schedule">There is no Schedule for Today</string>
+    <string name="there_is_no_private">There is no Private Active for Today</string>
     <string name="review_title">Review Performance</string>
     <string name="section_details">Section Details</string>
     <string name="private_details">Private Details</string>

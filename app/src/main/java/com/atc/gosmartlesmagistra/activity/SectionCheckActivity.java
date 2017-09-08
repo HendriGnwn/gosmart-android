@@ -150,8 +150,6 @@ public class SectionCheckActivity extends AppCompatActivity {
     }
 
     private void attemptSubmit() {
-        App.hideSoftKeyboard(this);
-
         String review = mReviewView.getText().toString();
 
         Integer checklist;

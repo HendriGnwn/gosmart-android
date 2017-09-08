@@ -103,15 +103,21 @@ public class PrivateDetailActivity extends AppCompatActivity {
         mTeacherPhoneNumberView.setText(privateModel.getTeacher().getPhoneNumber());
         mTeacherBioView.setText(privateModel.getTeacher().getTeacherProfile().getBio());
 
+        if (user.getRole() == User.roleTeacher) {
+            reviewButton.setText("Lihat Ulasan");
+        } else {
+            reviewButton.setText("Beri Ulasan");
+        }
+
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (privateModel.getStatus() != PrivateModel.statusDone) {
-                    Toast.makeText(getApplicationContext(), "Anda bisa beri ulasan jika Status sudah Done / Selesai", Toast.LENGTH_SHORT).show();
-                } else {
+                if (privateModel.getStatus() == 10) {
                     Intent intent = new Intent(getApplicationContext(), ReviewActivity.class);
                     intent.putExtra("privateModel", privateModel);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), privateModel.getStatus() + " Anda bisa beri ulasan jika Status sudah Done / Selesai", Toast.LENGTH_SHORT).show();
                 }
             }
         });

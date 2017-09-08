@@ -7,12 +7,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.atc.gosmartlesmagistra.App;
@@ -56,6 +59,8 @@ public class ReviewActivity extends AppCompatActivity {
     @BindView(R.id.rate) AutoCompleteTextView mRateView;
     @BindView(R.id.description) AutoCompleteTextView mReviewView;
     @BindView(R.id.progress_bar) ProgressBar progressBar;
+    @BindView(R.id.submit_button) AppCompatButton submitButton;
+    @BindView(R.id.created_at) TextView createdAt;
 
     SessionManager sessionManager;
     DatabaseHelper databaseHelper;
@@ -76,11 +81,33 @@ public class ReviewActivity extends AppCompatActivity {
             user = databaseHelper.getUser(sessionManager.getUserCode());
         }
 
+        if (user.getRole() == User.roleTeacher) {
+            mRateView.setEnabled(false);
+            mRateView.setFocusable(false);
+            mReviewView.setEnabled(false);
+            mReviewView.setFocusable(false);
+            submitButton.setVisibility(View.GONE);
+        } else {
+            mRateView.setEnabled(true);
+            mRateView.setFocusable(true);
+            mReviewView.setEnabled(true);
+            mReviewView.setFocusable(true);
+        }
+
         mRateView.setFilters(new InputFilter[] {
                 new InputFilterMinMax("1", "5")
         });
 
         privateModel = (PrivateModel) getIntent().getSerializableExtra("privateModel");
+
+        if (privateModel.getReview() != null) {
+            mRateView.setText(privateModel.getReview().getRate() + "");
+            mReviewView.setText(privateModel.getReview().getDescription());
+            createdAt.setVisibility(View.VISIBLE);
+            createdAt.setText("Dibuat pada: " + privateModel.getReview().getFormattedCreatedAt());
+        } else {
+            createdAt.setText("Belum ada Ulasan");
+        }
     }
 
     private void setActionLeftIcon() {
@@ -91,6 +118,12 @@ public class ReviewActivity extends AppCompatActivity {
 
     private void attemptSubmit() {
         App.hideSoftKeyboard(this);
+
+        if (privateModel.getReview() != null) {
+            Toast.makeText(this, "Anda sudah submit sebelumnya", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
         String rate = mRateView.getText().toString();
         String review = mReviewView.getText().toString();
@@ -134,15 +167,15 @@ public class ReviewActivity extends AppCompatActivity {
                     .build();
             RequestApi service = retrofit.create(RequestApi.class);
             ReviewRequest request = new ReviewRequest(sessionManager.getUserToken(), privateModel.getId(), rate, review);
-            Call<ReviewSuccess> call = service.review(sessionManager.getUserToken(), request);
+            Call<ReviewSuccess> call = service.review(sessionManager.getUserCode(), request);
             call.enqueue(new Callback<ReviewSuccess>() {
                 @Override
                 public void onResponse(Call<ReviewSuccess> call, Response<ReviewSuccess> response) {
+                    Log.i("cranium", response.raw().toString());
                     if (response.raw().isSuccessful()) {
                         Toast.makeText(getApplicationContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                         privateModel = response.body().getPrivateModel();
-                        Intent intent = new Intent(getApplicationContext(), PrivateDetailActivity.class);
-                        intent.putExtra("privateModel", privateModel);
+                        Intent intent = new Intent(getApplicationContext(), PrivateOrderHistoryActivity.class);
                         startActivity(intent);
 
                     } else if (response.raw().code() == 400) {

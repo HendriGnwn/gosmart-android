@@ -1,6 +1,8 @@
 package com.atc.gosmartlesmagistra.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -11,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -50,6 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindColor;
 import butterknife.BindView;
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.progress_bar) ProgressBar progressBar;
     @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
     @BindView(R.id.wording) RelativeLayout wordingRelative;
+    @BindView(R.id.wording_private) RelativeLayout wordingPrivateRelative;
 
     @BindColor(R.color.colorWhite) int white;
     @BindColor(R.color.colorAccent) int accent;
@@ -107,6 +112,8 @@ public class MainActivity extends AppCompatActivity
 
         sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
+
+        setLocaleIndonesianLanguage();
 
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(this, "You must be a login", Toast.LENGTH_SHORT).show();
@@ -227,20 +234,21 @@ public class MainActivity extends AppCompatActivity
 
                     if (scheduleList == null) {
                         wordingRelative.setVisibility(View.VISIBLE);
+                        scheduleListView.setVisibility(View.GONE);
                     } else {
+                        scheduleListView.setVisibility(View.VISIBLE);
                         wordingRelative.setVisibility(View.GONE);
-                    }
+                        HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+                        for (Schedule schedule : scheduleList) {
+                            List<String> description = new ArrayList<String>();
+                            description.add(schedule.getMessage());
+                            listDataChild.put(String.valueOf(schedule.getPrivateModel().getId()), description); // Header, Child data
+                        }
 
-                    HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
-                    for (Schedule schedule: scheduleList) {
-                        List<String> description = new ArrayList<String>();
-                        description.add(schedule.getMessage());
-                        listDataChild.put(String.valueOf(schedule.getPrivateModel().getId()), description); // Header, Child data
+                        scheduleExpandableListAdapter = new ScheduleExpandableListAdapter(getApplicationContext(), scheduleList, listDataChild);
+                        scheduleListView.setAdapter(scheduleExpandableListAdapter);
+                        setListViewHeightBasedOnChildrenSchedule(scheduleListView);
                     }
-
-                    scheduleExpandableListAdapter= new ScheduleExpandableListAdapter(getApplicationContext(), scheduleList, listDataChild);
-                    scheduleListView.setAdapter(scheduleExpandableListAdapter);
-                    setListViewHeightBasedOnChildrenSchedule(scheduleListView);
                 }
                 swipeContainer.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
@@ -281,16 +289,26 @@ public class MainActivity extends AppCompatActivity
                 if (response.raw().isSuccessful()) {
                     privateModelList = response.body().getPrivateModels();
 
-                    HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
-                    for (PrivateModel order: privateModelList) {
-                        List<String> description = new ArrayList<String>();
-                        description.add(order.getCode());
-                        listDataChild.put(String.valueOf(order.getId()), description); // Header, Child data
+                    if (privateModelList == null) {
+                        Log.i("cranium", "test");
+                        wordingPrivateRelative.setVisibility(View.VISIBLE);
+                        privateListView.setVisibility(View.GONE);
+                    } else {
+                        privateListView.setVisibility(View.VISIBLE);
+                        wordingPrivateRelative.setVisibility(View.GONE);
+                        HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+                        for (PrivateModel order: privateModelList) {
+                            List<String> description = new ArrayList<String>();
+                            description.add(order.getCode());
+                            listDataChild.put(String.valueOf(order.getId()), description); // Header, Child data
+                        }
+
+                        privateActiveExpandableListAdapter= new PrivateActiveExpandableListAdapter(getApplicationContext(), privateModelList, listDataChild);
+                        privateListView.setAdapter(privateActiveExpandableListAdapter);
+                        setListViewHeightBasedOnChildren(privateListView);
                     }
 
-                    privateActiveExpandableListAdapter= new PrivateActiveExpandableListAdapter(getApplicationContext(), privateModelList, listDataChild);
-                    privateListView.setAdapter(privateActiveExpandableListAdapter);
-                    setListViewHeightBasedOnChildren(privateListView);
+
                 }
                 swipeContainer.setRefreshing(false);
                 progressBar.setVisibility(View.GONE);
@@ -620,5 +638,14 @@ public class MainActivity extends AppCompatActivity
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
         listView.setLayoutParams(params);
         listView.requestLayout();
+    }
+
+    private void setLocaleIndonesianLanguage() {
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        Locale locale = new Locale("id", "ID");
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration,displayMetrics);
     }
 }

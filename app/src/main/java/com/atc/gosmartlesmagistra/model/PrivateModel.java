@@ -49,6 +49,9 @@ public class PrivateModel implements Serializable
     @SerializedName("private_details")
     @Expose
     private List<PrivateDetail> privateDetails = null;
+    @SerializedName("review")
+    @Expose
+    private Review review;
     @SerializedName("student")
     @Expose
     private User student;
@@ -80,7 +83,7 @@ public class PrivateModel implements Serializable
      * @param teacher
      * @param orderId
      */
-    public PrivateModel(Integer id, Integer orderId, Integer section, String sectionTime, String code, String startDate, String endDate, Integer status, String createdAt, String updatedAt, List<PrivateDetail> privateDetails, User student, User teacher) {
+    public PrivateModel(Integer id, Integer orderId, Integer section, String sectionTime, String code, String startDate, String endDate, Integer status, String createdAt, String updatedAt, List<PrivateDetail> privateDetails, Review review, User student, User teacher) {
         super();
         this.id = id;
         this.orderId = orderId;
@@ -93,6 +96,7 @@ public class PrivateModel implements Serializable
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.privateDetails = privateDetails;
+        this.review = review;
         this.student = student;
         this.teacher = teacher;
     }
@@ -183,6 +187,14 @@ public class PrivateModel implements Serializable
 
     public void setPrivateDetails(List<PrivateDetail> privateDetails) {
         this.privateDetails = privateDetails;
+    }
+
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
     }
 
     public User getStudent() {
