@@ -129,6 +129,12 @@ public class FillOrderActivity extends AppCompatActivity {
             return;
         }
 
+        if (user.getStatus() != 1) {
+            Toast.makeText(this, "Status Anda belum Aktif, silakan untuk mengisi semua biodata terlebih dahulu termasuk upload foto.", Toast.LENGTH_SHORT).show();
+            super.onBackPressed();
+            return;
+        }
+
         isEdit = getIntent().getBooleanExtra("isEdit", false);
         if (isEdit) {
             order = (Order) getIntent().getSerializableExtra("order");

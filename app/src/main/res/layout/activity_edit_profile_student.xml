@@ -222,7 +222,7 @@
                         android:id="@+id/degree"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/prompt_graduated"
+                        android:hint="@string/prompt_degree"
                         android:inputType="number"
                         android:imeOptions="actionNext"
                         android:nextFocusDown="@+id/department"
