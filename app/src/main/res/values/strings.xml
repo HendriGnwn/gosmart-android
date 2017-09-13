@@ -152,8 +152,7 @@
     <string name="teacher_phone">Teacher Phone</string>
     <string name="schedule">Schedule</string>
     <string name="section_done">Section is Done</string>
-
-    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
+    <string name="done_label">Done</string>
 
     <string-array name="title_arrays">
         <item>Diploma</item>

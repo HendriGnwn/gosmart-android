@@ -154,9 +154,6 @@
     <string name="section_done">Sesi sudah Selesai</string>
     <string name="done_label">Selesai</string>
 
-
-    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
-
     <string-array name="title_arrays">
         <item>Diploma</item>
         <item>Sarjana</item>
