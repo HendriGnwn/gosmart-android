@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 
 import com.atc.gosmartlesmagistra.R;
+import com.atc.gosmartlesmagistra.util.SessionManager;
 
 import java.util.Locale;
 
@@ -36,7 +37,16 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+
+                Intent intent;
+
+                SessionManager sessionManager = new SessionManager(SplashActivity.this);
+                if (sessionManager.getIntroFirstApp()) {
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, IntroActivity.class);
+                    sessionManager.setIntroFirstApp(true);
+                }
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_out, R.anim.fade_in);

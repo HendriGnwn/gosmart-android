@@ -26,6 +26,7 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     private static final String PREF_NAME = "ATCIndonesia";
+    private static final String KEY_IS_INTRO = "appIntro";
     private static final String KEY_IS_LOGGEDIN = "isLoggedIn";
     private static final String KEY_USER_TOKEN = "getToken";
     private static final String KEY_USER_CODE = "getUserCode";
@@ -54,6 +55,15 @@ public class SessionManager {
 
     public boolean isLoggedIn(){
         return pref.getBoolean(KEY_IS_LOGGEDIN, false);
+    }
+
+    public boolean getIntroFirstApp(){
+        return pref.getBoolean(KEY_IS_INTRO, false);
+    }
+
+    public void setIntroFirstApp(boolean value) {
+        editor.putBoolean(KEY_IS_INTRO, value);
+        editor.commit();
     }
 
     public String getUserToken(){

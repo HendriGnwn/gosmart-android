@@ -427,6 +427,10 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
 
+        if (!sessionManager.isLoggedIn()) {
+            return true;
+        }
+
         if (user.getRole() == User.roleTeacher) {
             menu.findItem(R.id.action_cart)
                     .setVisible(false);
