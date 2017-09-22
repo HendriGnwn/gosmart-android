@@ -164,6 +164,7 @@
     <string-array name="sort_arrays">
         <item>Umum</item>
         <item>Termurah</item>
+        <item>Termahal</item>
     </string-array>
 
 </resources>

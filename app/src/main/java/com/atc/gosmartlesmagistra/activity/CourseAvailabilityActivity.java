@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
@@ -72,6 +74,7 @@ public class CourseAvailabilityActivity extends AppCompatActivity {
     Retrofit retrofit;
     Course course;
     String[] sorts;
+    String sortSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,30 @@ public class CourseAvailabilityActivity extends AppCompatActivity {
                 this, R.layout.spinner_item, sorts
         );
         sortBySpinner.setAdapter(spinnerArrayAdapter);
+
+        sortBySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 1:
+                        sortSelected = "price-cheapest";
+                        break;
+                    case 2:
+                        sortSelected = "price-expensive";
+                        break;
+                    default:
+                        sortSelected = "default";
+                        break;
+                }
+                loadCourses();
+                Log.i("cranium", position + "tes");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                sortSelected = "default";
+            }
+        });
 
         courseList = new ArrayList<>();
         courseListAdapter = new CourseAvailabilityListAdapter(this, courseList);
@@ -146,7 +173,7 @@ public class CourseAvailabilityActivity extends AppCompatActivity {
     private void loadCourses() {
         CourseApi courseApi = retrofit.create(CourseApi.class);
 
-        Call<CourseAvailabilitiesSuccess> call = courseApi.courseAvailabilities(course.getId(),mSearchView.getText().toString(),null,null,null);
+        Call<CourseAvailabilitiesSuccess> call = courseApi.courseAvailabilities(course.getId(),mSearchView.getText().toString(),null,null,null,sortSelected);
         call.enqueue(new Callback<CourseAvailabilitiesSuccess>() {
             @Override
             public void onResponse(Call<CourseAvailabilitiesSuccess> call, Response<CourseAvailabilitiesSuccess> response) {

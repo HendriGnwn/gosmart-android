@@ -38,7 +38,8 @@ public interface CourseApi {
             @Query("search") String name,
             @Query("latitude") String latitude,
             @Query("longitude") String longitude,
-            @Query("radius") String radius
+            @Query("radius") String radius,
+            @Query("sort") String sort
     );
 
     @GET("similiar-courses/{id}")

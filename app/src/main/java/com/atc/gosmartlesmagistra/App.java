@@ -23,8 +23,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class App extends Application {
 
-    public static String API = "http://atc.co.id/gosmart/public/api/v1/";
-    public static String URL = "http://atc.co.id/gosmart/public/";
+    public static String API = "http://www.private-smart.com/public/api/v1/";
+    public static String URL = "http://www.private-smart.com/public/";
 
     @Override
     public void onCreate() {

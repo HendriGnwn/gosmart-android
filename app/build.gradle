@@ -12,6 +12,14 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    signingConfigs {
+        release {
+            storeFile file("keystorerelease.jks")
+            storePassword "@gosmart2017"
+            keyAlias "gosmart"
+            keyPassword "gosmart2017"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
