@@ -371,10 +371,10 @@ public class PrivateOrderActivity extends AppCompatActivity {
                             Integer bankId = bankList.get(i).getId();
                             if (bankId.equals(order.getOrderConfirmation().getBankId())) {
                                 selectedBankSpinner = i;
+                                bankSpinner.setSelection(selectedBankSpinner);
                                 break;
                             }
                         }
-                        bankSpinner.setSelection(selectedBankSpinner);
                         mBankAccountView.setText(order.getOrderConfirmation().getBankNumber());
                         mBankHolderNameView.setText(order.getOrderConfirmation().getBankBehalfOf());
                         mAmountView.setText(order.getOrderConfirmation().getAmount());

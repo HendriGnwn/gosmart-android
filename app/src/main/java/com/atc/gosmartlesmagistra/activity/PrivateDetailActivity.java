@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,10 +90,12 @@ public class PrivateDetailActivity extends AppCompatActivity {
         mStartDateView.setText(privateModel.getFormattedStartDate());
         mEndDateView.setText(privateModel.getFormattedEndDate());
         mStatusView.setText(privateModel.getStatusText());
-
-        mCourseNameView.setText(teacherCourse.getCourse().getName());
-        mCourseSectionView.setText(teacherCourse.getCourse().getSection() + ", " + teacherCourse.getCourse().getSectionTime() + " " + getString(R.string.time));
-        mCourseDescriptionView.setText(teacherCourse.getCourse().getDescription());
+        Log.i("hendri", teacherCourse + "");
+        if (teacherCourse != null) {
+            mCourseNameView.setText(teacherCourse.getCourse().getName());
+            mCourseSectionView.setText(teacherCourse.getCourse().getSection() + ", " + teacherCourse.getCourse().getSectionTime() + " " + getString(R.string.time));
+            mCourseDescriptionView.setText(teacherCourse.getCourse().getDescription());
+        }
 
         mStudentNameView.setText(privateModel.getStudent().getFullName());
         mStudentAddressView.setText(privateModel.getStudent().getAddress());

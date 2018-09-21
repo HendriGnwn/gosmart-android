@@ -3,6 +3,7 @@ package com.atc.gosmartlesmagistra.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.atc.gosmartlesmagistra.activity.PrivateDetailActivity;
 import com.atc.gosmartlesmagistra.model.Order;
 import com.atc.gosmartlesmagistra.model.PrivateModel;
 import com.atc.gosmartlesmagistra.model.StudentOnDetail;
+import com.atc.gosmartlesmagistra.model.TeacherCourse;
 import com.atc.gosmartlesmagistra.model.TeacherOnDetail;
 import com.atc.gosmartlesmagistra.model.User;
 import com.atc.gosmartlesmagistra.util.DatabaseHelper;
@@ -153,7 +155,9 @@ public class PrivateOrderHistoryExpandableListAdapter extends BaseExpandableList
         finish.setText(context.getResources().getString(R.string.finish) + ": " + order.getPrivateDetails().get(0).getChecklistText());
         finishAt.setText(context.getResources().getString(R.string.finished_at) + ": " + order.getPrivateDetails().get(0).getFormattedChecklistAt());
 
-        course.setText(context.getResources().getString(R.string.course) + ": " + order.getPrivateDetails().get(0).getTeacherCourse().getCourse().getName());
+        if (order.getPrivateDetails().get(0).getTeacherCourse() != null) {
+           course.setText(context.getResources().getString(R.string.course) + ": " + order.getPrivateDetails().get(0).getTeacherCourse().getCourse().getName());
+        }
         return convertView;
     }
 
